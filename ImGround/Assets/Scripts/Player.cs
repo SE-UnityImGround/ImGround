@@ -7,8 +7,13 @@ public class Player : MonoBehaviour
     public float speed;
     float hAxis;
     float vAxis;
-    bool rDown;
 
+    bool rDown;
+    bool fDown;
+    bool isReady;
+    float attackDelay;
+
+    public Camera followCamera;
     Animator anim;
     Vector3 moveVec;
 
@@ -22,6 +27,7 @@ public class Player : MonoBehaviour
         getInput();
         Move();
         Turn();
+        Attack();
     }
 
     void getInput()
@@ -29,6 +35,7 @@ public class Player : MonoBehaviour
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
         rDown = Input.GetButton("Run");
+        fDown = Input.GetButton("Fire1");
     }
     void Move()
     {
@@ -42,5 +49,16 @@ public class Player : MonoBehaviour
     void Turn()
     {
         transform.LookAt(transform.position + moveVec);
+    }
+
+    void Attack()
+    {
+        attackDelay += Time.deltaTime;
+        isReady = 0.4f < attackDelay;
+        if(fDown && isReady)
+        {
+            anim.SetTrigger("doAttack");
+            attackDelay = 0f;
+        }
     }
 }
