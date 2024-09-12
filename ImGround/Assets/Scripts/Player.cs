@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
     Animator anim;
     Vector3 moveVec;
 
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayer;
+    public Transform attackPoint;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -58,7 +62,25 @@ public class Player : MonoBehaviour
         if(fDown && isReady)
         {
             anim.SetTrigger("doAttack");
+            Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+
+            foreach(Collider enemy in hitEnemies)
+            {
+                Enemy enemyHealth = enemy.GetComponent<Enemy>();
+                if(enemyHealth != null && !enemyHealth.isDie)
+                {
+                    enemyHealth.TakeDamage(1);
+                }
+            }
             attackDelay = 0f;
         }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
