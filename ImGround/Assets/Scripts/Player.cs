@@ -43,9 +43,9 @@ public class Player : MonoBehaviour
     }
     void Move()
     {
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        moveVec = new Vector3(-hAxis, 0, -vAxis).normalized;
 
-        transform.position += moveVec * speed * (rDown ? 1f : 0.3f) * Time.deltaTime;
+        transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
         anim.SetBool("isWalk", moveVec != Vector3.zero);
         anim.SetBool("isRun", rDown);
     }
@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
             attackDelay = 0f;
         }
     }
+    // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null)
