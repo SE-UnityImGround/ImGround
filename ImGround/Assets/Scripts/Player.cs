@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     bool rDown;
     bool fDown;
+    bool dDown;
     bool isReady;
     float attackDelay;
 
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
         vAxis = Input.GetAxisRaw("Vertical");
         rDown = Input.GetButton("Run");
         fDown = Input.GetButton("Fire1");
+        dDown = Input.GetButton("Fire2");
     }
     void Move()
     {
@@ -59,20 +61,24 @@ public class Player : MonoBehaviour
     {
         attackDelay += Time.deltaTime;
         isReady = 0.4f < attackDelay;
-        if(fDown && isReady)
+        if (fDown && isReady)
         {
             anim.SetTrigger("doAttack");
             Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
 
-            foreach(Collider enemy in hitEnemies)
+            foreach (Collider enemy in hitEnemies)
             {
                 Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                if(enemyHealth != null && !enemyHealth.isDie)
+                if (enemyHealth != null && !enemyHealth.isDie)
                 {
                     enemyHealth.TakeDamage(1);
                 }
             }
             attackDelay = 0f;
+        }
+        else if(dDown && isReady)
+        {
+            anim.SetTrigger("doDig");
         }
     }
     // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
