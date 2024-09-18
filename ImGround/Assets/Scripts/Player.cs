@@ -43,10 +43,10 @@ public class Player : MonoBehaviour
         fDown = Input.GetButton("Fire1");
         dDown = Input.GetButton("Fire2");
     }
+
     void Move()
     {
-        moveVec = new Vector3(-hAxis, 0, -vAxis).normalized;
-
+        moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
         transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
         anim.SetBool("isWalk", moveVec != Vector3.zero);
         anim.SetBool("isRun", rDown);
