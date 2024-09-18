@@ -18,7 +18,13 @@ public class Enemy : MonoBehaviour
     public bool isChase;
     public bool isAttack;
 
+    // ======= Fade Parameters =======
+
+    public Renderer fadeRenderer; // 죽은 후 Fadeout 적용을 위한 Renderer
     public float fadeDuration = 3f; // 사라지는 시간
+
+    // ===============================
+
     private void Start()
     {
         health = maxHealth;
@@ -74,6 +80,22 @@ public class Enemy : MonoBehaviour
     {
         // 죽는 모션이 완료될 때까지 대기 (애니메이션 길이에 맞게 조정)
         yield return new WaitForSeconds(3f);
+
+        // 죽은 후 Fade Out 효과
+        if (fadeRenderer == null)
+            Debug.LogFormat("Fade Renderer가 등록되지 않음!!");
+        else
+        {
+            float elapsedTime = 0.0f;
+            Color c = fadeRenderer.material.color;
+            while (elapsedTime <= fadeDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                c.a = ((fadeDuration - elapsedTime) / fadeDuration * 1.0f);
+                fadeRenderer.material.color = c;
+                yield return new WaitForSeconds(0.02f);
+            }
+        }
 
         Destroy(gameObject);
     }
