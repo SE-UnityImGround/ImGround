@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public enum Type { Mush, Cact };
+    public enum Type { Mush, Cact, Boss };
     public Type type;
     public Transform target;
     public NavMeshAgent nav; // 타켓을 추적하는 AI 관련 클래스
@@ -126,6 +126,10 @@ public class Enemy : MonoBehaviour
                     targetRadius = 1f;
                     targetRange = 2f;
                     break;
+                case Type.Boss:
+                    targetRadius = 3f;
+                    targetRange = 3f;
+                    break;
             }
 
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius,
@@ -190,6 +194,10 @@ public class Enemy : MonoBehaviour
                     anim.SetTrigger("doHeadA");
                     break;
             }
+        }
+        else if(type == Type.Boss)
+        {
+            anim.SetTrigger("doPunchA");
         }
         
         yield return new WaitForSeconds(2f); // 공격 딜레이
