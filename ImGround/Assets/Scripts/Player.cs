@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     bool sDown1;
     bool sDown2;
     bool sDown3;
+    bool sDown4;
 
     bool isReady;
     bool isDigReady;
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
         sDown1 = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
         sDown2 = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
         sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
+        sDown4 = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
     }
 
     void Move()
@@ -103,7 +106,7 @@ public class Player : MonoBehaviour
             attackDelay = 0f;
             StartCoroutine(ResetAttack());
         }
-        else if(toolIndex == 1 && dDown && isDigReady && !isAttacking && !isJumping)
+        else if (toolIndex == 1 || toolIndex == 3 && dDown && isDigReady && !isAttacking && !isJumping)
         {
             anim.SetTrigger("doDigDown");
             isDigging = true;
@@ -149,6 +152,11 @@ public class Player : MonoBehaviour
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 2;
+        }
+        if (sDown4)
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 3;
         }
 
         tools[toolIndex].gameObject.SetActive(true);

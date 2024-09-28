@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,14 @@ public class Enemy : MonoBehaviour
     public bool isChase;
     public bool isAttack;
 
+    public GameObject stonePrefab; // 돌 프리팹
+    public float throwForce = 500f; // 돌을 던지는 힘
+    public int numberOfStones = 10; // 스톤 샤워 공격에 사용될 돌의 수
+    public float radius = 5f; // 스톤 샤워 돌 생성 반경
+    public GameObject stonePosition; // 골렘이 꺼내는 돌
+
+    public GameObject item;
+    
     // ======= Fade Parameters =======
 
     private Renderer fadeRenderer; // 죽은 후 Fadeout 적용을 위한 Renderer
@@ -34,6 +43,7 @@ public class Enemy : MonoBehaviour
         fadeRenderer = gameObject.GetComponentInChildren<Renderer>();
         if (fadeRenderer != null && transparentShader != null)
             fadeRenderer.material.shader = transparentShader;
+
     }
     void Awake()
     {
@@ -85,7 +95,7 @@ public class Enemy : MonoBehaviour
     IEnumerator FadeOutAndDestroy()
     {
         // 죽는 모션이 완료될 때까지 대기 (애니메이션 길이에 맞게 조정)
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.4f);
 
         // 죽은 후 Fade Out 효과
         if (fadeRenderer == null)
@@ -106,7 +116,8 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
     }
 
     void Targetting()
@@ -127,8 +138,8 @@ public class Enemy : MonoBehaviour
                     targetRange = 2f;
                     break;
                 case Type.Boss:
-                    targetRadius = 3f;
-                    targetRange = 3f;
+                    targetRadius = 6f;
+                    targetRange = 6f;
                     break;
             }
 
@@ -160,48 +171,78 @@ public class Enemy : MonoBehaviour
         lookDirection.y = 0; // Y축 회전을 방지하여 수평으로만 회전
         transform.rotation = Quaternion.LookRotation(lookDirection);
 
-        int ranAction = Random.Range(0, 5);
+        // 플레이어와의 거리 계산
+        float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+
         isAttack = true;
 
-        if (type == Type.Mush)
+        // Boss 타입의 경우 거리에 따라 공격 선택
+        if (type == Type.Boss)
         {
-            switch (ranAction)
+            if (distanceToPlayer <= 3f)  // 가까울 경우
             {
-                case 0:
-                case 1:
-                    anim.SetTrigger("doHeadA");
-                    break;
-                case 2:
-                case 3:
-                    anim.SetTrigger("doBodyA");
-                    break;
-                case 4:
-                    anim.SetTrigger("doSpinA");
-                    break;
-            }
-        }
-        else if (type == Type.Cact)
-        {
-            switch (ranAction)
-            {
-                case 0:
-                case 1:
-                case 2:
+                // 가까운 거리에서 Punch나 StoneShower 공격
+                int ranAction = Random.Range(0, 5);
+                if (ranAction <= 3) // Punch 공격
+                {
                     anim.SetTrigger("doPunchA");
-                    break;
-                case 3:
-                case 4:
-                    anim.SetTrigger("doHeadA");
-                    break;
+                }
+                else // StoneShower 공격
+                {
+                    CreateStoneShower();
+                    anim.SetTrigger("doStone");
+                }
+            }
+            else // 멀리 있을 경우
+            {
+                // 멀리 있을 때는 ThrowStone 공격
+                anim.SetTrigger("doThrow");
+                stonePosition.SetActive(true);  // 손에 돌을 활성화
+                Invoke("ThrowStone", 1.5f);    // ThrowStone 메서드를 호출해 돌 던지기
             }
         }
-        else if(type == Type.Boss)
+        else // Boss가 아닌 다른 타입의 적 공격
         {
-            anim.SetTrigger("doPunchA");
+            int ranAction = Random.Range(0, 5);
+            if (type == Type.Mush)
+            {
+                switch (ranAction)
+                {
+                    case 0:
+                    case 1:
+                        anim.SetTrigger("doHeadA");
+                        break;
+                    case 2:
+                    case 3:
+                        anim.SetTrigger("doBodyA");
+                        break;
+                    case 4:
+                        anim.SetTrigger("doSpinA");
+                        break;
+                }
+            }
+            else if (type == Type.Cact)
+            {
+                switch (ranAction)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                        anim.SetTrigger("doPunchA");
+                        break;
+                    case 3:
+                    case 4:
+                        anim.SetTrigger("doHeadA");
+                        break;
+                }
+            }
         }
-        
-        yield return new WaitForSeconds(2f); // 공격 딜레이
-        float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+
+        // 공격이 끝나면 일정 딜레이 후 다시 추적을 시작
+        if (type != Type.Boss)
+            yield return new WaitForSeconds(2f); // 일반 몬스터의 경우 공격 딜레이
+        else
+            yield return new WaitForSeconds(4f); // 보스의 경우 공격 딜레이
 
         // 플레이어와의 거리가 멀면 추적을 재개
         if (distanceToPlayer > nav.stoppingDistance)
@@ -217,5 +258,42 @@ public class Enemy : MonoBehaviour
         isAttack = false;
         nav.isStopped = false; // 다시 이동 가능하게 설정
         isChase = true;
+    }
+
+
+    void CreateStoneShower()
+    {
+        for (int i = 0; i < numberOfStones; i++)
+        {
+            Vector3 stonePosition = Random.onUnitSphere * radius + transform.position;
+            stonePosition.y = transform.position.y + 12; // 높이 조절
+            GameObject stone = Instantiate(stonePrefab, stonePosition, Quaternion.identity);
+            Rigidbody rb = stone.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                rb.useGravity = true; // 중력 사용
+            }
+            if(rb.position.y <= 0)
+            {
+                Destroy(rb);
+            }
+        }
+    }
+
+    void ThrowStone()
+    {
+        if (stonePrefab && target)
+        {
+            stonePosition.SetActive(false);
+            GameObject stone = Instantiate(stonePrefab, transform.position + Vector3.up, Quaternion.identity);
+            Rigidbody rb = stone.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                Vector3 direction = (target.position - transform.position).normalized;
+                rb.AddForce(direction * throwForce);
+            }
+
+            Destroy(stone, 4f);
+        }
     }
 }
