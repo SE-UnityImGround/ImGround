@@ -18,17 +18,21 @@ public class Player : MonoBehaviour
     bool sDown2;
     bool sDown3;
     bool sDown4;
+    bool sDown5;
 
     bool isReady;
     bool isDigReady;
     bool isJumpReady;
+    bool isPickReady;
     bool isAttacking = false;
     bool isDigging = false;
     bool isJumping = false;
+    bool isPicking = false;
 
     float attackDelay;
     float jumpDelay;
     float digDelay;
+    float pickDelay;
     int toolIndex = 0;
 
     public Camera followCamera;
@@ -68,14 +72,19 @@ public class Player : MonoBehaviour
         sDown2 = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
         sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
         sDown4 = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
+        sDown5 = Input.GetKeyDown(KeyCode.Alpha5); // 5번 키
     }
 
     void Move()
     {
         moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
         transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
-        anim.SetBool("isWalk", moveVec != Vector3.zero);
-        anim.SetBool("isRun", rDown && moveVec != Vector3.zero);
+
+        bool isWalking = moveVec != Vector3.zero;
+        bool isRunning = rDown && moveVec != Vector3.zero;
+        anim.SetBool("isWalk", isWalking);
+        anim.SetBool("isRun", isRunning);
+
     }
 
     void Turn()
@@ -87,9 +96,11 @@ public class Player : MonoBehaviour
     {
         attackDelay += Time.deltaTime;
         digDelay += Time.deltaTime;
+        pickDelay += Time.deltaTime;
         isReady = 0.4f < attackDelay;
         isDigReady = 1.5f < digDelay;
-        if (fDown && isReady && !isDigging && !isJumping)
+        isPickReady = 1.2f < pickDelay;
+        if (fDown && isReady && !isDigging && !isJumping && !isPicking)
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
@@ -106,14 +117,22 @@ public class Player : MonoBehaviour
             attackDelay = 0f;
             StartCoroutine(ResetAttack());
         }
-        else if (toolIndex == 1 || toolIndex == 3 && dDown && isDigReady && !isAttacking && !isJumping)
+        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
         {
             anim.SetTrigger("doDigDown");
             isDigging = true;
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
-        else if (toolIndex == 2 && dDown && isDigReady && !isAttacking && !isJumping)
+        else if (toolIndex == 2 && dDown && isPickReady && !isAttacking && !isJumping)
+        {
+            rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
+            anim.SetTrigger("doPick");
+            isPicking = true;
+            pickDelay = 0f;
+            StartCoroutine(ResetPick());
+        }
+        else if (toolIndex == 4 && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
         {
             anim.SetTrigger("doDigUp");
             isDigging = true;
@@ -158,6 +177,11 @@ public class Player : MonoBehaviour
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 3;
         }
+        if (sDown5)
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 4;
+        }
 
         tools[toolIndex].gameObject.SetActive(true);
     }
@@ -177,6 +201,12 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1.1f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
         isJumping = false;
     }
+
+    IEnumerator ResetPick()
+    {
+        yield return new WaitForSeconds(1.2f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
+        isPicking = false;
+    }
     // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
     private void OnDrawGizmosSelected()
     {
@@ -185,5 +215,19 @@ public class Player : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "fruit" && toolIndex == 2 && isPicking)
+        {
+            Rigidbody fruitRb = other.GetComponent<Rigidbody>();
+            Collider fruitCollider = other.GetComponent<Collider>();
+            if (fruitRb != null)
+            {
+                fruitRb.useGravity = true;
+                fruitCollider.isTrigger = false;
+            }
+        }
     }
 }
