@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
         isReady = 0.4f < attackDelay;
         isDigReady = 1.5f < digDelay;
         isPickReady = 1.2f < pickDelay;
-        if (fDown && isReady && !isDigging && !isJumping && !isPicking)
+        if (fDown && isReady && !isDigging && !isPicking)
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
-        else if (toolIndex == 2 && dDown && isPickReady && !isAttacking && !isJumping)
+        else if (toolIndex == 2 && dDown && isPickReady && !isAttacking)
         {
             rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
             anim.SetTrigger("doPick");
