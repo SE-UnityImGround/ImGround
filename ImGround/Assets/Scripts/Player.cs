@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public float speed;
     float hAxis;
     float vAxis;
+    [SerializeField]
+    private int health = 5;
 
     bool rDown;
     bool fDown;
@@ -28,6 +30,9 @@ public class Player : MonoBehaviour
     bool isDigging = false;
     bool isJumping = false;
     bool isPicking = false;
+    bool isTired = false;
+    bool isDie = false;
+    bool sleeping = false;
 
     float attackDelay;
     float jumpDelay;
@@ -45,6 +50,8 @@ public class Player : MonoBehaviour
     public LayerMask enemyLayer;
     public Transform attackPoint;
 
+    public float runningDuration = 3f;
+    private float runningTime = 0f;
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -53,11 +60,15 @@ public class Player : MonoBehaviour
     void Update()
     {
         getInput();
-        Move();
+        if (!isTired)
+        {
+            Move();
+        }
         Turn();
         Attack();
         Swap();
         Jump();
+        Sleep();
     }
 
     void getInput()
@@ -79,14 +90,37 @@ public class Player : MonoBehaviour
     {
         moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
         transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
+      
 
         bool isWalking = moveVec != Vector3.zero;
         bool isRunning = rDown && moveVec != Vector3.zero;
+
+        // ¾Ö´Ï¸ÞÀÌ¼Ç ¼³Á¤
         anim.SetBool("isWalk", isWalking);
         anim.SetBool("isRun", isRunning);
 
+        if (isRunning)
+        {
+            runningTime += Time.deltaTime;
+            if (runningTime > runningDuration)
+            {
+                StartCoroutine(Tired());
+            }
+        }
+        else
+        {
+            runningTime = 0;
+        }
     }
 
+    IEnumerator Tired()
+    {
+        isTired = true;
+        anim.SetBool("isTired", true);
+        yield return new WaitForSeconds(3f);
+        anim.SetBool("isTired", false);
+        isTired = false;
+    }
     void Turn()
     {
         transform.LookAt(transform.position + moveVec);
@@ -140,12 +174,17 @@ public class Player : MonoBehaviour
             StartCoroutine(ResetDig());
         }
     }
+    void Die()
+    {
+        anim.SetTrigger("doDie");
+        isDie = true;
+    }
     void Jump()
     {
         jumpDelay += Time.deltaTime;
         isJumpReady = 1.1f < jumpDelay;
 
-        if(jDown && isJumpReady && !isDigging)
+        if(jDown && isJumpReady && !isDigging && !sleeping)
         {
             isJumping = true;
             rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
@@ -154,30 +193,50 @@ public class Player : MonoBehaviour
             StartCoroutine (ResetJump());
         }
     }
+    void Sleep()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            sleeping = true;
+            isTired = true;
+            anim.SetBool("isSleep", true);
+        }
+        if(sleeping && jDown)
+        {
+            anim.SetBool("isSleep", false);
+            StartCoroutine(ResetSleep());
+        }
+    }
+    IEnumerator ResetSleep()
+    {
+        yield return new WaitForSeconds(2.3f);
+        isTired = false;
+        sleeping = false;
+    }
     void Swap()
     {
         int currentIndex = toolIndex;
-        if (sDown1)
+        if (sDown1) // ÁÖ¸Ô
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 0;
         }
-        if (sDown2)
+        if (sDown2) // ±ªÀÌ
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 1;
         }
-        if (sDown3)
+        if (sDown3) // »ïÁöÃ¢(°úÀÏ ¼öÈ®¿ë)
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 2;
         }
-        if (sDown4)
+        if (sDown4) // °î±ªÀÌ
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 3;
         }
-        if (sDown5)
+        if (sDown5) // »ð
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 4;
@@ -219,14 +278,31 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "fruit" && toolIndex == 2 && isPicking)
+        if (!isDie)
         {
-            Rigidbody fruitRb = other.GetComponent<Rigidbody>();
-            Collider fruitCollider = other.GetComponent<Collider>();
-            if (fruitRb != null)
+            if (other.tag == "fruit" && toolIndex == 2 && isPicking)
             {
-                fruitRb.useGravity = true;
-                fruitCollider.isTrigger = false;
+                Rigidbody fruitRb = other.GetComponent<Rigidbody>();
+                Collider fruitCollider = other.GetComponent<Collider>();
+                if (fruitRb != null)
+                {
+                    fruitRb.useGravity = true;
+                    fruitCollider.isTrigger = false;
+                }
+            }
+            else if (other.tag == "BossAttack")
+            {
+                anim.SetTrigger("doHit");
+                health--;
+            }
+            else if (other.tag == "BossRock")
+            {
+                anim.SetTrigger("doHit");
+                health -= 2;
+            }
+            if (health <= 0)
+            {
+                Die();
             }
         }
     }
