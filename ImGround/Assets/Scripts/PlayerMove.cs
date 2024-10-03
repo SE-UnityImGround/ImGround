@@ -13,12 +13,19 @@ public class PlayerMove : MonoBehaviour
 
     bool rDown;
     bool jDown;
-    public bool isJumping = false;
+    bool isJumping = false;
     bool isJumpReady;
-    public bool isTired = false;
-    public bool sleeping = false;
+    bool isWalking;
+    bool isRunning;
+    bool isTired = false;
+    bool sleeping = false;
 
-    private Player player;
+    public bool IsJumping { get { return isJumping; } }
+    public bool IsWalking {  get { return isWalking; } }
+    public bool IsTired { get { return isTired; } set { isTired = value; } }
+    public bool Sleeping { get { return sleeping; } }
+
+    public Player player;
     Animator anim;
     Vector3 moveVec;
     public Rigidbody rigid;
@@ -48,8 +55,8 @@ public class PlayerMove : MonoBehaviour
         transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
 
 
-        bool isWalking = moveVec != Vector3.zero;
-        bool isRunning = rDown && moveVec != Vector3.zero;
+        isWalking = moveVec != Vector3.zero;
+        isRunning = rDown && moveVec != Vector3.zero;
 
         // 애니메이션 설정
         anim.SetBool("isWalk", isWalking);
@@ -77,7 +84,7 @@ public class PlayerMove : MonoBehaviour
         jumpDelay += Time.deltaTime;
         isJumpReady = 1.1f < jumpDelay;
 
-        if (jDown && isJumpReady && !player.pBehavior.isDigging && !sleeping)
+        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !sleeping && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
         {
             isJumping = true;
             rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);

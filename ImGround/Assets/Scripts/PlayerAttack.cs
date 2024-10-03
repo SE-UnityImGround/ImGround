@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     float attackDelay;
-    bool fDown;
-    public bool isAttacking = false;
+    bool aDown;
+    bool isAttacking = false;
     bool isReady;
+
+    public bool IsAttacking { get { return isAttacking; } }
+
     private Player player;
     Animator anim;
     public Transform attackPoint;
@@ -22,13 +25,13 @@ public class PlayerAttack : MonoBehaviour
     }
     public void AttackInput()
     {
-        fDown = Input.GetButton("Fire1");
+        aDown = Input.GetButton("Fire1");
     }
     public void Attack()
     {
         attackDelay += Time.deltaTime;
         isReady = 0.4f < attackDelay;
-        if (fDown && isReady && !player.pBehavior.isDigging && !player.pBehavior.isPicking)
+        if (aDown && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
