@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         pBehavior.Swap();
         pMove.MoveInput();
         pAttack.AttackInput();
-        if (!pMove.isTired)
+        if (!pMove.IsTired)
         {
             pMove.Move();
         }
