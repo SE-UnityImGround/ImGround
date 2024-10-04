@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,22 +13,33 @@ public class Player : MonoBehaviour
     bool rDown;
     bool fDown;
     bool dDown;
+    bool jDown;
     bool sDown1;
     bool sDown2;
     bool sDown3;
+    bool sDown4;
+    bool sDown5;
+
     bool isReady;
     bool isDigReady;
+    bool isJumpReady;
+    bool isPickReady;
     bool isAttacking = false;
     bool isDigging = false;
+    bool isJumping = false;
+    bool isPicking = false;
 
     float attackDelay;
+    float jumpDelay;
     float digDelay;
+    float pickDelay;
     int toolIndex = 0;
 
     public Camera followCamera;
     public GameObject[] tools;
     Animator anim;
     Vector3 moveVec;
+    public Rigidbody rigid;
 
     public float attackRange = 0.5f;
     public LayerMask enemyLayer;
@@ -44,6 +57,7 @@ public class Player : MonoBehaviour
         Turn();
         Attack();
         Swap();
+        Jump();
     }
 
     void getInput()
@@ -53,20 +67,24 @@ public class Player : MonoBehaviour
         rDown = Input.GetButton("Run");
         fDown = Input.GetButton("Fire1");
         dDown = Input.GetButton("Fire2");
-        //sDown1 = Input.GetButtonDown("Swap1");
-        //sDown2 = Input.GetButtonDown("Swap2");
-        //sDown3 = Input.GetButtonDown("Swap3");
+        jDown = Input.GetKeyDown(KeyCode.Space);
         sDown1 = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
         sDown2 = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
         sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
+        sDown4 = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
+        sDown5 = Input.GetKeyDown(KeyCode.Alpha5); // 5번 키
     }
 
     void Move()
     {
         moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
         transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
-        anim.SetBool("isWalk", moveVec != Vector3.zero);
-        anim.SetBool("isRun", rDown);
+
+        bool isWalking = moveVec != Vector3.zero;
+        bool isRunning = rDown && moveVec != Vector3.zero;
+        anim.SetBool("isWalk", isWalking);
+        anim.SetBool("isRun", isRunning);
+
     }
 
     void Turn()
@@ -78,9 +96,11 @@ public class Player : MonoBehaviour
     {
         attackDelay += Time.deltaTime;
         digDelay += Time.deltaTime;
+        pickDelay += Time.deltaTime;
         isReady = 0.4f < attackDelay;
         isDigReady = 1.5f < digDelay;
-        if (fDown && isReady && !isDigging)
+        isPickReady = 1.2f < pickDelay;
+        if (fDown && isReady && !isDigging && !isPicking)
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
@@ -97,19 +117,41 @@ public class Player : MonoBehaviour
             attackDelay = 0f;
             StartCoroutine(ResetAttack());
         }
-        else if(toolIndex == 1 && dDown && isDigReady && !isAttacking)
+        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
         {
             anim.SetTrigger("doDigDown");
             isDigging = true;
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
-        else if (toolIndex == 2 && dDown && isDigReady && !isAttacking)
+        else if (toolIndex == 2 && dDown && isPickReady && !isAttacking)
+        {
+            rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
+            anim.SetTrigger("doPick");
+            isPicking = true;
+            pickDelay = 0f;
+            StartCoroutine(ResetPick());
+        }
+        else if (toolIndex == 4 && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
         {
             anim.SetTrigger("doDigUp");
             isDigging = true;
             digDelay = 0f;
             StartCoroutine(ResetDig());
+        }
+    }
+    void Jump()
+    {
+        jumpDelay += Time.deltaTime;
+        isJumpReady = 1.1f < jumpDelay;
+
+        if(jDown && isJumpReady && !isDigging)
+        {
+            isJumping = true;
+            rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
+            anim.SetTrigger("doJump");
+            jumpDelay = 0f;
+            StartCoroutine (ResetJump());
         }
     }
     void Swap()
@@ -130,6 +172,16 @@ public class Player : MonoBehaviour
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 2;
         }
+        if (sDown4)
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 3;
+        }
+        if (sDown5)
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 4;
+        }
 
         tools[toolIndex].gameObject.SetActive(true);
     }
@@ -144,6 +196,17 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1.5f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
         isDigging = false;
     }
+    IEnumerator ResetJump()
+    {
+        yield return new WaitForSeconds(1.1f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
+        isJumping = false;
+    }
+
+    IEnumerator ResetPick()
+    {
+        yield return new WaitForSeconds(1.2f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
+        isPicking = false;
+    }
     // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
     private void OnDrawGizmosSelected()
     {
@@ -152,5 +215,19 @@ public class Player : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "fruit" && toolIndex == 2 && isPicking)
+        {
+            Rigidbody fruitRb = other.GetComponent<Rigidbody>();
+            Collider fruitCollider = other.GetComponent<Collider>();
+            if (fruitRb != null)
+            {
+                fruitRb.useGravity = true;
+                fruitCollider.isTrigger = false;
+            }
+        }
     }
 }
