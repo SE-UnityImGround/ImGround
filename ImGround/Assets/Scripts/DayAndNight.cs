@@ -28,7 +28,7 @@ public class DayAndNight : MonoBehaviour
     {
 
         transform.Rotate(0.1f * secondPerRealTime * Time.deltaTime, 0f, 0f);
-        Debug.Log(transform.rotation.eulerAngles.x);
+        //Debug.Log(transform.rotation.eulerAngles.x);
         // ¹ã°ú ³·À» ±¸ºÐ (170µµ ÀÌ»óÀÌ¸é ¹ã, ±× ÀÌ¿Ü´Â ³·)
         if (transform.eulerAngles.x >= 170 && transform.eulerAngles.x <= 360)
         {
