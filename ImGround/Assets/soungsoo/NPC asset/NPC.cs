@@ -5,9 +5,13 @@ using UnityEngine.AI;
 
 public class NPCScript : MonoBehaviour
 {
-    /* =======================================================================
-     *  참고 : 스크립트 컴포넌트로 입력받지 않고, 직접 검색하여 찾도록 구현함!
-    // ======================================================================= */
+    public Vector3 Origin;
+    public bool SetOriginAsStartPos; // 만약 True이면 Origin은 오브젝트의 처음 위치로 설정됩니다.
+    public float Radius;
+
+    /* ===============================================================================
+     *  참고 : 각 컴포넌트는 인스펙터에서 입력받지 않고, 직접 검색하여 찾도록 구현함!
+    // =============================================================================== */
     private Animator animator; // 이동 애니메이션 관리 컴포넌트
     private NavMeshAgent agent; // 이동 AI를 담당할 에이전트
 
@@ -33,6 +37,9 @@ public class NPCScript : MonoBehaviour
         agent.updateRotation = false; // NPC 방향 회전은 NavMeshAgent를 이용하니 너무 부자연스러워 직접 회전값을 사용하도록 세팅
 
         stdTime = Time.time - TIMER_EXPIRE_DURATION; // 초기 타이머 세팅 (참고 : 즉시 시작하도록 세팅됨)
+
+        if (SetOriginAsStartPos)
+            Origin = transform.position;
     }
 
     // Update is called once per frame
@@ -47,7 +54,7 @@ public class NPCScript : MonoBehaviour
         NavMeshHit hit;
         for (int i = 0; i < 30; i++)
             if (NavMesh.SamplePosition(
-                    Vector3.zero + (Random.insideUnitSphere * radius),
+                    origin + (Random.insideUnitSphere * radius),
                     out hit,
                     5.0f, NavMesh.AllAreas)
                 )
@@ -59,7 +66,7 @@ public class NPCScript : MonoBehaviour
     {
         if (Time.time - stdTime >= TIMER_EXPIRE_DURATION)
         {
-            currentTarget = findRandomPos(Vector3.zero, 5.0f);
+            currentTarget = findRandomPos(Origin, Radius);
             agent.SetDestination(currentTarget);
 
             stdTime = Time.time;
