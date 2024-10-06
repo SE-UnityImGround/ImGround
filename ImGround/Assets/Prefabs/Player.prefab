@@ -3005,11 +3005,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  isJumping: 0
-  isTired: 0
-  sleeping: 0
+  player: {fileID: 0}
   rigid: {fileID: 3635496703665396742}
-  followCamera: {fileID: 3711069421033040665, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+  followCamera: {fileID: 0}
   runningEnergyTime: 10
 --- !u!114 &3720781393344613793
 MonoBehaviour:
@@ -3023,7 +3021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de9018d48e3d504790338eda1168da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAttacking: 0
   attackPoint: {fileID: 6848402948108908277}
   attackRange: 1
   enemyLayer:
@@ -3047,8 +3044,6 @@ MonoBehaviour:
   - {fileID: 4848728159647497554}
   - {fileID: 2651747729594002529}
   - {fileID: 8373242977027255922}
-  isDigging: 0
-  isPicking: 0
 --- !u!1 &2748259234206898592
 GameObject:
   m_ObjectHideFlags: 0
