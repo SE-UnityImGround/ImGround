@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
                 elapsedTime += Time.deltaTime;
                 c.a = ((fadeDuration - elapsedTime) / fadeDuration * 1.0f);
                 fadeRenderer.material.color = c;
-                yield return new WaitForSeconds(0.001f); // 몬스터가 죽고 사라지는 속도
+                yield return new WaitForSeconds(0.02f);
             }
         }
 
