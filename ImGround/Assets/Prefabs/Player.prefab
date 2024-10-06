@@ -2876,9 +2876,6 @@ GameObject:
   - component: {fileID: 1347098279213239118}
   - component: {fileID: 5978391711406859185}
   - component: {fileID: 3635496703665396742}
-  - component: {fileID: 8497136084724239062}
-  - component: {fileID: 3720781393344613793}
-  - component: {fileID: 2292487397957572338}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -2895,7 +2892,7 @@ Transform:
   m_GameObject: {fileID: 2723851214982213589}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 5.25, y: -0.1, z: 11.17}
+  m_LocalPosition: {x: 5.69546, y: -0.1, z: 8.95}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2937,11 +2934,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7459987998517245b927405420b6c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pMove: {fileID: 8497136084724239062}
-  pAttack: {fileID: 3720781393344613793}
-  pBehavior: {fileID: 2292487397957572338}
-  health: 5
+  speed: 10
+  followCamera: {fileID: 3711069421033040665, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+  tools:
+  - {fileID: 1734338205570048547}
+  - {fileID: 3066194468627949402}
+  - {fileID: 4848728159647497554}
+  - {fileID: 2651747729594002529}
+  - {fileID: 8373242977027255922}
   rigid: {fileID: 3635496703665396742}
+  attackRange: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  attackPoint: {fileID: 6848402948108908277}
 --- !u!136 &5978391711406859185
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2992,63 +2998,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8497136084724239062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723851214982213589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65cec55b3ae554448bcdebd3a0132fe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  isJumping: 0
-  isTired: 0
-  sleeping: 0
-  rigid: {fileID: 3635496703665396742}
-  followCamera: {fileID: 3711069421033040665, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
-  runningEnergyTime: 10
---- !u!114 &3720781393344613793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723851214982213589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6de9018d48e3d504790338eda1168da7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAttacking: 0
-  attackPoint: {fileID: 6848402948108908277}
-  attackRange: 1
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!114 &2292487397957572338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723851214982213589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6c8635127725644c8253b0d473dd9f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tools:
-  - {fileID: 1734338205570048547}
-  - {fileID: 3066194468627949402}
-  - {fileID: 4848728159647497554}
-  - {fileID: 2651747729594002529}
-  - {fileID: 8373242977027255922}
-  isDigging: 0
-  isPicking: 0
 --- !u!1 &2748259234206898592
 GameObject:
   m_ObjectHideFlags: 0
