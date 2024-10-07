@@ -7,7 +7,7 @@ public class NPCScript : MonoBehaviour
 {
     public Vector3 Origin;
     public bool SetOriginAsStartPos; // 만약 True이면 Origin은 오브젝트의 처음 위치로 설정됩니다.
-    public float Radius;
+    public float Radius; // 랜덤 위치 범위
 
     /* ===============================================================================
      *  참고 : 각 컴포넌트는 인스펙터에서 입력받지 않고, 직접 검색하여 찾도록 구현함!
@@ -15,7 +15,9 @@ public class NPCScript : MonoBehaviour
     private Animator animator; // 이동 애니메이션 관리 컴포넌트
     private NavMeshAgent agent; // 이동 AI를 담당할 에이전트
 
-    private const float TIMER_EXPIRE_DURATION = 5.0f; // 랜덤 위치 이동의 시간간격
+    private float timerExpireDuration; // 랜덤 위치 이동의 시간간격
+    private const float MAX_DURATION = 5.0f;
+    private const float MIN_DURATION = 30.0f;
     private float stdTime = 0.0f; // 타이머용 변수
     private Vector3 currentTarget; // 현재 랜덤위치
 
@@ -36,7 +38,8 @@ public class NPCScript : MonoBehaviour
 
         agent.updateRotation = false; // NPC 방향 회전은 NavMeshAgent를 이용하니 너무 부자연스러워 직접 회전값을 사용하도록 세팅
 
-        stdTime = Time.time - TIMER_EXPIRE_DURATION; // 초기 타이머 세팅 (참고 : 즉시 시작하도록 세팅됨)
+        timerExpireDuration = Random.Range(MIN_DURATION, MAX_DURATION);
+        stdTime = Time.time - timerExpireDuration; // 초기 타이머 세팅 (참고 : 즉시 시작하도록 세팅됨)
 
         if (SetOriginAsStartPos)
             Origin = transform.position;
@@ -64,12 +67,13 @@ public class NPCScript : MonoBehaviour
 
     private void setPosition()
     {
-        if (Time.time - stdTime >= TIMER_EXPIRE_DURATION)
+        if (Time.time - stdTime >= timerExpireDuration)
         {
             currentTarget = findRandomPos(Origin, Radius);
             agent.SetDestination(currentTarget);
 
             stdTime = Time.time;
+            timerExpireDuration = Random.Range(MIN_DURATION, MAX_DURATION);
         }
     }
 
