@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
 
 
 //유진-수정2
-/*using UnityEngine;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -165,4 +165,3 @@ public class Player : MonoBehaviour
         pAttack.Attack();
     }
 }
-*/

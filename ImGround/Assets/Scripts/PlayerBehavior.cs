@@ -14,6 +14,9 @@ public class PlayerBehavior : MonoBehaviour
     bool sDown3;
     bool sDown4;
     bool sDown5;
+    bool sDown6;
+    bool sDown7;
+    bool sDown0;
 
     bool isDigReady;
     bool isPickReady;
@@ -45,6 +48,9 @@ public class PlayerBehavior : MonoBehaviour
         sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
         sDown4 = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
         sDown5 = Input.GetKeyDown(KeyCode.Alpha5); // 5번 키
+        sDown6 = Input.GetKeyDown(KeyCode.Alpha6);
+        sDown7 = Input.GetKeyDown(KeyCode.Alpha7);
+        sDown0 = Input.GetKeyDown(KeyCode.Alpha0);
     }
 
     // 도구 사용 및 행동 로직
@@ -124,6 +130,21 @@ public class PlayerBehavior : MonoBehaviour
         {
             tools[currentIndex].gameObject.SetActive(false);
             toolIndex = 4;
+        }
+        if (sDown6) // 낫
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 5;
+        }
+        if (sDown7) // 검
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 6;
+        }
+        if (sDown0) // 이스터에그
+        {
+            tools[currentIndex].gameObject.SetActive(false);
+            toolIndex = 7;
         }
 
         tools[toolIndex].gameObject.SetActive(true);
