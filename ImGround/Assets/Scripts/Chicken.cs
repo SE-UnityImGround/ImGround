@@ -16,7 +16,7 @@ public class Chicken : Animal
         navAgent.updateRotation = false; // 자동 회전 비활성화
     }
 
-    void Update()
+    new void Update()
     {
         base.Update(); // Animal 클래스의 Update 메소드 실행
         DetectPlayerJump();
