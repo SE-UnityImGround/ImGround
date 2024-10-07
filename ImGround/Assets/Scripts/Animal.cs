@@ -66,7 +66,7 @@ public class Animal : MonoBehaviour
 
     void LookAt()
     {
-        float targetRadius = 1f;
+        float targetRadius = 2f;
         float targetRange = 4f;
 
         RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius,

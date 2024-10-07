@@ -42,7 +42,14 @@ public class PlayerAttack : MonoBehaviour
                 Enemy enemyHealth = enemy.GetComponent<Enemy>();
                 if (enemyHealth != null && !enemyHealth.isDie)
                 {
-                    enemyHealth.TakeDamage(1);
+                    if (player.pBehavior.ToolIndex == 6)
+                    {
+                        enemyHealth.TakeDamage(3);
+                    }
+                    else
+                    {
+                        enemyHealth.TakeDamage(1);
+                    }
                 }
             }
             attackDelay = 0f;
