@@ -26,14 +26,18 @@ public class PlayerBehavior : MonoBehaviour
     bool isPicking = false;
     bool isDie = false;
 
+    public Transform handPoint; // 아이템을 줍기 위한 손의 위치
+    private GameObject pickedItem; // 현재 주운 아이템
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
     public bool IsDigging { get {  return isDigging; } }
     public bool IsPicking { get { return isPicking; } }
+    public int ToolIndex { get { return toolIndex; } }
 
     float digDelay;
     float pickDelay;
     int toolIndex = 0;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -67,13 +71,42 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
         }
-        else if(toolIndex == 0 && fDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
-        {// 아이템 줍기
-            isPickingUp = true;
-            player.pMove.IsTired = true;
-            anim.SetTrigger("doPickUp");
-            StartCoroutine(ResetPickUp());
+        else if (toolIndex == 0 && fDown && !isPickingUp && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        {
+            // 원형 범위로 아이템 감지 (OverlapSphere 사용)
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // 플레이어 주변 1미터 범위
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("fruit")) // 과일 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                {
+                    pickedItem = hitCollider.gameObject;
+                    isPickingUp = true;
+                    player.pMove.IsTired = true;
+                    anim.SetTrigger("doPickUp");
+
+                    // 아이템 손으로 줍기 동작
+                    StartCoroutine(Picking());
+
+                    // 물리 효과 제거 (아이템이 손에서 날뛰는 문제 해결)
+                    if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                    {
+                        rb.isKinematic = true; // 물리 시뮬레이션 중지하여 고정
+                    }
+
+                    // 과일의 Collider 비활성화 (플레이어와의 충돌로 플레이어가 날아가는 문제 방지)
+                    if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider))
+                    {
+                        itemCollider.enabled = false; // 충돌 비활성화
+                    }
+
+                    // 아이템 줍기 동작 종료
+                    StartCoroutine(ResetPickUp());
+                    break; // 한 번 아이템을 잡으면 루프 중지(범위 내 아이템이 여러개 동시에 줍는 것 방지)
+                }
+            }
         }
+
         else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 경작하기
             anim.SetTrigger("doDigDown");
@@ -96,6 +129,19 @@ public class PlayerBehavior : MonoBehaviour
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
+        else if(toolIndex == 5 && dDown && isDigReady && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        {
+            anim.SetTrigger("doHarvest");
+        }
+    }
+    // 아이템 줍기 범위 확인용(추후 삭제 예정)
+    private void OnDrawGizmosSelected()
+    {
+        if (handPoint == null)
+            return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(handPoint.position, 1f);
     }
     // 사망 동작
     public void Die()
@@ -162,15 +208,31 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPickUp()
     {
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2.4f); // Wait for the pick-up animation to finish
         player.pMove.IsTired = false;
         isPickingUp = false;
+
+        // Destroy the picked-up item
+        if (pickedItem != null)
+        {
+            Destroy(pickedItem);
+            pickedItem = null; // Reset the reference to the item
+        }
     }
 
     IEnumerator ResetEat()
     {
         yield return new WaitForSeconds(1.5f);
         isEating = false;
+    }
+
+    IEnumerator Picking()
+    {
+        // 아이템을 손 위치로 이동
+        yield return new WaitForSeconds(0.5f);
+        pickedItem.transform.position = handPoint.position;
+        pickedItem.transform.rotation = handPoint.rotation; // 손의 회전과 맞춤
+        pickedItem.transform.parent = handPoint; // 아이템을 손에 붙임
     }
     // 과일 수확 로직
     private void OnTriggerEnter(Collider other)
