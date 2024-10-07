@@ -37,6 +37,10 @@ public class PlayerMove : MonoBehaviour
 
     private void Awake()
     {
+        if(followCamera == null)
+        {
+            followCamera = Camera.main;
+        }
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
         player = GetComponent<Player>();
