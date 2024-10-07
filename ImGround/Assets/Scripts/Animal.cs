@@ -8,7 +8,10 @@ public class Animal : MonoBehaviour
     public float patrolWaitTime = 3.0f; // 각 순찰 지점에서 대기하는 시간
     private float patrolWaitTimer;
 
-    private NavMeshAgent navAgent;
+    protected bool surprised = false; // 닭 전용 플래그
+    protected bool flying = false; // 공중에 날아다니는 동물(곤충) 전용
+
+    protected NavMeshAgent navAgent;
     private Vector3 patrolTarget;
     public Animator anim;
     public Transform target;
@@ -20,10 +23,11 @@ public class Animal : MonoBehaviour
         SetNewRandomPatrolTarget();
     }
 
-    void Update()
+    protected void Update()
     {
         Patrol();
-        LookAt();
+        if(!surprised && !flying)
+            LookAt();
     }
 
     void Patrol()
@@ -45,7 +49,7 @@ public class Animal : MonoBehaviour
     }
 
     // 랜덤한 위치를 순찰 지점으로 설정
-    void SetNewRandomPatrolTarget()
+    protected void SetNewRandomPatrolTarget()
     {
         
         Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
@@ -79,7 +83,13 @@ public class Animal : MonoBehaviour
                 navAgent.isStopped = true;
                 Vector3 lookDirection = (target.position - transform.position).normalized;
                 lookDirection.y = 0; // Y축 회전을 방지하여 수평으로만 회전
-                transform.rotation = Quaternion.LookRotation(lookDirection);
+
+                // 목표 회전 값 계산
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+                // 현재 회전 값에서 목표 회전 값으로 부드럽게 회전 (Slerp 사용)
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+
                 anim.SetBool("isWalk", false);
             }
             else
@@ -90,5 +100,6 @@ public class Animal : MonoBehaviour
             }
         }
     }
+
 }
 

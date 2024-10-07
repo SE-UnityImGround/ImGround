@@ -77,7 +77,15 @@ public class PlayerMove : MonoBehaviour
     }
     public void Turn()
     {
-        transform.LookAt(transform.position + moveVec);
+        //transform.LookAt(transform.position + moveVec);
+        if (moveVec != Vector3.zero) // 움직임이 있을 때만 회전
+        {
+            // 현재 회전과 목표 회전(이동 벡터 방향) 계산
+            Quaternion targetRotation = Quaternion.LookRotation(moveVec);
+
+            // 천천히 회전하도록 Slerp 사용
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        }
     }
     public void Jump()
     {
