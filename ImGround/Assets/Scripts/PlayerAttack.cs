@@ -40,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
             foreach (Collider enemy in hitEnemies)
             {
                 Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                if (enemyHealth != null && !enemyHealth.isDie)
+                if (enemyHealth != null && !enemyHealth.IsDie)
                 {
                     if (player.pBehavior.ToolIndex == 6)
                     {

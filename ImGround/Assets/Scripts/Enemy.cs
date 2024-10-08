@@ -11,20 +11,17 @@ public class Enemy : MonoBehaviour
     public Transform target;
     public NavMeshAgent nav; // 타켓을 추적하는 AI 관련 클래스
     public Animator anim;
+    public Vector3 respawnPosition; // 리스폰 위치 설정
 
     private int health;
     public int maxHealth;
-    public float damage;
-    public bool isDie;
-    public bool isChase;
-    public bool isAttack;
-
-    public GameObject stonePrefab; // 돌 프리팹
-    public float throwForce = 500f; // 돌을 던지는 힘
-    public int numberOfStones = 10; // 스톤 샤워 공격에 사용될 돌의 수
-    public float radius = 5f; // 스톤 샤워 돌 생성 반경
-    public GameObject stonePosition; // 골렘이 꺼내는 돌
-
+    protected bool isDie;
+    protected bool isChase;
+    protected bool isAttack;
+    public bool isNight = false;
+    private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
+    public bool IsDie {  get { return isDie; } }
+    [Header("Item Reward")]
     public GameObject item;
     
     // ======= Fade Parameters =======
@@ -32,7 +29,7 @@ public class Enemy : MonoBehaviour
     private Renderer fadeRenderer; // 죽은 후 Fadeout 적용을 위한 Renderer
 
     public Shader transparentShader = null; // 알파 렌더링 문제시 적용할 다른 쉐이더
-    public float fadeDuration = 3f; // 사라지는 시간
+    private float fadeDuration = 3f; // 사라지는 시간
 
     // ===============================
 
@@ -44,32 +41,66 @@ public class Enemy : MonoBehaviour
         if (fadeRenderer != null && transparentShader != null)
             fadeRenderer.material.shader = transparentShader;
 
+        // 시작할 때 플레이어의 기본 리스폰 위치를 현재 위치로 설정(침대 추가시 이 코드는 삭제 예정)
+        respawnPosition = transform.position;
     }
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
 
-        Invoke("ChaseStart", 2);
+        if(type != Type.Boss)
+            anim.SetBool("isIdle", true);
+        else if(type == Type.Boss)
+            ChaseStart();
     }
 
 
-    void Update()
+    protected void Update()
     {
+        // 사망 후 쿨다운이 활성화된 상태에서는 아무 동작도 하지 않음
+        if (isDeadCooldown)
+        {
+            return;
+        }
+
+        // 몬스터가 사망 상태인지 먼저 확인하고 사망 처리 후 5초간 동작 제한
+        if (isDie)
+        {
+            StartCoroutine(DeathCooldown());
+            return;
+        }
         if (nav.enabled)
         {
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
         }
     }
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
-        Targetting();
+        if(isChase && !isAttack)
+            Targetting();
+        if (!isNight && type != Type.Boss)
+            ChaseStop();
+        else if(isNight && type != Type.Boss && !isAttack)
+        {
+            ChaseStart();
+        }
     }
     void ChaseStart()
     {
+        nav.isStopped = false;
         isChase = true;
+        if(type != Type.Boss)
+            anim.SetBool("isIdle", false);
         anim.SetBool("isRun", true);
+    }
+    void ChaseStop()
+    {
+        nav.isStopped = true;
+        isChase = false;
+        StopAllCoroutines();
+        anim.SetBool("isIdle", true);
     }
     public void TakeDamage(int damage)
     {
@@ -77,11 +108,9 @@ public class Enemy : MonoBehaviour
 
         anim.SetTrigger("doHit");
         if (health <= 0)
-            Die();
-            
+            Die();           
     }
 
-   
     void Die()
     {
         isDie = true;
@@ -89,35 +118,7 @@ public class Enemy : MonoBehaviour
         isChase = false;
         nav.isStopped = true; // 이동을 멈추기
         anim.SetTrigger("doDie");
-        StartCoroutine(FadeOutAndDestroy());
-    }
-
-    IEnumerator FadeOutAndDestroy()
-    {
-        // 죽는 모션이 완료될 때까지 대기 (애니메이션 길이에 맞게 조정)
-        yield return new WaitForSeconds(1.4f);
-
-        // 죽은 후 Fade Out 효과
-        if (fadeRenderer == null)
-            Debug.LogFormat("Enemy_FadeOut : Fade Renderer를 설정하지 못함");
-        else
-        {
-            if (transparentShader == null)
-                Debug.LogFormat("Enemy_FadeOut : 기본 Transparent Shader로 투명화 처리");
-
-            float elapsedTime = 0.0f;
-            Color c = fadeRenderer.material.color;
-            while (elapsedTime <= fadeDuration)
-            {
-                elapsedTime += Time.deltaTime;
-                c.a = ((fadeDuration - elapsedTime) / fadeDuration * 1.0f);
-                fadeRenderer.material.color = c;
-                yield return new WaitForSeconds(0.02f);
-            }
-        }
-
-        gameObject.SetActive(false);
-        GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
+        StartCoroutine(FadeOut());
     }
 
     void Targetting()
@@ -131,11 +132,11 @@ public class Enemy : MonoBehaviour
             {
                 case Type.Mush:
                     targetRadius = 1f;
-                    targetRange = 2f;
+                    targetRange = 1.5f;
                     break;
                 case Type.Cact:
                     targetRadius = 1f;
-                    targetRange = 2f;
+                    targetRange = 1.5f;
                     break;
                 case Type.Boss:
                     targetRadius = 6f;
@@ -161,7 +162,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         // 추적을 멈추고 공격 애니메이션 실행
         isChase = false;
@@ -175,33 +176,8 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
         isAttack = true;
-
-        // Boss 타입의 경우 거리에 따라 공격 선택
-        if (type == Type.Boss)
-        {
-            if (distanceToPlayer <= 3f)  // 가까울 경우
-            {
-                // 가까운 거리에서 Punch나 StoneShower 공격
-                int ranAction = Random.Range(0, 5);
-                if (ranAction <= 3) // Punch 공격
-                {
-                    anim.SetTrigger("doPunchA");
-                }
-                else // StoneShower 공격
-                {
-                    CreateStoneShower();
-                    anim.SetTrigger("doStone");
-                }
-            }
-            else // 멀리 있을 경우
-            {
-                // 멀리 있을 때는 ThrowStone 공격
-                anim.SetTrigger("doThrow");
-                stonePosition.SetActive(true);  // 손에 돌을 활성화
-                Invoke("ThrowStone", 1.5f);    // ThrowStone 메서드를 호출해 돌 던지기
-            }
-        }
-        else // Boss가 아닌 다른 타입의 적 공격
+        
+        if(type != Type.Boss) // Boss가 아닌 다른 타입의 적 공격
         {
             int ranAction = Random.Range(0, 5);
             if (type == Type.Mush)
@@ -241,8 +217,6 @@ public class Enemy : MonoBehaviour
         // 공격이 끝나면 일정 딜레이 후 다시 추적을 시작
         if (type != Type.Boss)
             yield return new WaitForSeconds(2f); // 일반 몬스터의 경우 공격 딜레이
-        else
-            yield return new WaitForSeconds(4f); // 보스의 경우 공격 딜레이
 
         // 플레이어와의 거리가 멀면 추적을 재개
         if (distanceToPlayer > nav.stoppingDistance)
@@ -251,7 +225,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            anim.SetBool("isRun", false); // 걷는 상태 유지
+            anim.SetBool("isRun", false); // 정지 상태 유지
         }
 
         // 공격이 끝나면 다시 추적을 시작
@@ -261,39 +235,62 @@ public class Enemy : MonoBehaviour
     }
 
 
-    void CreateStoneShower()
+    IEnumerator FadeOut()
     {
-        for (int i = 0; i < numberOfStones; i++)
+        // 죽는 모션이 완료될 때까지 대기 (애니메이션 길이에 맞게 조정)
+        yield return new WaitForSeconds(1.4f);
+
+        // 죽은 후 Fade Out 효과
+        if (fadeRenderer == null)
+            Debug.LogFormat("Enemy_FadeOut : Fade Renderer를 설정하지 못함");
+        else
         {
-            Vector3 stonePosition = Random.onUnitSphere * radius + transform.position;
-            stonePosition.y = transform.position.y + 12; // 높이 조절
-            GameObject stone = Instantiate(stonePrefab, stonePosition, Quaternion.identity);
-            Rigidbody rb = stone.GetComponent<Rigidbody>();
-            if (rb)
+            if (transparentShader == null)
+                Debug.LogFormat("Enemy_FadeOut : 기본 Transparent Shader로 투명화 처리");
+
+            float elapsedTime = 0.0f;
+            Color c = fadeRenderer.material.color;
+            while (elapsedTime <= fadeDuration)
             {
-                rb.useGravity = true; // 중력 사용
-            }
-            if(rb.position.y <= 0)
-            {
-                Destroy(rb);
+                elapsedTime += Time.deltaTime;
+                c.a = ((fadeDuration - elapsedTime) / fadeDuration * 1.0f);
+                fadeRenderer.material.color = c;
+                yield return new WaitForSeconds(0.003f);
             }
         }
+
+        //gameObject.SetActive(false);
+        GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
     }
-
-    void ThrowStone()
+    // 사망 후 5초 동안 동작을 제한하는 코루틴
+    IEnumerator DeathCooldown()
     {
-        if (stonePrefab && target)
-        {
-            stonePosition.SetActive(false);
-            GameObject stone = Instantiate(stonePrefab, transform.position + Vector3.up, Quaternion.identity);
-            Rigidbody rb = stone.GetComponent<Rigidbody>();
-            if (rb)
-            {
-                Vector3 direction = (target.position - transform.position).normalized;
-                rb.AddForce(direction * throwForce);
-            }
+        isDeadCooldown = true; // 쿨다운 시작
 
-            Destroy(stone, 4f);
+        yield return new WaitForSeconds(15f); // 15초 대기
+
+        Respawn();
+        isDeadCooldown = false; // 쿨다운 종료
+    }
+    private void Respawn()
+    {
+        // 체력을 초기화
+        health = maxHealth;
+
+        // 리스폰 위치로 이동
+        transform.position = respawnPosition;
+
+        // 투명도 복원
+        if (fadeRenderer != null)
+        {
+            Color c = fadeRenderer.material.color;
+            c.a = 1.0f; // 투명도 복원
+            fadeRenderer.material.color = c;
         }
+        // 사망 상태 해제
+        isDie = false;
+        isChase = true;
+        isAttack = false;
+        nav.isStopped = false; 
     }
 }

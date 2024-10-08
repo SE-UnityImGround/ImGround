@@ -33,6 +33,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsDigging { get {  return isDigging; } }
     public bool IsPicking { get { return isPicking; } }
     public int ToolIndex { get { return toolIndex; } }
+    public bool IsDie { get { return isDie; } set { isDie = value; } }
 
     float digDelay;
     float pickDelay;
