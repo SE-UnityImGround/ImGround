@@ -6,6 +6,7 @@ using UnityEngine;
 public class DayAndNight : MonoBehaviour
 {
     [SerializeField] private float secondPerRealTime;
+    static public float inGameTime = 0.0f; // 단위 : 초, 초기값 : 0초
 
     public bool isNight = false;
 
@@ -26,8 +27,10 @@ public class DayAndNight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.LogFormat("게임 시간 {0} 실제시간 {1}", inGameTime/3600, inGameTime/ 24.0f / secondPerRealTime);
 
-        transform.Rotate(0.1f * secondPerRealTime * Time.deltaTime, 0f, 0f);
+        inGameTime += 24.0f * secondPerRealTime * Time.deltaTime;
+        transform.rotation = Quaternion.Euler(inGameTime * 360.0f / 86400.0f, 0.0f, 0.0f); // second -> angle(degree)
         //Debug.Log(transform.rotation.eulerAngles.x);
         // 밤과 낮을 구분 (170도 이상이면 밤, 그 이외는 낮)
         if (transform.eulerAngles.x >= 170 && transform.eulerAngles.x <= 360)
