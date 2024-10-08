@@ -27,9 +27,7 @@ public class DayAndNight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.LogFormat("게임 시간 {0} 실제시간 {1}", inGameTime/3600, inGameTime/ 24.0f / secondPerRealTime);
-
-        inGameTime += 24.0f * secondPerRealTime * Time.deltaTime;
+        inGameTime += 24.0f * secondPerRealTime * Time.deltaTime; // secondPerRealTime = 6 으로 주어졌을 때 실제 5분 = 게임시간 12시간이 되도록 조정
         transform.rotation = Quaternion.Euler(inGameTime * 360.0f / 86400.0f, 0.0f, 0.0f); // second -> angle(degree)
         //Debug.Log(transform.rotation.eulerAngles.x);
         // 밤과 낮을 구분 (170도 이상이면 밤, 그 이외는 낮)
