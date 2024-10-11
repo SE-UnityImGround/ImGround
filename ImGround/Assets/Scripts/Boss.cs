@@ -10,7 +10,7 @@ public class Boss : Enemy
     int numberOfStones = 10; // ½ºÅæ »þ¿ö °ø°Ý¿¡ »ç¿ëµÉ µ¹ÀÇ ¼ö
     float radius = 5f; // ½ºÅæ »þ¿ö µ¹ »ý¼º ¹Ý°æ
     public GameObject stonePosition; // °ñ·½ÀÌ ²¨³»´Â µ¹
-    public GameObject punchPosition;
+    
 
     new void Update()
     {

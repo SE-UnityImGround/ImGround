@@ -490,13 +490,14 @@ MonoBehaviour:
   nav: {fileID: 6712122162955420815}
   anim: {fileID: 1077356409}
   respawnPosition: {x: 0, y: 0, z: 0}
+  punchPosition: {fileID: 5513445366115106238}
+  headPosition: {fileID: 0}
   maxHealth: 2
   isNight: 0
   item: {fileID: 0}
   transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
   stonePrefab: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
   stonePosition: {fileID: 6043571350728599342}
-  punchPosition: {fileID: 5513445366115106238}
 --- !u!1 &1099011281
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,10 @@ public class Enemy : MonoBehaviour
     public Animator anim;
     public Vector3 respawnPosition; // 리스폰 위치 설정
 
+    [Header("Attack Position")]
+    public GameObject punchPosition;
+    public GameObject headPosition;
+
     private int health;
     public int maxHealth;
     protected bool isDie;
@@ -58,22 +62,14 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
-        // 사망 후 쿨다운이 활성화된 상태에서는 아무 동작도 하지 않음
-        if (isDeadCooldown)
-        {
-            return;
-        }
-
-        // 몬스터가 사망 상태인지 먼저 확인하고 사망 처리 후 5초간 동작 제한
-        if (isDie)
-        {
-            StartCoroutine(DeathCooldown());
-            return;
-        }
         if (nav.enabled)
         {
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
+        }
+        if (isDie)
+        {
+            return;
         }
     }
     protected void FixedUpdate()
@@ -187,13 +183,16 @@ public class Enemy : MonoBehaviour
                     case 0:
                     case 1:
                         anim.SetTrigger("doHeadA");
+                        StartCoroutine(HeadAttack());
                         break;
                     case 2:
                     case 3:
                         anim.SetTrigger("doBodyA");
+                        StartCoroutine(PunchAttack());
                         break;
                     case 4:
                         anim.SetTrigger("doSpinA");
+                        StartCoroutine(HeadAttack());
                         break;
                 }
             }
@@ -205,10 +204,12 @@ public class Enemy : MonoBehaviour
                     case 1:
                     case 2:
                         anim.SetTrigger("doPunchA");
+                        StartCoroutine(PunchAttack());
                         break;
                     case 3:
                     case 4:
                         anim.SetTrigger("doHeadA");
+                        StartCoroutine(HeadAttack());
                         break;
                 }
             }
@@ -216,7 +217,7 @@ public class Enemy : MonoBehaviour
 
         // 공격이 끝나면 일정 딜레이 후 다시 추적을 시작
         if (type != Type.Boss)
-            yield return new WaitForSeconds(2f); // 일반 몬스터의 경우 공격 딜레이
+            yield return new WaitForSeconds(3f); // 일반 몬스터의 경우 공격 딜레이
 
         // 플레이어와의 거리가 멀면 추적을 재개
         if (distanceToPlayer > nav.stoppingDistance)
@@ -234,6 +235,19 @@ public class Enemy : MonoBehaviour
         isChase = true;
     }
 
+    IEnumerator HeadAttack()
+    {
+        headPosition.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        headPosition.SetActive(false);
+    }
+
+    IEnumerator PunchAttack()
+    {
+        punchPosition.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        punchPosition.SetActive(false);
+    }
 
     IEnumerator FadeOut()
     {
@@ -259,20 +273,11 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
         GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
     }
-    // 사망 후 5초 동안 동작을 제한하는 코루틴
-    IEnumerator DeathCooldown()
-    {
-        isDeadCooldown = true; // 쿨다운 시작
 
-        yield return new WaitForSeconds(15f); // 15초 대기
-
-        Respawn();
-        isDeadCooldown = false; // 쿨다운 종료
-    }
-    private void Respawn()
+    public void Respawn()
     {
         // 체력을 초기화
         health = maxHealth;
@@ -291,6 +296,7 @@ public class Enemy : MonoBehaviour
         isDie = false;
         isChase = true;
         isAttack = false;
-        nav.isStopped = false; 
+        if (nav.isActiveAndEnabled && nav.isOnNavMesh)
+            nav.isStopped = false; 
     }
 }

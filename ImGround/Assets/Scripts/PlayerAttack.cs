@@ -15,7 +15,7 @@ public class PlayerAttack : MonoBehaviour
     Animator anim;
     public Transform attackPoint;
     [SerializeField]
-    private float attackRange = 1f;
+    private float attackRange = 1.1f;
     public LayerMask enemyLayer;
 
     private void Awake()

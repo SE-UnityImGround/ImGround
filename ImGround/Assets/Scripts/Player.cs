@@ -113,7 +113,8 @@ public class Player : MonoBehaviour
     public PlayerBehavior pBehavior;
 
     [Header("Player Status")]
-    public int maxHealth = 10;
+    [SerializeField]
+    private int maxHealth = 10;
     public int health;
 
     public Vector3 respawnPosition; // 리스폰 위치 설정
