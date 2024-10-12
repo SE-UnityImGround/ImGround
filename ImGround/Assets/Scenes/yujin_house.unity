@@ -2552,7 +2552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ad8da1108e82094b9707c07e0f5eb5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPosition: {x: 52.25, y: 1.2, z: 87.2}
 --- !u!4 &767561994
 Transform:
   m_ObjectHideFlags: 0
@@ -4298,6 +4297,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1686437435373435391, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+      propertyPath: cameraDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4352325634134037479, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
       propertyPath: m_LocalPosition.x
       value: 54.190002
@@ -4342,11 +4345,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Follow Camera
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1686437435373435391, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5847193756138321887, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720158243}
   m_SourcePrefab: {fileID: 100100000, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+--- !u!1 &1720158242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5847193756138321887, guid: d6d781915241adb4a9a4ad662cecb286, type: 3}
+  m_PrefabInstance: {fileID: 1720158241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1720158243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720158242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e1cbd93256c70b4c8c28ca4a02a81bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  focusOffset: {x: 0, y: 2, z: 0}
+  cameraDistance: 5
+  accel: 120
 --- !u!1001 &1766125946
 PrefabInstance:
   m_ObjectHideFlags: 0
