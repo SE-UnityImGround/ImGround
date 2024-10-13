@@ -954,19 +954,13 @@ MonoBehaviour:
   target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
   nav: {fileID: 2936000962579850200}
   anim: {fileID: 5371818081151228581}
+  respawnPosition: {x: 0, y: 0, z: 0}
+  punchPosition: {fileID: 0}
+  headPosition: {fileID: 0}
   maxHealth: 10
-  damage: 10
-  isDie: 0
-  isChase: 0
-  isAttack: 0
-  stonePrefab: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
-  throwForce: 500
-  numberOfStones: 10
-  radius: 5
-  stonePosition: {fileID: 441323722839363835}
+  isNight: 0
   item: {fileID: 6576735527821680563, guid: 38961af266cf4da4e8ac7d6ed37d075c, type: 3}
   transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
-  fadeDuration: 3
 --- !u!195 &2936000962579850200
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1070,11 +1064,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
---- !u!1 &441323722839363835 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
-  m_PrefabInstance: {fileID: 5735199641037823752}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7219709196377348224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3145213401843664776, guid: cad9f745870d9f448bf225d2a253d382, type: 3}

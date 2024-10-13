@@ -2883,6 +2883,7 @@ GameObject:
   - component: {fileID: 8497136084724239062}
   - component: {fileID: 2292487397957572338}
   - component: {fileID: 1821996107579570962}
+  - component: {fileID: 6235837591708017944}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -2944,7 +2945,9 @@ MonoBehaviour:
   pMove: {fileID: 8497136084724239062}
   pAttack: {fileID: 1821996107579570962}
   pBehavior: {fileID: 2292487397957572338}
-  health: 5
+  maxHealth: 10
+  health: 10
+  respawnPosition: {x: 0, y: 0, z: 0}
   rigid: {fileID: 3635496703665396742}
 --- !u!136 &5978391711406859185
 CapsuleCollider:
@@ -3034,6 +3037,8 @@ MonoBehaviour:
   - {fileID: 2419728733987307349}
   - {fileID: 1748235019629511502}
   - {fileID: 1887479742422903558}
+  handPoint: {fileID: 4289810962353847650}
+  doorPoint: {fileID: 0}
 --- !u!114 &1821996107579570962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3051,6 +3056,20 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &6235837591708017944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723851214982213589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e8a251423342d4680ee03c01a5bca0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyRespawnTime: 10
+  bossRespawnTime: 30
 --- !u!1 &2748259234206898592
 GameObject:
   m_ObjectHideFlags: 0
