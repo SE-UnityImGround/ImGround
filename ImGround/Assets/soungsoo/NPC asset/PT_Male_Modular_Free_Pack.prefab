@@ -1927,8 +1927,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.957, y: 0, z: -0.581}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 321866411424447014}
   - {fileID: 7640928163142517262}
@@ -1972,6 +1972,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ced7a8a35b526d44b402e9601493df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Origin: {x: 0, y: 0, z: 0}
+  SetOriginAsStartPos: 1
+  Radius: 50.37
 --- !u!195 &6308810343971106238
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1981,7 +1984,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5766264148575498709}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1993,7 +1996,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!1 &5766946841322954475
 GameObject:
   m_ObjectHideFlags: 0

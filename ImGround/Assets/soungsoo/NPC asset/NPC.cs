@@ -73,7 +73,7 @@ public class NPCScript : MonoBehaviour
             agent.SetDestination(currentTarget);
 
             stdTime = Time.time;
-            timerExpireDuration = Random.Range(MIN_DURATION, MAX_DURATION);
+            timerExpireDuration = float.MaxValue;
         }
     }
 
