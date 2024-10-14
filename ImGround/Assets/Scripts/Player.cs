@@ -1,233 +1,207 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
-using UnityEngine;
+/*using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed;
-    float hAxis;
-    float vAxis;
+    [Header("Player Class")]
+    public PlayerMove pMove;
+    public PlayerAttack pAttack;
+    public PlayerBehavior pBehavior;
 
-    bool rDown;
-    bool fDown;
-    bool dDown;
-    bool jDown;
-    bool sDown1;
-    bool sDown2;
-    bool sDown3;
-    bool sDown4;
-    bool sDown5;
+    [Header("Player Status")]
+    public int health = 5;
 
-    bool isReady;
-    bool isDigReady;
-    bool isJumpReady;
-    bool isPickReady;
-    bool isAttacking = false;
-    bool isDigging = false;
-    bool isJumping = false;
-    bool isPicking = false;
-
-    float attackDelay;
-    float jumpDelay;
-    float digDelay;
-    float pickDelay;
-    int toolIndex = 0;
-
-    public Camera followCamera;
-    public GameObject[] tools;
-    Animator anim;
-    Vector3 moveVec;
     public Rigidbody rigid;
-
-    public float attackRange = 0.5f;
-    public LayerMask enemyLayer;
-    public Transform attackPoint;
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        pMove = GetComponent<PlayerMove>();
+        pAttack = GetComponent<PlayerAttack>();
+        pBehavior = GetComponent<PlayerBehavior>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        getInput();
-        Move();
-        Turn();
-        Attack();
-        Swap();
-        Jump();
-    }
-
-    void getInput()
-    {
-        hAxis = Input.GetAxisRaw("Horizontal");
-        vAxis = Input.GetAxisRaw("Vertical");
-        rDown = Input.GetButton("Run");
-        fDown = Input.GetButton("Fire1");
-        dDown = Input.GetButton("Fire2");
-        jDown = Input.GetKeyDown(KeyCode.Space);
-        sDown1 = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
-        sDown2 = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
-        sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
-        sDown4 = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
-        sDown5 = Input.GetKeyDown(KeyCode.Alpha5); // 5번 키
-    }
-
-    void Move()
-    {
-        moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
-        transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
-
-        bool isWalking = moveVec != Vector3.zero;
-        bool isRunning = rDown && moveVec != Vector3.zero;
-        anim.SetBool("isWalk", isWalking);
-        anim.SetBool("isRun", isRunning);
-
-    }
-
-    void Turn()
-    {
-        transform.LookAt(transform.position + moveVec);
-    }
-
-    void Attack()
-    {
-        attackDelay += Time.deltaTime;
-        digDelay += Time.deltaTime;
-        pickDelay += Time.deltaTime;
-        isReady = 0.4f < attackDelay;
-        isDigReady = 1.5f < digDelay;
-        isPickReady = 1.2f < pickDelay;
-        if (fDown && isReady && !isDigging && !isPicking)
+        pBehavior.getInput();
+        pBehavior.Use();
+        pBehavior.Swap();
+        pMove.MoveInput();
+        pAttack.AttackInput();
+        if (!pMove.IsTired)
         {
-            anim.SetTrigger("doAttack");
-            isAttacking = true;
-            Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+            pMove.Move();
+        }
+        pMove.Turn();
+        pMove.Jump();
+        pMove.Sleep();
+        pAttack.Attack();
+    }
+}*/
 
-            foreach (Collider enemy in hitEnemies)
-            {
-                Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                if (enemyHealth != null && !enemyHealth.isDie)
-                {
-                    enemyHealth.TakeDamage(1);
-                }
-            }
-            attackDelay = 0f;
-            StartCoroutine(ResetAttack());
-        }
-        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
-        {
-            anim.SetTrigger("doDigDown");
-            isDigging = true;
-            digDelay = 0f;
-            StartCoroutine(ResetDig());
-        }
-        else if (toolIndex == 2 && dDown && isPickReady && !isAttacking)
-        {
-            rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
-            anim.SetTrigger("doPick");
-            isPicking = true;
-            pickDelay = 0f;
-            StartCoroutine(ResetPick());
-        }
-        else if (toolIndex == 4 && dDown && isDigReady && !isAttacking && !isJumping && !isPicking)
-        {
-            anim.SetTrigger("doDigUp");
-            isDigging = true;
-            digDelay = 0f;
-            StartCoroutine(ResetDig());
-        }
-    }
-    void Jump()
-    {
-        jumpDelay += Time.deltaTime;
-        isJumpReady = 1.1f < jumpDelay;
 
-        if(jDown && isJumpReady && !isDigging)
-        {
-            isJumping = true;
-            rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
-            anim.SetTrigger("doJump");
-            jumpDelay = 0f;
-            StartCoroutine (ResetJump());
-        }
-    }
-    void Swap()
-    {
-        int currentIndex = toolIndex;
-        if (sDown1)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 0;
-        }
-        if (sDown2)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 1;
-        }
-        if (sDown3)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 2;
-        }
-        if (sDown4)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 3;
-        }
-        if (sDown5)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 4;
-        }
 
-        tools[toolIndex].gameObject.SetActive(true);
-    }
-    IEnumerator ResetAttack()
-    {
-        yield return new WaitForSeconds(0.5f); // 공격 애니메이션이 끝나는 시간 (임의로 설정)
-        isAttacking = false;
-    }
+//유진-수정1
+/*using UnityEngine;
 
-    IEnumerator ResetDig()
-    {
-        yield return new WaitForSeconds(1.5f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
-        isDigging = false;
-    }
-    IEnumerator ResetJump()
-    {
-        yield return new WaitForSeconds(1.1f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
-        isJumping = false;
-    }
+public class Player : MonoBehaviour
+{
+    [Header("Player Class")]
+    public PlayerMove pMove;
+    public PlayerAttack pAttack;
+    public PlayerBehavior pBehavior;
 
-    IEnumerator ResetPick()
+    [Header("Player Status")]
+    public int health = 5;
+
+    public Rigidbody rigid;
+
+    private static Player instance;
+
+    void Awake()
     {
-        yield return new WaitForSeconds(1.2f); // 땅파기 애니메이션이 끝나는 시간 (임의로 설정)
-        isPicking = false;
-    }
-    // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null)
+        // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // 플레이어를 씬 전환 시 유지
+        }
+        else
+        {
+            Destroy(gameObject); // 중복된 플레이어 파괴
             return;
+        }
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        // 플레이어 컴포넌트 초기화
+        pMove = GetComponent<PlayerMove>();
+        pAttack = GetComponent<PlayerAttack>();
+        pBehavior = GetComponent<PlayerBehavior>();
+        rigid = GetComponent<Rigidbody>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if(other.tag == "fruit" && toolIndex == 2 && isPicking)
+        // 플레이어 동작 업데이트
+        pBehavior.getInput();
+        pBehavior.Use();
+        pBehavior.Swap();
+        pMove.MoveInput();
+        pAttack.AttackInput();
+
+        if (!pMove.IsTired)
         {
-            Rigidbody fruitRb = other.GetComponent<Rigidbody>();
-            Collider fruitCollider = other.GetComponent<Collider>();
-            if (fruitRb != null)
-            {
-                fruitRb.useGravity = true;
-                fruitCollider.isTrigger = false;
-            }
+            pMove.Move();
         }
+
+        pMove.Turn();
+        pMove.Jump();
+        pMove.Sleep();
+        pAttack.Attack();
+    }
+}
+*/
+
+
+//유진-수정2
+using UnityEngine;
+using System.Collections;
+
+public class Player : MonoBehaviour
+{
+    [Header("Player Class")]
+    public PlayerMove pMove;
+    public PlayerAttack pAttack;
+    public PlayerBehavior pBehavior;
+
+    [Header("Player Status")]
+    [SerializeField]
+    private int maxHealth = 10;
+    public int health;
+
+    public Vector3 respawnPosition; // 리스폰 위치 설정
+    public Rigidbody rigid;
+
+    private static Player instance;
+    private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
+
+    void Awake()
+    {
+        // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않게 설정
+        }
+        else
+        {
+            Destroy(gameObject); // 중복된 플레이어 파괴
+            return;
+        }
+
+        // 플레이어 컴포넌트 초기화
+        pMove = GetComponent<PlayerMove>();
+        pAttack = GetComponent<PlayerAttack>();
+        pBehavior = GetComponent<PlayerBehavior>();
+        rigid = GetComponent<Rigidbody>();
+        health = maxHealth;
+        // 시작할 때 플레이어의 기본 리스폰 위치를 현재 위치로 설정(침대 추가시 이 코드는 삭제 예정)
+        respawnPosition = transform.position;
+    }
+
+    // 싱글톤으로 플레이어 오브젝트 참조 반환
+    public static Player GetInstance()
+    {
+        return instance;
+    }
+
+    void Update()
+    {
+        // 사망 후 쿨다운이 활성화된 상태에서는 아무 동작도 하지 않음
+        if (isDeadCooldown)
+        {
+            return;
+        }
+
+        // 플레이어가 사망 상태인지 먼저 확인하고 사망 처리 후 5초간 동작 제한
+        if (pBehavior.IsDie)
+        {
+            StartCoroutine(DeathCooldown());
+            return;
+        }
+        // 플레이어 동작 업데이트
+        pBehavior.getInput();
+        pBehavior.Use();
+        pBehavior.Swap();
+        pMove.MoveInput();
+        pAttack.AttackInput();
+
+        if (!pMove.IsTired)
+        {
+            pMove.Move();
+        }
+
+        pMove.Turn();
+        pMove.Jump();
+        pMove.Sleep();
+        pAttack.Attack();
+    }
+    // 사망 후 5초 동안 동작을 제한하는 코루틴
+    IEnumerator DeathCooldown()
+    {
+        isDeadCooldown = true; // 쿨다운 시작
+        yield return new WaitForSeconds(5f); // 5초 대기
+
+        Respawn();
+        isDeadCooldown = false; // 쿨다운 종료
+    }
+    private void Respawn()
+    {
+        // 체력을 초기화
+        health = maxHealth;
+
+        // 리스폰 위치로 이동
+        transform.position = respawnPosition;
+
+        // 사망 상태 해제
+        pBehavior.IsDie = false;
     }
 }
