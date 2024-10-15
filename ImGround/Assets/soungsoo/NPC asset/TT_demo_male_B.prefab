@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8742002540121805209}
   m_Layer: 0
-  m_Name: Bip001 Head
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -802,7 +802,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
   SetOriginAsStartPos: 1
+  type: 0
   Radius: 50.37
+  PlayerLookOffset: {x: 0, y: 1.25, z: 0}
 --- !u!1 &6895409614953078591
 GameObject:
   m_ObjectHideFlags: 0

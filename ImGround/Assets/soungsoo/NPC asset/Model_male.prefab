@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1689936319245167449, guid: 53611bf1a0bd17e48b9d5b2ccd56a0fc, type: 3}
+      propertyPath: m_Name
+      value: Head
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 53611bf1a0bd17e48b9d5b2ccd56a0fc, type: 3}
       propertyPath: m_Name
       value: Model_male
@@ -148,4 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
   SetOriginAsStartPos: 1
+  type: 0
   Radius: 50.37
+  PlayerLookOffset: {x: 0, y: 1.25, z: 0}

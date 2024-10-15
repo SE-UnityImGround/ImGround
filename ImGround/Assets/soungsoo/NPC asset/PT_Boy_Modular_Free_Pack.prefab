@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3761346255985634550}
   m_Layer: 0
-  m_Name: PT_Head
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2239,7 +2239,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
   SetOriginAsStartPos: 1
+  type: 0
   Radius: 50.37
+  PlayerLookOffset: {x: 0, y: 1.25, z: 0}
 --- !u!195 &3731250223822412631
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -893,7 +893,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
   SetOriginAsStartPos: 1
+  type: 0
   Radius: 15.66
+  PlayerLookOffset: {x: 0, y: 1.25, z: 0}
 --- !u!195 &9144801038757458786
 NavMeshAgent:
   m_ObjectHideFlags: 0

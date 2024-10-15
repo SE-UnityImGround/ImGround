@@ -1266,7 +1266,7 @@ GameObject:
   - component: {fileID: 1847576581298500784}
   - component: {fileID: 7287404200348131215}
   m_Layer: 0
-  m_Name: Head
+  m_Name: HeadM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3424,7 +3424,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Origin: {x: 0, y: 0, z: 0}
   SetOriginAsStartPos: 1
+  type: 0
   Radius: 50.37
+  PlayerLookOffset: {x: 0, y: 1.25, z: 0}
 --- !u!195 &8439745310326465499
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4637,7 +4639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5372933213787649351}
   m_Layer: 0
-  m_Name: Head_M
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

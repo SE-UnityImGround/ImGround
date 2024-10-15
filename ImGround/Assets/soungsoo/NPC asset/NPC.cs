@@ -7,7 +7,9 @@ public class NPCScript : MonoBehaviour
 {
     public Vector3 Origin;
     public bool SetOriginAsStartPos; // 만약 True이면 Origin은 오브젝트의 처음 위치로 설정됩니다.
+    public NPCType type;
     public float Radius; // 랜덤 위치 범위
+    public Vector3 PlayerLookOffset;
 
     /* ===============================================================================
      *  참고 : 각 컴포넌트는 인스펙터에서 입력받지 않고, 직접 검색하여 찾도록 구현함!
@@ -20,6 +22,9 @@ public class NPCScript : MonoBehaviour
     private const float MIN_DURATION = 30.0f;
     private float stdTime = 0.0f; // 타이머용 변수
     private Vector3 currentTarget; // 현재 랜덤위치
+
+    private Transform head;
+    private Vector3 deltaAngle;
 
     // 애니메이션 파라미터 이름값
     private class animationParameters
@@ -43,6 +48,40 @@ public class NPCScript : MonoBehaviour
 
         if (SetOriginAsStartPos)
             Origin = transform.position;
+
+        if ((head = findChildRecursively(transform, "Head")) == null)
+            Debug.LogErrorFormat("gameObject {0}의 Head를 찾을 수 없습니다!!", gameObject.name);
+        else
+            deltaAngle = head.eulerAngles - transform.eulerAngles;
+    }
+
+    private Transform findChildRecursively(Transform root, string name)
+    {
+        Queue<Transform> childs = new Queue<Transform>();
+        childs.Enqueue(root);
+        Transform child;
+        Transform parent;
+
+        do
+        {
+            for (int cnt = childs.Count; cnt > 0; cnt--)
+            {
+                parent = childs.Dequeue();
+                for (int i = 0; i < parent.childCount; i++)
+                {
+                    child = parent.GetChild(i);
+                    if (child.name.CompareTo(name) == 0)
+                    {
+                        childs.Clear();
+                        return child;
+                    }
+                    else
+                        childs.Enqueue(child);
+                }
+            }
+        } while (childs.Count > 0);
+
+        return null;
     }
 
     // Update is called once per frame
@@ -50,6 +89,11 @@ public class NPCScript : MonoBehaviour
     {
         setPosition();
         move();
+    }
+
+    void LateUpdate()
+    {
+        lookAtPlayer();
     }
 
     private Vector3 findRandomPos(Vector3 origin, float radius)
@@ -89,5 +133,13 @@ public class NPCScript : MonoBehaviour
         }
         else
             animator.SetBool(animationParameters.isWalk, false);
+    }
+
+    private void lookAtPlayer()
+    {
+        if (head != null)
+        {
+            head.rotation = Quaternion.LookRotation(GameObject.Find("Player").transform.position + PlayerLookOffset - head.transform.position) * Quaternion.Euler(deltaAngle);
+        }
     }
 }
