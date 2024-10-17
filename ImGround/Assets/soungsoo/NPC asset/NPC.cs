@@ -24,7 +24,8 @@ public class NPCScript : MonoBehaviour
     private Vector3 currentTarget; // 현재 랜덤위치
 
     private Transform head;
-    private Vector3 deltaAngle;
+    private Quaternion lastHeadRotation;
+    private Quaternion deltaAngle;
 
     // 애니메이션 파라미터 이름값
     private class animationParameters
@@ -52,7 +53,10 @@ public class NPCScript : MonoBehaviour
         if ((head = findChildRecursively(transform, "Head")) == null)
             Debug.LogErrorFormat("gameObject {0}의 Head를 찾을 수 없습니다!!", gameObject.name);
         else
-            deltaAngle = head.eulerAngles - transform.eulerAngles;
+        {
+            deltaAngle = Quaternion.Euler(head.eulerAngles - transform.eulerAngles);
+            lastHeadRotation = head.rotation;
+        }
     }
 
     private Transform findChildRecursively(Transform root, string name)
@@ -139,7 +143,42 @@ public class NPCScript : MonoBehaviour
     {
         if (head != null)
         {
-            head.rotation = Quaternion.LookRotation(GameObject.Find("Player").transform.position + PlayerLookOffset - head.transform.position) * Quaternion.Euler(deltaAngle);
+            GameObject player = findPlayerInDistance(5.0f);
+            Quaternion lookAngle = Quaternion.LookRotation(player.transform.position + PlayerLookOffset - head.transform.position);
+
+            Vector3 angleAmount = lookAngle.eulerAngles - transform.eulerAngles;
+            float x = angleAmount.x % 360.0f;
+            x = (x >= 180.0f ? x - 360.0f :
+                (x <= -180.0f ? x + 360.0f : x)); // -180.0 ~ 180.0 범위로 정규화
+            float y = angleAmount.y % 360.0f;
+            y = (y >= 180.0f ? y - 360.0f :
+                (y <= -180.0f ? y + 360.0f : y)); // -180.0 ~ 180.0 범위로 정규화
+
+            if (player != null 
+                && (Mathf.Abs(y) <= 70.0f && x >= -45.0f)) // 좌우 80도, 아래로 45도 까지의 시선만 적용
+            {
+                lastHeadRotation = Quaternion.Lerp(
+                    lastHeadRotation,
+                    lookAngle * deltaAngle,
+                    1.0f / (0.15f) * Time.deltaTime); // 괄호 내 : a->b로 가는데 걸리는 총 시간(초)
+            }
+            else
+            {
+                lastHeadRotation = Quaternion.Lerp(
+                       lastHeadRotation,
+                       transform.rotation * deltaAngle,
+                       1.0f / (0.5f) * Time.deltaTime); // 괄호 내 : a->b로 가는데 걸리는 총 시간(초)
+            }
+
+            head.rotation = lastHeadRotation;
         }
+    }
+
+    private GameObject findPlayerInDistance(float distance)
+    {
+        foreach (Collider c in Physics.OverlapSphere(transform.position, distance))
+            if (c.name.CompareTo("Player") == 0)
+                return c.gameObject;
+        return null;
     }
 }
