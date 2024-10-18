@@ -141,9 +141,9 @@ public class NPCScript : MonoBehaviour
 
     private void lookAtPlayer()
     {
-        if (head != null)
+        GameObject player = findPlayerInDistance(5.0f);
+        if (head != null && player != null)
         {
-            GameObject player = findPlayerInDistance(5.0f);
             Quaternion lookAngle = Quaternion.LookRotation(player.transform.position + PlayerLookOffset - head.transform.position);
 
             Vector3 angleAmount = lookAngle.eulerAngles - transform.eulerAngles;
