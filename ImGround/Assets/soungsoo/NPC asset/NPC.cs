@@ -141,37 +141,51 @@ public class NPCScript : MonoBehaviour
 
     private void lookAtPlayer()
     {
-        GameObject player = findPlayerInDistance(5.0f);
-        if (head != null && player != null)
+        if (head != null)
         {
-            Quaternion lookAngle = Quaternion.LookRotation(player.transform.position + PlayerLookOffset - head.transform.position);
-
-            Vector3 angleAmount = lookAngle.eulerAngles - transform.eulerAngles;
-            float x = angleAmount.x % 360.0f;
-            x = (x >= 180.0f ? x - 360.0f :
-                (x <= -180.0f ? x + 360.0f : x)); // -180.0 ~ 180.0 범위로 정규화
-            float y = angleAmount.y % 360.0f;
-            y = (y >= 180.0f ? y - 360.0f :
-                (y <= -180.0f ? y + 360.0f : y)); // -180.0 ~ 180.0 범위로 정규화
-
-            if (player != null 
-                && (Mathf.Abs(y) <= 70.0f && x >= -45.0f)) // 좌우 80도, 아래로 45도 까지의 시선만 적용
+            GameObject player = findPlayerInDistance(5.0f);
+            if (player != null)
             {
-                lastHeadRotation = Quaternion.Lerp(
-                    lastHeadRotation,
-                    lookAngle * deltaAngle,
-                    1.0f / (0.15f) * Time.deltaTime); // 괄호 내 : a->b로 가는데 걸리는 총 시간(초)
+                Quaternion lookAngle = Quaternion.LookRotation(player.transform.position + PlayerLookOffset - head.transform.position);
+
+                Vector3 angleAmount = lookAngle.eulerAngles - transform.eulerAngles;
+                float x = angleAmount.x % 360.0f;
+                x = (x >= 180.0f ? x - 360.0f :
+                    (x <= -180.0f ? x + 360.0f : x)); // -180.0 ~ 180.0 범위로 정규화
+                float y = angleAmount.y % 360.0f;
+                y = (y >= 180.0f ? y - 360.0f :
+                    (y <= -180.0f ? y + 360.0f : y)); // -180.0 ~ 180.0 범위로 정규화
+
+                if (Mathf.Abs(y) <= 70.0f
+                    && x <= 60.0f && x >= -45.0f) // 좌우 70도, 아래로 60도 위로 45도 까지의 시선만 적용
+                {
+                    lookAt(lookAngle, 0.15f); // 플레이어를 향함
+                }
+                else
+                {
+                    lookAt(transform.rotation, 0.5f); // 플레이어를 향하지 않음
+                }
             }
             else
             {
-                lastHeadRotation = Quaternion.Lerp(
-                       lastHeadRotation,
-                       transform.rotation * deltaAngle,
-                       1.0f / (0.5f) * Time.deltaTime); // 괄호 내 : a->b로 가는데 걸리는 총 시간(초)
+                lookAt(transform.rotation, 0.5f); // 플레이어를 향하지 않음
             }
-
-            head.rotation = lastHeadRotation;
         }
+    }
+
+    /// <summary>
+    /// NPC의 머리를 duration 시간동안 lookAngle 방향으로 회전합니다.
+    /// <br/>Lerp 선형보간이 적용됩니다.
+    /// </summary>
+    /// <param name="lookAngle"></param>
+    /// <param name="duration"></param>
+    private void lookAt(Quaternion lookAngle, float duration)
+    {
+        lastHeadRotation = Quaternion.Lerp(
+               lastHeadRotation,
+               lookAngle * deltaAngle,
+               1.0f / duration * Time.deltaTime); // duration : a->b로 가는데 걸리는 총 시간(초)
+        head.rotation = lastHeadRotation;
     }
 
     private GameObject findPlayerInDistance(float distance)
