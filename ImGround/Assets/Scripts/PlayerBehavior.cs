@@ -22,10 +22,12 @@ public class PlayerBehavior : MonoBehaviour
 
     bool isDigReady;
     bool isPickReady;
+    bool isHarvestReady;
     bool isEating = false;
     bool isPickingUp = false;
     bool isDigging = false;
     bool isPicking = false;
+    bool isHarvest = false;
     bool isDie = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
@@ -34,11 +36,13 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsPickingUp { get {  return isPickingUp; } }
     public bool IsDigging { get {  return isDigging; } }
     public bool IsPicking { get { return isPicking; } }
+    public bool IsHarvest { get { return isHarvest; } }
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
     float digDelay;
     float pickDelay;
+    float harvestDelay;
     int toolIndex = 0;
 
     private void Awake()
@@ -66,8 +70,10 @@ public class PlayerBehavior : MonoBehaviour
     {
         digDelay += Time.deltaTime;
         pickDelay += Time.deltaTime;
+        harvestDelay = Time.deltaTime;
         isDigReady = 1.5f < digDelay;
         isPickReady = 1.2f < pickDelay;
+        isHarvestReady = 0.4f < harvestDelay;
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
@@ -75,7 +81,7 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
         }
-        else if (toolIndex == 0 && fDown && !isPickingUp && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && fDown && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
@@ -123,14 +129,14 @@ public class PlayerBehavior : MonoBehaviour
         //        }
         //    }
         //}
-        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 경작하기
             anim.SetTrigger("doDigDown");
             isDigging = true;
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
-        else if (toolIndex == 2 && dDown && isPickReady && !player.pAttack.IsAttacking)
+        else if (toolIndex == 2 && dDown && isPickReady && !isHarvest && !player.pAttack.IsAttacking)
         {// 과일 수확
             player.rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
             anim.SetTrigger("doPick");
@@ -138,16 +144,19 @@ public class PlayerBehavior : MonoBehaviour
             pickDelay = 0f;
             StartCoroutine(ResetPick());
         }
-        else if (toolIndex == 4 && dDown && isDigReady && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 땅파기
             anim.SetTrigger("doDigUp");
             isDigging = true;
             digDelay = 0f;
             StartCoroutine(ResetDig());
         }
-        else if(toolIndex == 5 && dDown && isDigReady && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if(toolIndex == 5 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {
             anim.SetTrigger("doHarvest");
+            isHarvest = true;
+            harvestDelay = 0f;
+            StartCoroutine(ResetHarvest());
         }
     }
     // 문 여닫기 애니메이션 (천천히 90도 회전 후 다시 닫힘)
@@ -292,6 +301,11 @@ public class PlayerBehavior : MonoBehaviour
         isEating = false;
     }
 
+    IEnumerator ResetHarvest()
+    {
+        yield return new WaitForSeconds(1f);
+        isHarvest = false;
+    }
     IEnumerator Picking()
     {
         // 아이템을 손 위치로 이동
