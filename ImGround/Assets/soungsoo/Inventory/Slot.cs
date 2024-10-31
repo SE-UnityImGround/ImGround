@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 인벤토리 내 슬롯의 기본 자료구조입니다.
+/// </summary>
 public class Slot
 {
     public Item item = null;
@@ -21,6 +24,7 @@ public class Slot
 
     /// <summary>
     /// 아이템을 슬롯에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
+    /// <br/>아이템을 추가한 후 남은 수량이 입력된 item 객체에 반영됩니다.
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
@@ -29,17 +33,13 @@ public class Slot
         if (this.item == null)
         {
             this.item = new Item(item);
-            item.count = 0;
+            item.getDividedItems();
 
             itemUpdatedEventHandler?.Invoke(this.item);
             return true;
         }
-        else if (this.item.remainCapacity > 0 && this.item.itemId == item.itemId)
+        else if (this.item.addItem(item))
         {
-            int getAmount = Math.Min(item.count, this.item.remainCapacity);
-            item.count -= getAmount;
-            this.item.count += getAmount;
-
             itemUpdatedEventHandler?.Invoke(this.item);
             return true;
         }
@@ -57,6 +57,13 @@ public class Slot
         return (item != null && item.count > 0);
     }
 
+    /// <summary>
+    /// 슬롯에서 아이템을 주어진 갯수만큼 꺼냅니다.
+    /// <br/> 갯수가 음수이면 모두 꺼냅니다.
+    /// <br/> 아이템이 없다면 null을 반환합니다.
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
     public Item takeItem(int count = -1)
     {
         if (item == null)
@@ -79,6 +86,9 @@ public class Slot
         return result;
     }
 
+    /// <summary>
+    /// 슬롯을 즉시 비웁니다.
+    /// </summary>
     public void clear()
     {
         item = null;
