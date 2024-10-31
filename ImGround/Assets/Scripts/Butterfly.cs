@@ -14,5 +14,8 @@ public class Butterfly : Animal
     new void Update()
     {
         base.Update();
+        Vector3 targetPosition = navAgent.transform.position;
+        targetPosition.y = 2;
+        transform.position = targetPosition;
     }
 }
