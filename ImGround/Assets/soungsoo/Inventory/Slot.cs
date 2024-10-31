@@ -31,7 +31,7 @@ public class Slot
             this.item = new Item(item);
             item.count = 0;
 
-            itemUpdatedEventHandler(this.item);
+            itemUpdatedEventHandler?.Invoke(this.item);
             return true;
         }
         else if (this.item.remainCapacity > 0 && this.item.itemId == item.itemId)
@@ -40,7 +40,7 @@ public class Slot
             item.count -= getAmount;
             this.item.count += getAmount;
 
-            itemUpdatedEventHandler(this.item);
+            itemUpdatedEventHandler?.Invoke(this.item);
             return true;
         }
         

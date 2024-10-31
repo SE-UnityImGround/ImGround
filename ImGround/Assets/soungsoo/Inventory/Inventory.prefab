@@ -200,6 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 269687331111299658, guid: cf72771f77279a64395a1ac816d0b8a6, type: 3}
+  SlotList: {fileID: 0}
 --- !u!1 &436494260306590421
 GameObject:
   m_ObjectHideFlags: 0
@@ -3355,7 +3356,6 @@ GameObject:
   - component: {fileID: 1184681025937090838}
   - component: {fileID: 4389263872584250310}
   - component: {fileID: 583221908120200624}
-  - component: {fileID: 3476860237957416186}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -3448,19 +3448,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3476860237957416186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2824068894738933216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee659a34e5e8afe4684c0277f00a6b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 6804148300335052283}
 --- !u!1 &2831216429609693397
 GameObject:
   m_ObjectHideFlags: 0
@@ -7238,13 +7225,14 @@ GameObject:
   - component: {fileID: 7944330968393284989}
   - component: {fileID: 215430471233828154}
   - component: {fileID: 6266261546424629403}
+  - component: {fileID: 7995501798654657790}
   m_Layer: 5
   m_Name: InventoryUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &443662497470451348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7319,6 +7307,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.6754716, g: 0.5896666, b: 0.45243853, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 0
+--- !u!114 &7995501798654657790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6804148300335052283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16af8053b65ff5240b1717c5304cc2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotPrefab: {fileID: 269687331111299658, guid: cf72771f77279a64395a1ac816d0b8a6, type: 3}
+  SlotList: {fileID: 213921901125228870}
 --- !u!1 &6816557960516037038
 GameObject:
   m_ObjectHideFlags: 0
@@ -7916,7 +7918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -19.97351}
+  m_AnchoredPosition: {x: 0, y: -19.97348}
   m_SizeDelta: {x: 42.87793, y: 200}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4685653383069649494

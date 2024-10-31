@@ -5,27 +5,21 @@ using UnityEngine.UI;
 
 public class SlotBehavior : MonoBehaviour
 {
-    /// <summary>
-    /// ï¿½×½ï¿½Æ® ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼È­ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½!
-    /// </summary>
-    private GameObject itemImg;
-
-    private BagBehavior backpack;
+    private InventoryBehavior backpack;
     private int slotIdx;
+    private Image itemImg;
 
     /// <summary>
     /// ½½·Ô °´Ã¼ µî·Ï½Ã ÃÊ±âÈ­!
     /// </summary>
-    /// <param name="parent"></param>
+    /// <param name="inventoryUI"></param>
     /// <param name="slotIdx"></param>
-    public void initialize(BagBehavior parent, Slot mySlot, int slotIdx)
+    public void initialize(InventoryBehavior inventoryUI, Slot mySlot, int slotIdx)
     {
-        this.backpack = parent;
+        this.backpack = inventoryUI;
         this.slotIdx = slotIdx;
         mySlot.itemUpdatedEventHandler += itemUpdated;
-
-        // test ï¿½×½ï¿½Æ®ï¿½ï¿½
-        itemImg = transform.GetChild(0).gameObject;
+        itemImg = transform.GetChild(0).gameObject.GetComponent<Image>();
     }
 
     /// <summary>
