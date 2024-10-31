@@ -8,6 +8,7 @@ public class Crops : MonoBehaviour
     private GameObject[] currentCrops;
     [SerializeField]
     private GameObject particle;
+    private ParticleSystem particleSystem;
 
     private void Start()
     {
@@ -45,19 +46,28 @@ public class Crops : MonoBehaviour
         }
     }
 
-    private void AllGrown()
+    private void AllGrown(bool harvest = false)
     {
-        GameObject particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
-        ParticleSystem particleSystem = particleInstance.GetComponent<ParticleSystem>();
-        if (particleSystem != null)
-            particleSystem.Play();
+        if (!harvest)
+        {
+            GameObject particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
+            particleSystem = particleInstance.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+                particleSystem.Play();
+        }
+        else if(harvest)
+        {
+            //particleSystem.Pause();
+            Destroy(particle);
+        }
     }
 
-    // "Harvest" ÅÂ±×¿Í Ãæµ¹ ½Ã ÀÛ¹°À» Èğ»Ñ¸®´Â ±â´É
+    // "Harvest" íƒœê·¸ì™€ ì¶©ëŒ ì‹œ ì‘ë¬¼ì„ í©ë¿Œë¦¬ëŠ” ê¸°ëŠ¥
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Harvest"))
         {
+            AllGrown(true);
             ScatterCrops();
         }
     }
@@ -68,31 +78,31 @@ public class Crops : MonoBehaviour
         {
             if (crop != null)
             {
-                // Rigidbody Ãß°¡
+                // Rigidbody ì¶”ê°€
                 Rigidbody rb = crop.AddComponent<Rigidbody>();
                 Collider collider = rb.GetComponent<Collider>();
-                // À§·Î »ìÂ¦ Æ¢¾î ¿À¸£±â À§ÇÑ ÃÊ±â Èû
-                float jumpForce = 6f; // À§·Î Æ¢¾î ¿À¸£´Â ÈûÀÇ Å©±â
-                collider.isTrigger = false;
+                // ìœ„ë¡œ ì‚´ì§ íŠ€ì–´ ì˜¤ë¥´ê¸° ìœ„í•œ ì´ˆê¸° í˜
+                float jumpForce = 3f; // ìœ„ë¡œ íŠ€ì–´ ì˜¤ë¥´ëŠ” í˜ì˜ í¬ê¸°
+                
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-                // Á¶±İ ±â´Ù¸° ÈÄ Èğ»Ñ¸®´Â Èû Àû¿ë
-                StartCoroutine(ApplyScatterForce(rb));
+                // ì¡°ê¸ˆ ê¸°ë‹¤ë¦° í›„ í©ë¿Œë¦¬ëŠ” í˜ ì ìš©
+                StartCoroutine(ApplyScatterForce(rb, collider));
             }
         }
     }
 
-    private IEnumerator ApplyScatterForce(Rigidbody rb)
+    private IEnumerator ApplyScatterForce(Rigidbody rb, Collider collider)
     {
-        yield return new WaitForSeconds(0.1f); // »ìÂ¦ Æ¢¾î ¿À¸¦ ½Ã°£À» ±â´Ù¸²
-
-        // Èğ»Ñ¸®´Â ÈûÀ» ·£´ı ¹æÇâÀ¸·Î °¡ÇÏ±â
+        yield return new WaitForSeconds(0.5f); // ì‚´ì§ íŠ€ì–´ ì˜¤ë¥¼ ì‹œê°„ì„ ê¸°ë‹¤ë¦¼
+        collider.isTrigger = false;
+        // í©ë¿Œë¦¬ëŠ” í˜ì„ ëœë¤ ë°©í–¥ìœ¼ë¡œ ê°€í•˜ê¸°
         Vector3 randomDirection = new Vector3(
-            Random.Range(-1f, 1f),
-            Random.Range(0.5f, 1f),
-            Random.Range(-1f, 1f)
+            Random.Range(-0.2f, 0.2f),
+            Random.Range(0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f)
         ).normalized;
-        float scatterForce = Random.Range(2f, 5f); // Èğ»Ñ¸®´Â ÈûÀÇ Å©±â
+        float scatterForce = Random.Range(0.5f, 1f); // í©ë¿Œë¦¬ëŠ” í˜ì˜ í¬ê¸°
         rb.AddForce(randomDirection * scatterForce, ForceMode.Impulse);
     }
 

@@ -31,6 +31,7 @@ public class PlayerBehavior : MonoBehaviour
     bool isDie = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
+    public Transform pointH;
     private GameObject pickedItem; // 현재 주운 아이템
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
@@ -155,60 +156,12 @@ public class PlayerBehavior : MonoBehaviour
         {
             anim.SetTrigger("doHarvest");
             isHarvest = true;
+            pointH.gameObject.SetActive(true);
             harvestDelay = 0f;
             StartCoroutine(ResetHarvest());
         }
     }
-    // 문 여닫기 애니메이션 (천천히 90도 회전 후 다시 닫힘)
-    //IEnumerator OpenAndCloseDoor(GameObject door)
-    //{
-    //    Quaternion originalRotation = door.transform.rotation;
-    //    Quaternion openRotation = Quaternion.Euler(door.transform.eulerAngles.x, door.transform.eulerAngles.y + 90, door.transform.eulerAngles.z);
-    //    Collider doorC = door.GetComponent<Collider>();
-    //    doorC.isTrigger = true;
-    //    anim.SetTrigger("doOpenOut");
-    //    float time = 0f;
-    //    while (time < 1f)
-    //    {
-    //        door.transform.rotation = Quaternion.Slerp(originalRotation, openRotation, time);
-    //        time += Time.deltaTime / 1.8f;
-    //        yield return null;
-    //    }
-
-    //    door.transform.rotation = openRotation; // 최종적으로 열린 상태로 설정
-
-
-    //    // 플레이어가 바라보는 방향으로 이동
-    //    Vector3 playerPosition = transform.position;     // 현재 플레이어 위치
-    //    Vector3 directionToMove = transform.forward;     // 플레이어가 바라보는 방향 (forward)
-
-    //    // 이동 목표 위치 계산 (현재 위치에서 바라보는 방향으로 2만큼 떨어진 지점)
-    //    Vector3 targetPosition = playerPosition + (directionToMove * 1.5f);
-
-    //    // 플레이어를 천천히 이동
-    //    float moveTime = 0f;
-    //    float moveDuration = 1.1f;  // 이동 시간
-    //    while (moveTime < moveDuration)
-    //    {
-    //        transform.position = Vector3.Lerp(playerPosition, targetPosition, moveTime / moveDuration);  // 부드럽게 이동
-    //        moveTime += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-
-    //    time = 0f;
-    //    while (time < 1f)
-    //    {
-    //        door.transform.rotation = Quaternion.Slerp(openRotation, originalRotation, time);
-    //        time += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    door.transform.rotation = originalRotation; // 문이 다시 닫힌 상태로 설정
-    //    yield return new WaitForSeconds(1f);
-    //    doorC.isTrigger = false;
-    //}
-
+   
     // 아이템 줍기 범위 확인용(추후 삭제 예정)
     private void OnDrawGizmosSelected()
     {
@@ -304,6 +257,7 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator ResetHarvest()
     {
         yield return new WaitForSeconds(1f);
+        pointH.gameObject.SetActive(false);
         isHarvest = false;
     }
     IEnumerator Picking()
