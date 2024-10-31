@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SlotBehavior : MonoBehaviour
 {
     /// <summary>
-    /// Å×½ºÆ® ¸Å°³º¯¼ö : ¾ÆÁ÷ ±¸Ã¼È­µÇÁö ¾Ê¾Ò¾î¿ä!
+    /// ï¿½×½ï¿½Æ® ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼È­ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½!
     /// </summary>
     private GameObject itemImg;
 
@@ -24,7 +24,7 @@ public class SlotBehavior : MonoBehaviour
         this.slotIdx = slotIdx;
         mySlot.itemUpdatedEventHandler += itemUpdated;
 
-        // test Å×½ºÆ®¿ë
+        // test ï¿½×½ï¿½Æ®ï¿½ï¿½
         itemImg = transform.GetChild(0).gameObject;
     }
 
@@ -57,17 +57,27 @@ public class SlotBehavior : MonoBehaviour
     /// <param name="updatedItem"></param>
     private void itemUpdated(Item updatedItem)
     {
-        testItemUpdated(updatedItem);
+        setImage(updatedItem);
     }
 
-    /// <summary>
-    /// ¾ÆÀÌÅÛ ¾÷µ¥ÀÌÆ® Ã³¸®¿¡ ´ëÇÑ Å×½ºÆ® ÇÔ¼öÀÔ´Ï´Ù.
-    /// </summary>
-    /// <param name="i"></param>
-    private void testItemUpdated(Item i)
+    /*=======================================================
+     *                    ³»ºÎ Ã³¸® ¸Þ¼Òµå
+     *=======================================================*/
+
+    private void setImage(Item i)
     {
-        if (i != null) {
-            itemImg.SetActive(true);
+        if (i == null)
+        {
+            itemImg.sprite = null;
+            itemImg.color = new Color(255, 255, 255, 0);
+        }
+        else
+        {
+            itemImg.color = new Color(255, 255, 255, 255);
+            if (itemImg.sprite != ImagesSO.getImage(i.itemId))
+            {
+                itemImg.sprite = ImagesSO.getImage(i.itemId);
+            }
         }
     }
 }
