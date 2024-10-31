@@ -25,5 +25,10 @@ public class PlayerUIController : MonoBehaviour
         {
             myBag.setActive(!myBag.getActive());
         }
+
+        if (Input.GetKeyDown(KeyCode.Q)) 
+        {
+            myQuest.setActive(!myQuest.getActive());
+        }
     }
 }
