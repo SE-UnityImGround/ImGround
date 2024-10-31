@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Crops : MonoBehaviour
 {
     public CropData cropData;
+    [Header("Spots")]
     public Transform[] spots;
+    public Transform bigSpot;
+
     private GameObject[] currentCrops;
     [SerializeField]
     private GameObject particle;
@@ -12,12 +16,22 @@ public class Crops : MonoBehaviour
 
     private void Start()
     {
-        currentCrops = new GameObject[spots.Length];
-        for (int i = 0; i < spots.Length; i++)
+        if (!cropData.isBig)
         {
-            currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
-            currentCrops[i].transform.SetParent(spots[i]);
-            StartCoroutine(GrowCrop(i));
+            currentCrops = new GameObject[spots.Length];
+            for (int i = 0; i < spots.Length; i++)
+            {
+                currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
+                currentCrops[i].transform.SetParent(spots[i]);
+                StartCoroutine(GrowCrop(i));
+            }
+        }
+        else if(cropData.isBig)
+        {
+            currentCrops = new GameObject[1];
+            currentCrops[0] = Instantiate(cropData.growthStages[0], bigSpot.position, Quaternion.identity);
+            currentCrops[0].transform.SetParent(bigSpot);
+            StartCoroutine(GrowBigCrop());
         }
     }
 
@@ -29,7 +43,7 @@ public class Crops : MonoBehaviour
         {
             yield return new WaitForSeconds(cropData.growthTimePerStage[currentStage]);
 
-            if (currentStage != 3)
+            if (currentStage != cropData.growthStages.Length - 1)
                 Destroy(currentCrops[index]);
             else
                 break;
@@ -40,6 +54,31 @@ public class Crops : MonoBehaviour
             {
                 currentCrops[index] = Instantiate(cropData.growthStages[currentStage], spots[index].position, Quaternion.identity);
                 currentCrops[index].transform.SetParent(spots[index]);
+                if (currentStage == cropData.growthStages.Length - 1)
+                    AllGrown();
+            }
+        }
+    }
+
+    private IEnumerator GrowBigCrop()
+    {
+        int currentStage = 0;
+
+        while (currentStage < cropData.growthStages.Length)
+        {
+            yield return new WaitForSeconds(cropData.growthTimePerStage[currentStage]);
+
+            if (currentStage != cropData.growthStages.Length - 1)
+                Destroy(currentCrops[0]);
+            else
+                break;
+
+            currentStage++;
+
+            if (currentStage < cropData.growthStages.Length)
+            {
+                currentCrops[0] = Instantiate(cropData.growthStages[currentStage], bigSpot.position, Quaternion.identity);
+                currentCrops[0].transform.SetParent(bigSpot);
                 if (currentStage == cropData.growthStages.Length - 1)
                     AllGrown();
             }
@@ -98,11 +137,11 @@ public class Crops : MonoBehaviour
         collider.isTrigger = false;
         // 흩뿌리는 힘을 랜덤 방향으로 가하기
         Vector3 randomDirection = new Vector3(
-            Random.Range(-0.2f, 0.2f),
-            Random.Range(0.1f, 0.1f),
-            Random.Range(-0.1f, 0.1f)
+            UnityEngine.Random.Range(-0.2f, 0.2f),
+            UnityEngine.Random.Range(0.1f, 0.1f),
+            UnityEngine.Random.Range(-0.1f, 0.1f)
         ).normalized;
-        float scatterForce = Random.Range(0.5f, 1f); // 흩뿌리는 힘의 크기
+        float scatterForce = UnityEngine.Random.Range(0.5f, 1f); // 흩뿌리는 힘의 크기
         rb.AddForce(randomDirection * scatterForce, ForceMode.Impulse);
     }
 
