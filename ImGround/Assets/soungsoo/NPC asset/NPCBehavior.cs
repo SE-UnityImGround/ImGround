@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPCScript : MonoBehaviour
+public class NPCBehavior : MonoBehaviour
 {
     private static readonly string PLAYER_NAME = "Player";
-
+    
     public Vector3 Origin;
     [Tooltip("만약 True이면 Origin 값은 오브젝트의 처음 위치로 덮어씌웁니다.")]
     public bool SetOriginAsStartPos;
     public NPCType type;
-    public float Radius; // 랜덤 위치 범위
+    public float Radius; // 랜덤 이동 위치의 범위
     public Vector3 PlayerLookOffset;
+    public Vector3 IconOffset = new Vector3(0, 3, 0);
 
     private Animator animator; // 이동 애니메이션 관리 컴포넌트 (인스펙터에서 입력받지 않고, 직접 검색합니다)
 
     private NpcGazer npcGazer; // npc 시선 처리 모듈
     private NpcMover npcMover; // npc 이동 모듈
+
+    private NPCIconBehavior defaultIcon;
+    private NPCIconBehavior questIcon;
+    private NPCIconBehavior RewardIcon;
+    private NPCIconBehavior currentIcon;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +38,13 @@ public class NPCScript : MonoBehaviour
         npcGazer = new NpcGazer(transform);
         npcMover = new NpcMover(gameObject);
         npcMover.onMoveStateChangedEventHandler += onMoveStart;
+
+        defaultIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.DEFAULT);
+        questIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.QUEST);
+        RewardIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.REWARD);
+        currentIcon = defaultIcon;
+
+        currentIcon.show(transform, IconOffset);
     }
 
     void onMoveStart(NpcMoveState state)
@@ -52,6 +65,11 @@ public class NPCScript : MonoBehaviour
     void LateUpdate()
     {
         lookAtPlayer();
+    }
+
+    public void setSelected(bool isSelected)
+    {
+        currentIcon.setSelected(isSelected);
     }
 
     /// <summary>

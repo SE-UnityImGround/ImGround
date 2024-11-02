@@ -106,7 +106,7 @@ public class NpcMover
         if (currentState == NpcMoveState.MOVE) 
         {
             // µµÂø »óÅÂ
-            if ((currentTarget - npcObject.transform.position).magnitude < IN_POSITION_RADIUS_SQUARE)
+            if ((currentTarget - npcObject.transform.position).sqrMagnitude < IN_POSITION_RADIUS_SQUARE)
             {
                 stdTime = Time.time;
                 timerDuration = Random.Range(minDuration, maxDuration);
