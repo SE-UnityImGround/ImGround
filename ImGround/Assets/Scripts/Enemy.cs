@@ -327,7 +327,7 @@ public class Enemy : MonoBehaviour
     protected bool isDie;
     protected bool isChase;
     protected bool isAttack;
-    public bool isNight = false;
+    protected bool isNight = false;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
     public bool IsDie { get { return isDie; } }
     [Header("Item Reward")]
@@ -376,17 +376,7 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
-        Debug.Log("isNight: " + isNight);
-
-        if (dayAndNightScript != null)
-        {
-            isNight = dayAndNightScript.isNight; // isNight 변수 가져오기
-        }
-
-        // 밤낮 상태에 따라 오브젝트 활성화/비활성화
-        gameObject.SetActive(isNight);
-
-        if (nav.enabled)
+       if (nav.enabled)
         {
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
@@ -394,6 +384,27 @@ public class Enemy : MonoBehaviour
         if (isDie)
         {
             return;
+        }
+        
+        if (dayAndNightScript != null)
+        {
+            isNight = dayAndNightScript.isNight; // isNight 변수 가져오기
+        }
+
+        // 밤낮 상태에 따라 오브젝트의 동작을 활성화/비활성화
+        if (isNight)
+        {
+            if (!nav.isStopped && !isDie)
+            {
+                nav.enabled = true;
+                anim.enabled = true;
+            }
+        }
+        else
+        {
+            nav.enabled = false;
+            anim.SetBool("isIdle", true);
+            anim.enabled = false;
         }
     }
     protected void FixedUpdate()
@@ -417,10 +428,18 @@ public class Enemy : MonoBehaviour
     }
     void ChaseStop()
     {
-        nav.isStopped = true;
+        /*nav.isStopped = true;
+        isChase = false;
+        StopAllCoroutines();
+        anim.SetBool("isIdle", true);*/
+        if (nav.isActiveAndEnabled && nav.isOnNavMesh)
+        {
+            nav.isStopped = true;
+        }
         isChase = false;
         StopAllCoroutines();
         anim.SetBool("isIdle", true);
+
     }
     public void TakeDamage(int damage)
     {
