@@ -6,17 +6,17 @@ using UnityEngine;
 public class DayAndNight : MonoBehaviour
 {
     [SerializeField] private float secondPerRealTime;
-    static public float inGameTime = 0.0f; // ´ÜÀ§ : ÃÊ, ÃÊ±â°ª : 0ÃÊ
+    static public float inGameTime = 0.0f; // ë‹¨ìœ„ : ì´ˆ, ì´ˆê¸°ê°’ : 0ì´ˆ
 
     public bool isNight = false;
 
-    [SerializeField] private float NightFogDensityCalc; // ¾È°³ Áõ°¨·® ºñÀ²
+    [SerializeField] private float NightFogDensityCalc; // ì•ˆê°œ ì¦ê°ëŸ‰ ë¹„ìœ¨
     [SerializeField] private float DayFogDensityCalc;
 
-    [SerializeField] private float NightFogDensity; // ¹ãÀÏ ¶§ ¾È°³ ¹Ðµµ
+    [SerializeField] private float NightFogDensity; // ë°¤ì¼ ë•Œ ì•ˆê°œ ë°€ë„
 
-    private float DayFogDensity; // ³·ÀÏ ¶§ ¾È°³ ¹Ðµµ
-    private float currentFogDensity; // ÇöÀç ¾È°³ ¹Ðµµ
+    private float DayFogDensity; // ë‚®ì¼ ë•Œ ì•ˆê°œ ë°€ë„
+    private float currentFogDensity; // í˜„ìž¬ ì•ˆê°œ ë°€ë„
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +27,10 @@ public class DayAndNight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.LogFormat("°ÔÀÓ ½Ã°£ {0} ½ÇÁ¦½Ã°£ {1}", inGameTime/3600, inGameTime/ 24.0f / secondPerRealTime);
-
-        inGameTime += 24.0f * secondPerRealTime * Time.deltaTime;
+        inGameTime += 24.0f * secondPerRealTime * Time.deltaTime; // secondPerRealTime = 6 ìœ¼ë¡œ ì£¼ì–´ì¡Œì„ ë•Œ ì‹¤ì œ 5ë¶„ = ê²Œìž„ì‹œê°„ 12ì‹œê°„ì´ ë˜ë„ë¡ ì¡°ì •
         transform.rotation = Quaternion.Euler(inGameTime * 360.0f / 86400.0f, 0.0f, 0.0f); // second -> angle(degree)
         //Debug.Log(transform.rotation.eulerAngles.x);
-        // ¹ã°ú ³·À» ±¸ºÐ (170µµ ÀÌ»óÀÌ¸é ¹ã, ±× ÀÌ¿Ü´Â ³·)
+        // ë°¤ê³¼ ë‚®ì„ êµ¬ë¶„ (170ë„ ì´ìƒì´ë©´ ë°¤, ê·¸ ì´ì™¸ëŠ” ë‚®)
         if (transform.eulerAngles.x >= 170 && transform.eulerAngles.x <= 360)
         {
             isNight = true;
@@ -42,10 +40,10 @@ public class DayAndNight : MonoBehaviour
             isNight = false;
         }
 
-        // ¾È°³ ¹Ðµµ Á¶Á¤
+        // ì•ˆê°œ ë°€ë„ ì¡°ì •
         if (isNight)
         {
-            // ÇöÀç ¾È°³ ¹Ðµµ°¡ ¹ã ¾È°³ ¹Ðµµº¸´Ù ÀÛÀ¸¸é Áõ°¡
+            // í˜„ìž¬ ì•ˆê°œ ë°€ë„ê°€ ë°¤ ì•ˆê°œ ë°€ë„ë³´ë‹¤ ìž‘ìœ¼ë©´ ì¦ê°€
             if (currentFogDensity < NightFogDensity)
             {
                 currentFogDensity += NightFogDensityCalc * Time.deltaTime;
@@ -54,7 +52,7 @@ public class DayAndNight : MonoBehaviour
         }
         else
         {
-            // ÇöÀç ¾È°³ ¹Ðµµ°¡ ³· ¾È°³ ¹Ðµµº¸´Ù Å©¸é °¨¼Ò
+            // í˜„ìž¬ ì•ˆê°œ ë°€ë„ê°€ ë‚® ì•ˆê°œ ë°€ë„ë³´ë‹¤ í¬ë©´ ê°ì†Œ
             if (currentFogDensity > DayFogDensity)
             {
                 currentFogDensity -= DayFogDensityCalc * Time.deltaTime;

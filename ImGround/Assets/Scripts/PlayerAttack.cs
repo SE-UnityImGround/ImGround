@@ -15,7 +15,7 @@ public class PlayerAttack : MonoBehaviour
     Animator anim;
     public Transform attackPoint;
     [SerializeField]
-    private float attackRange = 1f;
+    private float attackRange = 1.1f;
     public LayerMask enemyLayer;
 
     private void Awake()
@@ -40,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
             foreach (Collider enemy in hitEnemies)
             {
                 Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                if (enemyHealth != null && !enemyHealth.isDie)
+                if (enemyHealth != null && !enemyHealth.IsDie)
                 {
                     if (player.pBehavior.ToolIndex == 6)
                     {
