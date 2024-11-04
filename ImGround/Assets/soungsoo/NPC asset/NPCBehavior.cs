@@ -10,7 +10,7 @@ public class NPCBehavior : MonoBehaviour
     public Vector3 Origin;
     [Tooltip("만약 True이면 Origin 값은 오브젝트의 처음 위치로 덮어씌웁니다.")]
     public bool SetOriginAsStartPos;
-    public NPCType type;
+    public NPCType type = NPCType.CROWD;
     public float Radius; // 랜덤 이동 위치의 범위
     public Vector3 PlayerLookOffset;
     public Vector3 IconOffset = new Vector3(0, 3, 0);
@@ -19,11 +19,7 @@ public class NPCBehavior : MonoBehaviour
 
     private NpcGazer npcGazer; // npc 시선 처리 모듈
     private NpcMover npcMover; // npc 이동 모듈
-
-    private NPCIconBehavior defaultIcon;
-    private NPCIconBehavior questIcon;
-    private NPCIconBehavior RewardIcon;
-    private NPCIconBehavior currentIcon;
+    private NPCIconController npcIcon; // npc 아이콘 관리 모듈
 
     // Start is called before the first frame update
     void Start()
@@ -38,13 +34,7 @@ public class NPCBehavior : MonoBehaviour
         npcGazer = new NpcGazer(transform);
         npcMover = new NpcMover(gameObject);
         npcMover.onMoveStateChangedEventHandler += onMoveStart;
-
-        defaultIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.DEFAULT);
-        questIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.QUEST);
-        RewardIcon = NpcIconsSO.getNPCIcon(NpcIconsSO.REWARD);
-        currentIcon = defaultIcon;
-
-        currentIcon.show(transform, IconOffset);
+        npcIcon = new NPCIconController(transform, IconOffset);
     }
 
     void onMoveStart(NpcMoveState state)
@@ -69,7 +59,7 @@ public class NPCBehavior : MonoBehaviour
 
     public void setSelected(bool isSelected)
     {
-        currentIcon.setSelected(isSelected);
+        npcIcon.setSelected(isSelected);
     }
 
     /// <summary>
