@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour
     protected bool isChase;
     protected bool isAttack;
     public bool isNight = false;
-    private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
     public bool IsDie {  get { return isDie; } }
     [Header("Item Reward")]
     public GameObject item;
