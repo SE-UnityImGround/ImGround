@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b3d08fdfb1e25f4791c88bd92a758fc, type: 3}
+  m_Name: NpcIconsSO
+  m_EditorClassIdentifier: 
+  Icon_Default_Prefab: {fileID: 1851663904592521705, guid: 2efede5b198f3f44cb753553ad683f20, type: 3}
+  Icon_Quest_Prefab: {fileID: 5675701374405032580, guid: 44f5547cafa9d934a84e6b8a5e0bf3f5, type: 3}
+  Icon_Reward_Prefab: {fileID: 6622225090004692580, guid: fbd89516cbefa6f439c689c2d361c3da, type: 3}
