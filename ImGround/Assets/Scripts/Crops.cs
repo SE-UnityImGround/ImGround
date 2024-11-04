@@ -12,6 +12,8 @@ public class Crops : MonoBehaviour
     private GameObject[] currentCrops;
     [SerializeField]
     private GameObject particle;
+    private GameObject particleInstance;
+    private GameObject cropInstance;
     private ParticleSystem particleSystem;
 
     private void Start()
@@ -89,15 +91,20 @@ public class Crops : MonoBehaviour
     {
         if (!harvest)
         {
-            GameObject particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
-            particleSystem = particleInstance.GetComponent<ParticleSystem>();
+            if (particleInstance == null)
+            {
+                particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
+                particleSystem = particleInstance.GetComponent<ParticleSystem>();
+            }
             if (particleSystem != null)
                 particleSystem.Play();
         }
-        else if(harvest)
+        else
         {
-            //particleSystem.Pause();
-            Destroy(particle);
+            if (particleSystem != null && particleSystem.isPlaying)
+            {
+                particleSystem.Stop();
+            }
         }
     }
 
@@ -107,42 +114,20 @@ public class Crops : MonoBehaviour
         if (other.CompareTag("Harvest"))
         {
             AllGrown(true);
-            ScatterCrops();
+            HarvestCrops();
         }
     }
 
-    private void ScatterCrops()
+    private void HarvestCrops()
     {
         foreach (var crop in currentCrops)
         {
             if (crop != null)
             {
-                // Rigidbody 추가
-                Rigidbody rb = crop.AddComponent<Rigidbody>();
-                Collider collider = rb.GetComponent<Collider>();
-                // 위로 살짝 튀어 오르기 위한 초기 힘
-                float jumpForce = 3f; // 위로 튀어 오르는 힘의 크기
-                
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-                // 조금 기다린 후 흩뿌리는 힘 적용
-                StartCoroutine(ApplyScatterForce(rb, collider));
+                Destroy(crop);
+                if(cropInstance == null)
+                    cropInstance = Instantiate(cropData.cropH, bigSpot.position, Quaternion.identity);
             }
         }
     }
-
-    private IEnumerator ApplyScatterForce(Rigidbody rb, Collider collider)
-    {
-        yield return new WaitForSeconds(0.5f); // 살짝 튀어 오를 시간을 기다림
-        collider.isTrigger = false;
-        // 흩뿌리는 힘을 랜덤 방향으로 가하기
-        Vector3 randomDirection = new Vector3(
-            UnityEngine.Random.Range(-0.2f, 0.2f),
-            UnityEngine.Random.Range(0.1f, 0.1f),
-            UnityEngine.Random.Range(-0.1f, 0.1f)
-        ).normalized;
-        float scatterForce = UnityEngine.Random.Range(0.5f, 1f); // 흩뿌리는 힘의 크기
-        rb.AddForce(randomDirection * scatterForce, ForceMode.Impulse);
-    }
-
 }
