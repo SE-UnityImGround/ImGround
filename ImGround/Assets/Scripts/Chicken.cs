@@ -20,7 +20,7 @@ public class Chicken : Animal
     {
         base.Update(); // Animal 클래스의 Update 메소드 실행
         DetectPlayerJump();
-        HandleManualRotation(); // 수동 회전 처리
+        LookAtPlayer(); // 수동 회전 처리
     }
 
     // 플레이어의 점프에 놀라서 도망가는 동작
@@ -49,7 +49,7 @@ public class Chicken : Animal
         navAgent.speed = walkSpeed; // 걷는 속도로 복귀
     }
 
-    void HandleManualRotation()
+    void LookAtPlayer()
     {
         // 목표 지점으로의 방향 벡터 계산
         Vector3 direction = navAgent.steeringTarget - transform.position;

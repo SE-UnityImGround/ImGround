@@ -182,6 +182,7 @@ public class Player : MonoBehaviour
         pMove.Turn();
         pMove.Jump();
         pMove.Sleep();
+        pMove.Sit();
         pAttack.Attack();
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
