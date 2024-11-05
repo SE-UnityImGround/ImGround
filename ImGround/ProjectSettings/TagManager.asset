@@ -3,7 +3,20 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FieldItem
+  - fork
+  - fruit
+  - lamp_light
+  - house_door
+  - BossAttack
+  - BossRock
+  - EnemyAttack
+  - Enemy
+  - Bed
+  - Harvest
+  - crop
+  - Chair
   layers:
   - Default
   - TransparentFX
@@ -11,9 +24,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - Player
+  - Ore
   - 
   - 
   - 
