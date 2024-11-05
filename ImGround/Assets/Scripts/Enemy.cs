@@ -384,6 +384,7 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
+
         
         if (dayAndNightScript != null)
         {
@@ -397,6 +398,7 @@ public class Enemy : MonoBehaviour
             Targetting();
         if (!isNight && type != Type.Boss)
             ChaseStop();
+       
         else if (isNight && type != Type.Boss && !isAttack)
         {
             ChaseStart();
@@ -602,6 +604,7 @@ public class Enemy : MonoBehaviour
 
         gameObject.SetActive(false);
         GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
+        
     }
 
     public void Respawn()
