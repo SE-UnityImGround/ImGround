@@ -6,32 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-<<<<<<< HEAD
-    path: Assets/Scripts/Scenes/minji_scenes/Setting_scenes.unity
-    guid: 979042bf56b49904cb27e5f68f3a5752
-  - enabled: 1
     path: Assets/Scripts/Scenes/minji_scenes/main_scene.unity
     guid: 5dbc485421286064bb8c6cfbe52bf1b8
-  - enabled: 0
-    path: Assets/Scripts/Scenes/minji_scenes/Mission_scenes.unity
+  - enabled: 1
+    path: Assets/Scripts/Scenes/minji_scenes/Quest_scenes.unity
     guid: cfb998e8ec9aa09438cdaaf771a95a8c
-  - enabled: 0
-    path: Assets/Scripts/Scenes/minji_scenes/Achievements.unity
-    guid: 82bbdc066f43e4356a6dda861c0838b2
-  - enabled: 0
-    path: Assets/Scripts/Scenes/minji_scenes/Talk_scenes.unity
-    guid: 6f159f8438875734f94ba12d8da6f2af
-=======
-    path: Assets/Scenes/Eunju_LoadingScene.unity
-    guid: 254d652191e94c649b4dc98192ca6a30
   - enabled: 1
-    path: Assets/Scenes/Eunju_PlayScene.unity
-    guid: 3f2f587146256794ba530594f1d3425d
+    path: Assets/Scripts/Scenes/minji_scenes/Setting_scenes.unity
+    guid: 6e9b0e20f410e3440a16e4b8d0d0d538
   - enabled: 1
-    path: Assets/Scenes/yujin_Environment.unity
-    guid: 54dc9e6632ee67147a4b5baf522d41d8
-  - enabled: 1
-    path: Assets/Scenes/yujin_house.unity
-    guid: e4498b1b581f6be4a97565c9e3354d35
->>>>>>> main
+    path: Assets/Scripts/Scenes/minji_scenes/Quest_scenes.unity
+    guid: cfb998e8ec9aa09438cdaaf771a95a8c
   m_configObjects: {}
