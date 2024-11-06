@@ -16,9 +16,13 @@ public class NpcMover
     private float stdTime; // 기준 시각
     private float maxDuration;
     private float minDuration;
+    private const float ERROR_RETRY_DURATION = 0.5f;
 
     private Vector3 currentTarget; // 현재 랜덤위치
-    private static readonly float IN_POSITION_RADIUS_SQUARE = 0.2f;
+    private static readonly float IN_POSITION_RADIUS_SQUARE = 0.01f;
+    private const string NAV_AREA_NPC_LAYER = "npc";
+    private int NPCAreaBitMask = 1 << NavMesh.GetAreaFromName(NAV_AREA_NPC_LAYER);
+    private NavMeshPath path = new NavMeshPath();
 
     private NpcMoveState currentState = NpcMoveState.IDLE;
 
@@ -64,23 +68,34 @@ public class NpcMover
      * ===========================*/
 
     /// <summary>
-    /// 주어진 범위에서 NavMesh 내 랜덤 위치를 반환합니다.
-    /// <br/> 만약 찾을 수 없다면 <paramref name="origin"/>을 반환합니다.
+    /// 주어진 범위에서 NavMesh 내 랜덤 위치를 찾습니다.
+    /// <br/> 만약 찾을 수 없다면 <see cref="false"/>을 반환합니다.
+    /// <br/> 기준 위치 <paramref name="currentPos"/>로부터 최소 <paramref name="minDistance"/>만큼 떨어진 거리를 찾습니다.
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="radius"></param>
+    /// <param name="foundPos"></param>
     /// <returns></returns>
-    private Vector3 findRandomPos(Vector3 origin, float radius)
+    private bool findRandomPos(Vector3 origin, float radius, out Vector3 foundPos, Vector3 currentPos, float minDistance)
     {
-        NavMeshHit hit;
         for (int i = 0; i < 30; i++)
-            if (NavMesh.SamplePosition(
-                    origin + (Random.insideUnitSphere * radius),
-                    out hit,
-                    5.0f, NavMesh.AllAreas)
-                )
-                return hit.position;
-        return origin;
+        {
+            Vector3 sample = origin + (Random.insideUnitSphere * radius);
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(sample, out hit, 5.0f, NPCAreaBitMask))
+            {
+                Vector3 distance = hit.position - sample;
+                distance.y = 0;
+                if (distance.sqrMagnitude < 0.1f
+                    && (currentPos - hit.position).sqrMagnitude >= minDistance * minDistance)
+                {
+                    foundPos = hit.position;
+                    return true;
+                }
+            }
+        }
+        foundPos = Vector3.zero;
+        return false;
     }
 
     /* ===========================
@@ -94,8 +109,27 @@ public class NpcMover
             // 대기 시간 종료
             if (Time.time - stdTime >= timerDuration)
             {
-                currentTarget = findRandomPos(origin, radius);
-                agent.SetDestination(currentTarget);
+                for (int tryCnt = 0; ; tryCnt++)
+                {
+                    Vector3 value = Vector3.zero;
+                    if (findRandomPos(origin, radius, out value, currentTarget, 1.0f))
+                    {
+                        currentTarget = value;
+                        if (agent.CalculatePath(currentTarget, path) 
+                            && path.status == NavMeshPathStatus.PathComplete)
+                        {
+                            agent.SetPath(path);
+                            break;
+                        }
+                    }
+                    if (tryCnt == 10)
+                    {
+                        Debug.LogError("NPC " + npcObject.name + " : 이동 경로를 찾지 못했습니다!\n원인 : 무작위 이동 영역과 NavMesh가 겹치는 영역이 너무 좁을 수 있습니다! 또는, \nNPC가 이동할 수 없는 영역(ex : 위/아래층)까지 포함되어 있을 수 있습니다!\n또는, NavMeshSurface가 " + NAV_AREA_NPC_LAYER + " 레이어가 아니거나 랜덤 영역이 NavMesh와 겹치지 않음.");
+                        stdTime = Time.time;
+                        timerDuration = ERROR_RETRY_DURATION;
+                        return;
+                    }
+                }
 
                 currentState = NpcMoveState.MOVE;
                 onMoveStateChangedEventHandler?.Invoke(currentState);
@@ -106,8 +140,10 @@ public class NpcMover
         if (currentState == NpcMoveState.MOVE) 
         {
             // 도착 상태
-            if ((currentTarget - npcObject.transform.position).sqrMagnitude < IN_POSITION_RADIUS_SQUARE)
+            if ((agent.pathEndPosition - npcObject.transform.position).sqrMagnitude < IN_POSITION_RADIUS_SQUARE)
             {
+                agent.ResetPath();
+
                 stdTime = Time.time;
                 timerDuration = Random.Range(minDuration, maxDuration);
 
