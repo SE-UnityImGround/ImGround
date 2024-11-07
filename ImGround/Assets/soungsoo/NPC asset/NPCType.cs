@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public enum NPCType
 {
-    Shop,
-    Crowd
+    SHOP,
+    SHOP_SPECIAL,
+    CROWD
 }
