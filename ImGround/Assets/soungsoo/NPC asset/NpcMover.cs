@@ -51,6 +51,7 @@ public class NpcMover
         this.agent = npcObject.GetComponent<NavMeshAgent>();
         if (agent == null)
             throw new Exception(string.Format("NPC 게임오브젝트 {0}의 NavMeshAgent를 찾을 수 없습니다!!", npcObject.name));
+        agent.areaMask = NPCAreaBitMask;
 
         this.npcObject = npcObject;
         this.maxDuration = maxDuration;
