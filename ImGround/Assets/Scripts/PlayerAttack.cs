@@ -17,6 +17,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private float attackRange = 1.1f;
     public LayerMask enemyLayer;
+    public LayerMask animalLayer;
 
     private void Awake()
     {
@@ -36,19 +37,56 @@ public class PlayerAttack : MonoBehaviour
             anim.SetTrigger("doAttack");
             isAttacking = true;
             Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
-
-            foreach (Collider enemy in hitEnemies)
+            Collider[] hitAnimals = Physics.OverlapSphere(attackPoint.position, attackRange, animalLayer);
+            if (hitEnemies.Length > 0)
             {
-                Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                if (enemyHealth != null && !enemyHealth.IsDie)
+                foreach (Collider enemy in hitEnemies)
                 {
-                    if (player.pBehavior.ToolIndex == 6)
+                    Enemy enemyHealth = enemy.GetComponent<Enemy>();
+                    if (enemyHealth != null && !enemyHealth.IsDie)
                     {
-                        enemyHealth.TakeDamage(3);
+                        if (player.pBehavior.ToolIndex == 6)
+                        {
+                            enemyHealth.TakeDamage(5);
+                        }
+                        else if (player.pBehavior.ToolIndex == 2)
+                        {
+                            enemyHealth.TakeDamage(3);
+                        }
+                        else if (player.pBehavior.ToolIndex == 0)
+                        {
+                            enemyHealth.TakeDamage(1);
+                        }
+                        else
+                        {
+                            enemyHealth.TakeDamage(2);
+                        }
                     }
-                    else
+                }
+            }
+            if (hitAnimals.Length > 0)
+            {
+                foreach(Collider animal in hitAnimals)
+                {
+                    Animal animalHealth = animal.GetComponent<Animal>();
+                    if(animalHealth != null)
                     {
-                        enemyHealth.TakeDamage(1);
+                        if (player.pBehavior.ToolIndex == 6)
+                        {
+                            animalHealth.TakeDamage(5);
+                        }
+                        else if(player.pBehavior.ToolIndex == 2)
+                        {
+                            animalHealth.TakeDamage(3);
+                        }
+                        else if(player.pBehavior.ToolIndex == 0)
+                        {
+                            animalHealth.TakeDamage(1);
+                        }
+                        else
+                        {
+                            animalHealth.TakeDamage(2);
+                        }
                     }
                 }
             }

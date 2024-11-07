@@ -95,7 +95,7 @@ public class PlayerBehavior : MonoBehaviour
 
             foreach (Collider hitCollider in hitColliders)
             {
-                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop")) // 과일 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("item")) // 과일 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
                 {
                     pickedItem = hitCollider.gameObject;
                     isPickingUp = true;
