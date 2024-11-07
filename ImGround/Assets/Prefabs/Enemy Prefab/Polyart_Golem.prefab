@@ -843,11 +843,11 @@ GameObject:
   - component: {fileID: 5371818081151228581}
   - component: {fileID: 8286553459109068129}
   - component: {fileID: 2312599074877663503}
-  - component: {fileID: 1263944415408429082}
   - component: {fileID: 2936000962579850200}
+  - component: {fileID: 8201594442865175496}
   m_Layer: 6
   m_Name: Polyart_Golem
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -913,7 +913,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -938,29 +938,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.5, y: 4, z: 3}
   m_Center: {x: 0, y: 2.2, z: 0.25}
---- !u!114 &1263944415408429082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8444571588026954315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b562755a2abc0284c98de809a9d1dce7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
-  target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
-  nav: {fileID: 2936000962579850200}
-  anim: {fileID: 5371818081151228581}
-  respawnPosition: {x: 0, y: 0, z: 0}
-  punchPosition: {fileID: 0}
-  headPosition: {fileID: 0}
-  maxHealth: 10
-  isNight: 0
-  item: {fileID: 6576735527821680563, guid: 38961af266cf4da4e8ac7d6ed37d075c, type: 3}
-  transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
 --- !u!195 &2936000962579850200
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -983,6 +960,30 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8201594442865175496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444571588026954315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f95c1cc202edc1469b256c1a899a683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  target: {fileID: 0}
+  nav: {fileID: 2936000962579850200}
+  anim: {fileID: 5371818081151228581}
+  respawnPosition: {x: 0, y: 0, z: 0}
+  punchPosition: {fileID: 2319526977264868050}
+  headPosition: {fileID: 0}
+  maxHealth: 10
+  item: {fileID: 0}
+  transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
+  stonePrefab: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
+  stonePosition: {fileID: 5922496904370245174}
 --- !u!1001 &5735199641037823752
 PrefabInstance:
   m_ObjectHideFlags: 0

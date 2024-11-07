@@ -9,9 +9,9 @@ public class Enemy : MonoBehaviour
     public enum Type { Mush, Cact, Boss };
     public Type type;
     public Transform target;
-    public NavMeshAgent nav; // Å¸ÄÏÀ» ÃßÀûÇÏ´Â AI °ü·Ã Å¬·¡½º
+    public NavMeshAgent nav; // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ AI ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     public Animator anim;
-    public Vector3 respawnPosition; // ¸®½ºÆù À§Ä¡ ¼³Á¤
+    public Vector3 respawnPosition; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
 
     [Header("Attack Position")]
     public GameObject punchPosition;
@@ -29,10 +29,10 @@ public class Enemy : MonoBehaviour
     
     // ======= Fade Parameters =======
 
-    private Renderer fadeRenderer; // Á×Àº ÈÄ Fadeout Àû¿ëÀ» À§ÇÑ Renderer
+    private Renderer fadeRenderer; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Fadeout ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Renderer
 
-    public Shader transparentShader = null; // ¾ËÆÄ ·»´õ¸µ ¹®Á¦½Ã Àû¿ëÇÒ ´Ù¸¥ ½¦ÀÌ´õ
-    private float fadeDuration = 3f; // »ç¶óÁö´Â ½Ã°£
+    public Shader transparentShader = null; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½
+    private float fadeDuration = 3f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
 
     // ===============================
 
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
         if (fadeRenderer != null && transparentShader != null)
             fadeRenderer.material.shader = transparentShader;
 
-        // ½ÃÀÛÇÒ ¶§ ÇÃ·¹ÀÌ¾îÀÇ ±âº» ¸®½ºÆù À§Ä¡¸¦ ÇöÀç À§Ä¡·Î ¼³Á¤(Ä§´ë Ãß°¡½Ã ÀÌ ÄÚµå´Â »èÁ¦ ¿¹Á¤)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(Ä§ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         respawnPosition = transform.position;
     }
     void Awake()
@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
         isDie = true;
         StopAllCoroutines();
         isChase = false;
-        nav.isStopped = true; // ÀÌµ¿À» ¸ØÃß±â
+        nav.isStopped = true; // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
         anim.SetTrigger("doDie");
         StartCoroutine(FadeOut());
     }
@@ -144,10 +144,10 @@ public class Enemy : MonoBehaviour
 
             if (rayHits.Length > 0 && !isAttack)
             {
-                // Player¿ÍÀÇ °Å¸® °è»ê
+                // Playerï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½
                 float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-                // ÀÏÁ¤ °Å¸® ÀÌ³»¿¡ ÀÖÀ» °æ¿ì¿¡¸¸ °ø°Ý
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½Ì³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (distanceToPlayer <= targetRange)
                 {
                     anim.SetBool("isRun", false);
@@ -159,20 +159,20 @@ public class Enemy : MonoBehaviour
 
     protected virtual IEnumerator Attack()
     {
-        // ÃßÀûÀ» ¸ØÃß°í °ø°Ý ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         isChase = false;
-        nav.isStopped = true; // ÀÌµ¿À» ¸ØÃß±â
+        nav.isStopped = true; // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
 
         Vector3 lookDirection = (target.position - transform.position).normalized;
-        lookDirection.y = 0; // YÃà È¸ÀüÀ» ¹æÁöÇÏ¿© ¼öÆòÀ¸·Î¸¸ È¸Àü
+        lookDirection.y = 0; // Yï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ È¸ï¿½ï¿½
         transform.rotation = Quaternion.LookRotation(lookDirection);
 
-        // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸® °è»ê
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
         isAttack = true;
         
-        if(type != Type.Boss) // Boss°¡ ¾Æ´Ñ ´Ù¸¥ Å¸ÀÔÀÇ Àû °ø°Ý
+        if(type != Type.Boss) // Bossï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½Ù¸ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             int ranAction = Random.Range(0, 5);
             if (type == Type.Mush)
@@ -214,23 +214,23 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // °ø°ÝÀÌ ³¡³ª¸é ÀÏÁ¤ µô·¹ÀÌ ÈÄ ´Ù½Ã ÃßÀûÀ» ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (type != Type.Boss)
-            yield return new WaitForSeconds(3f); // ÀÏ¹Ý ¸ó½ºÅÍÀÇ °æ¿ì °ø°Ý µô·¹ÀÌ
+            yield return new WaitForSeconds(3f); // ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸®°¡ ¸Ö¸é ÃßÀûÀ» Àç°³
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½Ö¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ç°³
         if (distanceToPlayer > nav.stoppingDistance)
         {
-            anim.SetBool("isRun", true); // ´Þ¸®´Â ¾Ö´Ï¸ÞÀÌ¼Ç È°¼ºÈ­
+            anim.SetBool("isRun", true); // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ È°ï¿½ï¿½È­
         }
         else
         {
-            anim.SetBool("isRun", false); // Á¤Áö »óÅÂ À¯Áö
+            anim.SetBool("isRun", false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
-        // °ø°ÝÀÌ ³¡³ª¸é ´Ù½Ã ÃßÀûÀ» ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isAttack = false;
-        nav.isStopped = false; // ´Ù½Ã ÀÌµ¿ °¡´ÉÇÏ°Ô ¼³Á¤
+        nav.isStopped = false; // ï¿½Ù½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
         isChase = true;
     }
 
@@ -250,16 +250,16 @@ public class Enemy : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        // Á×´Â ¸ð¼ÇÀÌ ¿Ï·áµÉ ¶§±îÁö ´ë±â (¾Ö´Ï¸ÞÀÌ¼Ç ±æÀÌ¿¡ ¸Â°Ô Á¶Á¤)
+        // ï¿½×´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½)
         yield return new WaitForSeconds(1.4f);
 
-        // Á×Àº ÈÄ Fade Out È¿°ú
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Fade Out È¿ï¿½ï¿½
         if (fadeRenderer == null)
-            Debug.LogFormat("Enemy_FadeOut : Fade Renderer¸¦ ¼³Á¤ÇÏÁö ¸øÇÔ");
+            Debug.LogFormat("Enemy_FadeOut : Fade Rendererï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         else
         {
             if (transparentShader == null)
-                Debug.LogFormat("Enemy_FadeOut : ±âº» Transparent Shader·Î Åõ¸íÈ­ Ã³¸®");
+                Debug.LogFormat("Enemy_FadeOut : ï¿½âº» Transparent Shaderï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ Ã³ï¿½ï¿½");
 
             float elapsedTime = 0.0f;
             Color c = fadeRenderer.material.color;
@@ -278,20 +278,20 @@ public class Enemy : MonoBehaviour
 
     public void Respawn()
     {
-        // Ã¼·ÂÀ» ÃÊ±âÈ­
+        // Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         health = maxHealth;
 
-        // ¸®½ºÆù À§Ä¡·Î ÀÌµ¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
         transform.position = respawnPosition;
 
-        // Åõ¸íµµ º¹¿ø
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (fadeRenderer != null)
         {
             Color c = fadeRenderer.material.color;
-            c.a = 1.0f; // Åõ¸íµµ º¹¿ø
+            c.a = 1.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             fadeRenderer.material.color = c;
         }
-        // »ç¸Á »óÅÂ ÇØÁ¦
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isDie = false;
         isChase = true;
         isAttack = false;
@@ -313,9 +313,9 @@ public class Enemy : MonoBehaviour
     public enum Type { Mush, Cact, Boss };
     public Type type;
     public Transform target;
-    public NavMeshAgent nav; // Å¸ÄÏÀ» ÃßÀûÇÏ´Â AI °ü·Ã Å¬·¡½º
+    public NavMeshAgent nav; // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ AI ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     public Animator anim;
-    public Vector3 respawnPosition; // ¸®½ºÆù À§Ä¡ ¼³Á¤
+    public Vector3 respawnPosition; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
 
     [Header("Attack Position")]
     public GameObject punchPosition;
@@ -327,7 +327,7 @@ public class Enemy : MonoBehaviour
     protected bool isChase;
     protected bool isAttack;
     protected bool isNight = false;
-    private bool isDeadCooldown = false; // »ç¸Á ÈÄ 5ÃÊ µ¿¾ÈÀÇ Äð´Ù¿î
+    private bool isDeadCooldown = false; // ï¿½ï¿½ï¿½ ï¿½ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¿ï¿½
     public bool IsDie { get { return isDie; } }
     [Header("Item Reward")]
     public GameObject item;
@@ -336,10 +336,10 @@ public class Enemy : MonoBehaviour
 
     // ======= Fade Parameters =======
 
-    private Renderer fadeRenderer; // Á×Àº ÈÄ Fadeout Àû¿ëÀ» À§ÇÑ Renderer
+    private Renderer fadeRenderer; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Fadeout ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Renderer
 
-    public Shader transparentShader = null; // ¾ËÆÄ ·»´õ¸µ ¹®Á¦½Ã Àû¿ëÇÒ ´Ù¸¥ ½¦ÀÌ´õ
-    private float fadeDuration = 3f; // »ç¶óÁö´Â ½Ã°£
+    public Shader transparentShader = null; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½
+    private float fadeDuration = 3f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
 
     // ===============================
 
@@ -351,7 +351,7 @@ public class Enemy : MonoBehaviour
         if (fadeRenderer != null && transparentShader != null)
             fadeRenderer.material.shader = transparentShader;
 
-        // ½ÃÀÛÇÒ ¶§ ÇÃ·¹ÀÌ¾îÀÇ ±âº» ¸®½ºÆù À§Ä¡¸¦ ÇöÀç À§Ä¡·Î ¼³Á¤(Ä§´ë Ãß°¡½Ã ÀÌ ÄÚµå´Â »èÁ¦ ¿¹Á¤)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(Ä§ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         respawnPosition = transform.position;
 
         GameObject directionalLight = GameObject.Find("Directional Light");
@@ -384,10 +384,11 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
+
         
         if (dayAndNightScript != null)
         {
-            isNight = dayAndNightScript.isNight; // isNight º¯¼ö °¡Á®¿À±â
+            isNight = dayAndNightScript.isNight; // isNight ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
 
     }
@@ -397,6 +398,7 @@ public class Enemy : MonoBehaviour
             Targetting();
         if (!isNight && type != Type.Boss)
             ChaseStop();
+       
         else if (isNight && type != Type.Boss && !isAttack)
         {
             ChaseStart();
@@ -439,7 +441,7 @@ public class Enemy : MonoBehaviour
         isDie = true;
         StopAllCoroutines();
         isChase = false;
-        nav.isStopped = true; // ÀÌµ¿À» ¸ØÃß±â
+        nav.isStopped = true; // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
         anim.SetTrigger("doDie");
         StartCoroutine(FadeOut());
     }
@@ -472,10 +474,10 @@ public class Enemy : MonoBehaviour
 
             if (rayHits.Length > 0 && !isAttack)
             {
-                // Player¿ÍÀÇ °Å¸® °è»ê
+                // Playerï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½
                 float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-                // ÀÏÁ¤ °Å¸® ÀÌ³»¿¡ ÀÖÀ» °æ¿ì¿¡¸¸ °ø°Ý
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½Ì³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (distanceToPlayer <= targetRange)
                 {
                     anim.SetBool("isRun", false);
@@ -487,20 +489,20 @@ public class Enemy : MonoBehaviour
 
     protected virtual IEnumerator Attack()
     {
-        // ÃßÀûÀ» ¸ØÃß°í °ø°Ý ¾Ö´Ï¸ÞÀÌ¼Ç ½ÇÇà
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         isChase = false;
-        nav.isStopped = true; // ÀÌµ¿À» ¸ØÃß±â
+        nav.isStopped = true; // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
 
         Vector3 lookDirection = (target.position - transform.position).normalized;
-        lookDirection.y = 0; // YÃà È¸ÀüÀ» ¹æÁöÇÏ¿© ¼öÆòÀ¸·Î¸¸ È¸Àü
+        lookDirection.y = 0; // Yï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ È¸ï¿½ï¿½
         transform.rotation = Quaternion.LookRotation(lookDirection);
 
-        // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸® °è»ê
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
         isAttack = true;
 
-        if (type != Type.Boss) // Boss°¡ ¾Æ´Ñ ´Ù¸¥ Å¸ÀÔÀÇ Àû °ø°Ý
+        if (type != Type.Boss) // Bossï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½Ù¸ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             int ranAction = Random.Range(0, 5);
             if (type == Type.Mush)
@@ -542,23 +544,23 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // °ø°ÝÀÌ ³¡³ª¸é ÀÏÁ¤ µô·¹ÀÌ ÈÄ ´Ù½Ã ÃßÀûÀ» ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (type != Type.Boss)
-            yield return new WaitForSeconds(3f); // ÀÏ¹Ý ¸ó½ºÅÍÀÇ °æ¿ì °ø°Ý µô·¹ÀÌ
+            yield return new WaitForSeconds(3f); // ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸®°¡ ¸Ö¸é ÃßÀûÀ» Àç°³
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½Ö¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ç°³
         if (distanceToPlayer > nav.stoppingDistance)
         {
-            anim.SetBool("isRun", true); // ´Þ¸®´Â ¾Ö´Ï¸ÞÀÌ¼Ç È°¼ºÈ­
+            anim.SetBool("isRun", true); // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ È°ï¿½ï¿½È­
         }
         else
         {
-            anim.SetBool("isRun", false); // Á¤Áö »óÅÂ À¯Áö
+            anim.SetBool("isRun", false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
-        // °ø°ÝÀÌ ³¡³ª¸é ´Ù½Ã ÃßÀûÀ» ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isAttack = false;
-        nav.isStopped = false; // ´Ù½Ã ÀÌµ¿ °¡´ÉÇÏ°Ô ¼³Á¤
+        nav.isStopped = false; // ï¿½Ù½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
         isChase = true;
     }
 
@@ -578,16 +580,16 @@ public class Enemy : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        // Á×´Â ¸ð¼ÇÀÌ ¿Ï·áµÉ ¶§±îÁö ´ë±â (¾Ö´Ï¸ÞÀÌ¼Ç ±æÀÌ¿¡ ¸Â°Ô Á¶Á¤)
+        // ï¿½×´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½)
         yield return new WaitForSeconds(1.4f);
 
-        // Á×Àº ÈÄ Fade Out È¿°ú
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Fade Out È¿ï¿½ï¿½
         if (fadeRenderer == null)
-            Debug.LogFormat("Enemy_FadeOut : Fade Renderer¸¦ ¼³Á¤ÇÏÁö ¸øÇÔ");
+            Debug.LogFormat("Enemy_FadeOut : Fade Rendererï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         else
         {
             if (transparentShader == null)
-                Debug.LogFormat("Enemy_FadeOut : ±âº» Transparent Shader·Î Åõ¸íÈ­ Ã³¸®");
+                Debug.LogFormat("Enemy_FadeOut : ï¿½âº» Transparent Shaderï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ Ã³ï¿½ï¿½");
 
             float elapsedTime = 0.0f;
             Color c = fadeRenderer.material.color;
@@ -602,24 +604,25 @@ public class Enemy : MonoBehaviour
 
         gameObject.SetActive(false);
         GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+
     }
 
     public void Respawn()
     {
-        // Ã¼·ÂÀ» ÃÊ±âÈ­
+        // Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         health = maxHealth;
 
-        // ¸®½ºÆù À§Ä¡·Î ÀÌµ¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
         transform.position = respawnPosition;
 
-        // Åõ¸íµµ º¹¿ø
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (fadeRenderer != null)
         {
             Color c = fadeRenderer.material.color;
-            c.a = 1.0f; // Åõ¸íµµ º¹¿ø
+            c.a = 1.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             fadeRenderer.material.color = c;
         }
-        // »ç¸Á »óÅÂ ÇØÁ¦
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isDie = false;
         isChase = true;
         isAttack = false;

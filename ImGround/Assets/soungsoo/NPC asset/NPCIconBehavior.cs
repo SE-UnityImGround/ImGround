@@ -12,8 +12,6 @@ public class NPCIconBehavior : MonoBehaviour
     private static readonly float HEIGHT_AMPLITUDE = 0.2f;
     private static readonly float HEIGHT_PERIOD = 1.0f;
     private static readonly float ROTATE_VELOCITY = 360.0f;
-    
-    private float heightPos = 0.0f;
 
     private Transform origin;
     private Vector3 iconOffset;
@@ -38,16 +36,28 @@ public class NPCIconBehavior : MonoBehaviour
     {
         if (isVisible)
         {
-            heightPos = HEIGHT_AMPLITUDE * Mathf.Sin(Time.time / HEIGHT_PERIOD * 2 * Mathf.PI);
-
-            transform.position = origin.transform.position;
-            foreach (GameObject obj in icons)
-                obj.transform.localPosition = iconOffset + new Vector3(0, heightPos, 0);
-            transform.Rotate(0, Time.deltaTime * ROTATE_VELOCITY, 0);
+            setPosition();
         }
     }
 
-    public void show(Transform target, Vector3 offset)
+    /// <summary>
+    /// 아이콘 위치를 목표 위치로 이동합니다.
+    /// </summary>
+    private void setPosition()
+    {
+        transform.position = origin.transform.position;
+        float heightPos = HEIGHT_AMPLITUDE * Mathf.Sin(Time.time / HEIGHT_PERIOD * 2 * Mathf.PI);
+        foreach (GameObject obj in icons)
+            obj.transform.localPosition = iconOffset + new Vector3(0, heightPos, 0);
+        transform.Rotate(0, Time.deltaTime * ROTATE_VELOCITY, 0);
+    }
+
+    /// <summary>
+    /// NPC 아이콘의 위치를 설정합니다.
+    /// </summary>
+    /// <param name="target">대상 오브젝트의 <see cref="Transform"/></param>
+    /// <param name="offset">아이콘이 표시될 위치 오프셋</param>
+    public void setPosition(Transform target, Vector3 offset)
     {
         if (target == null)
         {
@@ -57,16 +67,24 @@ public class NPCIconBehavior : MonoBehaviour
         this.origin = target;
         this.iconOffset = offset;
 
+    }
+
+    public void show()
+    {
+        if (origin == null)
+        {
+            throw new System.Exception("기본 위치가 설정되지 않았습니다!");
+        }
+
         isVisible = true;
-        gameObject.SetActive(true);
+        setPosition();
+        gameObject.SetActive(isVisible);
     }
 
     public void hide()
     {
-        this.origin = null;
-
         isVisible = false;
-        gameObject.SetActive(false);
+        gameObject.SetActive(isVisible);
     }
 
     public void setSelected(bool isSelected)

@@ -16,7 +16,7 @@ public class Animal : MonoBehaviour
 
     public float patrolRadius = 5.0f; // 순찰 범위
     public float patrolWaitTime = 3.0f; // 각 순찰 지점에서 대기하는 시간
-    private float patrolWaitTimer;
+    protected float patrolWaitTimer;
 
     protected bool surprised = false; // 닭 전용 플래그
     protected bool flying = false; // 공중에 날아다니는 동물(곤충) 전용
@@ -51,7 +51,8 @@ public class Animal : MonoBehaviour
     void Patrol()
     {
         // 순찰 중 목적지에 도착했는지 확인
-        if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
+        //navAgent.remainingDistance < 0.5f
+        if (!navAgent.pathPending)
         {
             anim.SetBool("isWalk", false);
             patrolWaitTimer += Time.deltaTime;
