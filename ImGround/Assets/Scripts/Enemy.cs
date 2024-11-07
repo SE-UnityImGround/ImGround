@@ -601,7 +601,7 @@ public class Enemy : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-        GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
+        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
     }
 
     public void Respawn()

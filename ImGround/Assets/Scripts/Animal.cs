@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 public class Animal : MonoBehaviour
@@ -25,6 +26,9 @@ public class Animal : MonoBehaviour
     private Vector3 patrolTarget;
     public Animator anim;
     public Transform target;
+
+    [Header("Item Reward")]
+    public GameObject item;
 
     void Awake()
     {
@@ -114,6 +118,7 @@ public class Animal : MonoBehaviour
         }
 
         yield return new WaitForSeconds(3f);
+        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
         Destroy(gameObject);
     }
 
