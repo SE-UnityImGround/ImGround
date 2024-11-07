@@ -384,27 +384,13 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
+
         
         if (dayAndNightScript != null)
         {
             isNight = dayAndNightScript.isNight; // isNight 변수 가져오기
         }
 
-        // 밤낮 상태에 따라 오브젝트의 동작을 활성화/비활성화
-        if (isNight)
-        {
-            if (!nav.isStopped && !isDie)
-            {
-                nav.enabled = true;
-                anim.enabled = true;
-            }
-        }
-        else
-        {
-            nav.enabled = false;
-            anim.SetBool("isIdle", true);
-            anim.enabled = false;
-        }
     }
     protected void FixedUpdate()
     {
@@ -412,6 +398,7 @@ public class Enemy : MonoBehaviour
             Targetting();
         if (!isNight && type != Type.Boss)
             ChaseStop();
+       
         else if (isNight && type != Type.Boss && !isAttack)
         {
             ChaseStart();
@@ -427,10 +414,10 @@ public class Enemy : MonoBehaviour
     }
     void ChaseStop()
     {
-        /*nav.isStopped = true;
+        nav.isStopped = true;
         isChase = false;
         StopAllCoroutines();
-        anim.SetBool("isIdle", true);*/
+        anim.SetBool("isIdle", true);
         if (nav.isActiveAndEnabled && nav.isOnNavMesh)
         {
             nav.isStopped = true;
@@ -617,6 +604,7 @@ public class Enemy : MonoBehaviour
 
         gameObject.SetActive(false);
         GameObject reward = Instantiate(item, transform.position, Quaternion.identity);
+        
     }
 
     public void Respawn()

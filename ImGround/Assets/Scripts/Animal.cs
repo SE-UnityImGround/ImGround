@@ -1,15 +1,25 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Animal : MonoBehaviour
 {
+    [Header("Status")]
+    [SerializeField]
+    private int maxHealth = 5;
+    public int health;
+    [SerializeField]
+    private NavMeshAgent nav;
+
     public float patrolRadius = 5.0f; // 순찰 범위
     public float patrolWaitTime = 3.0f; // 각 순찰 지점에서 대기하는 시간
-    private float patrolWaitTimer;
+    protected float patrolWaitTimer;
 
     protected bool surprised = false; // 닭 전용 플래그
     protected bool flying = false; // 공중에 날아다니는 동물(곤충) 전용
+    private bool isDie = false;
 
     protected NavMeshAgent navAgent;
     private Vector3 patrolTarget;
@@ -18,6 +28,7 @@ public class Animal : MonoBehaviour
 
     void Awake()
     {
+        health = maxHealth;
         anim = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         SetNewRandomPatrolTarget();
@@ -25,15 +36,19 @@ public class Animal : MonoBehaviour
 
     protected void Update()
     {
-        Patrol();
-        if (!surprised && !flying)
-            LookAt();
+        if (!isDie)
+        {
+            Patrol();
+            if (!surprised && !flying)
+                LookAt();
+        }
     }
 
     void Patrol()
     {
         // 순찰 중 목적지에 도착했는지 확인
-        if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
+        //navAgent.remainingDistance < 0.5f
+        if (!navAgent.pathPending)
         {
             anim.SetBool("isWalk", false);
             patrolWaitTimer += Time.deltaTime;
@@ -47,6 +62,63 @@ public class Animal : MonoBehaviour
             }
         }
     }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+            StartCoroutine(Die());
+    }
+
+    public void StartDie()
+    {
+        StartCoroutine(Die());
+    }
+
+    IEnumerator Die()
+    {
+        float currentZAngle = transform.eulerAngles.z;
+        isDie = true;
+        nav.enabled = false;
+
+        Renderer renderer = GetComponentInChildren<Renderer>();
+        Color originalColor = renderer.material.color;
+        Color targetColor = Color.red;
+
+        float elapsedTime = 0f;
+        float duration = 2f; // 색상이 변하는 시간 (2초 동안)
+
+        while (elapsedTime < duration)
+        {
+            // 점진적으로 붉은색으로 변하게 만듦
+            if (renderer != null) // 렌더러가 존재하는지 확인
+            {
+                renderer.material.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
+            }
+
+            // 회전 각도 점진적으로 변경
+            float t = elapsedTime / duration;
+            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t); // Lerp를 사용해 점진적으로 회전
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, newZAngle);
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        // 회전을 최종적으로 90도에 맞춤
+        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
+
+        // 최종 색상 붉은색으로 고정
+        if (renderer != null)
+        {
+            renderer.material.color = targetColor;
+        }
+
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject);
+    }
+
+
 
     // 랜덤한 위치를 순찰 지점으로 설정
     protected void SetNewRandomPatrolTarget()

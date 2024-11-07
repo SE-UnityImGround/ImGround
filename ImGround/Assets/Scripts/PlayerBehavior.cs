@@ -10,7 +10,8 @@ public class PlayerBehavior : MonoBehaviour
 
     bool dDown;
     bool fDown;
-    //bool eDown;
+    bool eDown;
+    bool zDown;
     bool sDown1;
     bool sDown2;
     bool sDown3;
@@ -23,11 +24,13 @@ public class PlayerBehavior : MonoBehaviour
     bool isDigReady;
     bool isPickReady;
     bool isHarvestReady;
+    bool isPlantReady;
     bool isEating = false;
     bool isPickingUp = false;
     bool isDigging = false;
     bool isPicking = false;
     bool isHarvest = false;
+    bool isPlant = false;
     bool isDie = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
@@ -44,6 +47,7 @@ public class PlayerBehavior : MonoBehaviour
     float digDelay;
     float pickDelay;
     float harvestDelay;
+    float plantDelay;
     int toolIndex = 0;
 
     private void Awake()
@@ -55,7 +59,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         dDown = Input.GetButton("Fire2");
         fDown = Input.GetKeyDown(KeyCode.F);
-        //eDown = Input.GetKeyDown(KeyCode.E);
+        eDown = Input.GetKeyDown(KeyCode.E);
         sDown1 = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
         sDown2 = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
         sDown3 = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
@@ -71,10 +75,12 @@ public class PlayerBehavior : MonoBehaviour
     {
         digDelay += Time.deltaTime;
         pickDelay += Time.deltaTime;
-        harvestDelay = Time.deltaTime;
+        harvestDelay += Time.deltaTime;
+        plantDelay += Time.deltaTime;
         isDigReady = 1.5f < digDelay;
         isPickReady = 1.2f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
+        isPlantReady = 2f < plantDelay;
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
@@ -117,19 +123,13 @@ public class PlayerBehavior : MonoBehaviour
                 }
             }
         }
-        //else if (toolIndex == 0 && eDown && !isPickingUp && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
-        //{
-        //    // E 키를 눌렀을 때 문 열기 시도
-        //    Ray ray = new Ray(transform.position, transform.forward);
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(ray, out hit, 3.0f)) // 플레이어 앞 3미터 거리 체크
-        //    {
-        //        if (hit.collider.CompareTag("Door"))
-        //        {
-        //            StartCoroutine(OpenAndCloseDoor(hit.collider.gameObject)); // 문 여닫기 애니메이션 실행
-        //        }
-        //    }
-        //}
+        else if (toolIndex == 0 && eDown && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        {
+            anim.SetTrigger("doPlant");
+            isPlant = true;
+            plantDelay = 0f;
+            StartCoroutine(ResetPlant());
+        }
         else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 경작하기
             anim.SetTrigger("doDigDown");
@@ -145,7 +145,7 @@ public class PlayerBehavior : MonoBehaviour
             pickDelay = 0f;
             StartCoroutine(ResetPick());
         }
-        else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 4 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 땅파기
             anim.SetTrigger("doDigUp");
             isDigging = true;
@@ -259,6 +259,12 @@ public class PlayerBehavior : MonoBehaviour
         yield return new WaitForSeconds(1f);
         pointH.gameObject.SetActive(false);
         isHarvest = false;
+    }
+
+    IEnumerator ResetPlant()
+    {
+        yield return new WaitForSeconds(2f);
+        isPlant = false;
     }
     IEnumerator Picking()
     {
