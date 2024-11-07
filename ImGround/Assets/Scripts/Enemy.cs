@@ -327,10 +327,9 @@ public class Enemy : MonoBehaviour
     protected bool isChase;
     protected bool isAttack;
     protected bool isNight = false;
-    private bool isDeadCooldown = false; // ��� �� 5�� ������ ��ٿ�
     public bool IsDie { get { return isDie; } }
     [Header("Item Reward")]
-    public GameObject item;
+    public GameObject[] item;
 
     private DayAndNight dayAndNightScript;
 
@@ -603,7 +602,17 @@ public class Enemy : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+        if(item.Length <= 1)
+            Instantiate(item[0], transform.position, item[0].transform.rotation);
+        else
+        {
+            foreach (GameObject reward in item)
+            {
+                Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+                Instantiate(reward, transform.position + randomOffset, reward.transform.rotation);
+            }
+
+        }
 
     }
 
