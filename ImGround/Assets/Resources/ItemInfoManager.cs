@@ -7,9 +7,58 @@ using UnityEngine;
 
 public class ItemInfoManager
 {
+    /*==================================================
+     *                 싱글톤 관리자
+     *==================================================*/
+
+    /// <summary>
+    /// 절대 이 멤버로 접근하지 말 것. <see cref="getInstance"/>를 사용하세요.
+    /// </summary>
+    private static ItemInfoManager instance = null;
+
+    private ItemInfoManager()
+    {
+
+    }
+
+    private static ItemInfoManager getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new ItemInfoManager();
+            checkItemInfo();
+        }
+        return instance;
+    }
+
+    /// <summary>
+    /// 모든 아이템 정보가 포함되어 있는지를 검사합니다.
+    /// </summary>
+    private static void checkItemInfo()
+    {
+        string omittedImages = "";
+        foreach (ItemIdEnum id in Enum.GetValues(typeof(ItemIdEnum)))
+        {
+            try
+            {
+                findItemInfo(id);
+            }
+            catch (Exception e)
+            {
+                omittedImages += id.ToString() + "\n";
+            }
+        }
+        if (omittedImages.Length > 0)
+            Debug.LogError("다음의 아이템 정보가 아직 등록되지 않았습니다! :\n" + omittedImages);
+    }
+
+    /*==================================================
+     *                 Item 데이터 
+     *==================================================*/
+
     private const int DEFAULT_COUNT = 4;
 
-    private static ItemInfo[] informations =
+    private ItemInfo[] informations =
     {
         new ItemInfo(ItemIdEnum.TEST_NULL_ITEM, ImageIdEnum.ITEM_NULL, "TestNullItem", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.MILK_PACK, ImageIdEnum.ITEM_MILK_PACK, "우유 팩", DEFAULT_COUNT),
@@ -33,14 +82,22 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.WATERMELON_SEED, ImageIdEnum.ITEM_WATERMELON_SEED, "수박 씨앗", DEFAULT_COUNT)
     };
 
+    /*==================================================
+     *                 Util Method
+     *==================================================*/
+
     private static ItemInfo findItemInfo(ItemIdEnum itemId)
     {
         // 현재 O(N) 알고리즘 -> 리팩터링 요소
-        for (int i = 0; i < informations.Length; i++)
-            if (informations[i].itemId == itemId)
-                return informations[i];
-        throw new Exception(itemId.ToString() + "에 대한 아이템 정보가 등록되지 않았습니다!");
+        foreach (ItemInfo info in getInstance().informations)
+            if (info.itemId == itemId)
+                return info;
+        throw new Exception("오류 : " + itemId.ToString() + "에 대한 아이템 정보가 등록되지 않았습니다!");
     }
+
+    /*==================================================
+     *                 Item Info Getter 
+     *==================================================*/
 
     /// <summary>
     /// 아이템의 이미지를 반환합니다.

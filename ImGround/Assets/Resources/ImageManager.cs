@@ -9,13 +9,21 @@ public class ImageManager
      *                 싱글톤 관리자
      *==================================================*/
 
+    /// <summary>
+    /// 절대 이 멤버로 접근하지 말 것. <see cref="getInstance"/>로 접근하세요.
+    /// </summary>
     private static ImageManager instance = null;
+
+    private ImageManager()
+    {
+
+    }
 
     /// <summary>
     /// 싱글톤으로 사용하기 위해 인스턴스 초기화 및 가져오는 메소드입니다.
     /// </summary>
     /// <returns></returns>
-    private static ImageManager getImagesSO()
+    private static ImageManager getInstance()
     {
         if (instance == null)
         {
@@ -33,7 +41,7 @@ public class ImageManager
     private static void loadImageFiles()
     {
         string faildList = "";
-        foreach (ImageInfo info in getImagesSO().imageData)
+        foreach (ImageInfo info in getInstance().imageData)
         {
             if (!info.load())
             {
@@ -72,7 +80,7 @@ public class ImageManager
     private static ImageInfo findImageInfo(ImageIdEnum id)
     {
         // 현재 O(N) 알고리즘. 성능 개선 필요시 고려해야 할 부분임!
-        foreach (ImageInfo info in getImagesSO().imageData)
+        foreach (ImageInfo info in getInstance().imageData)
         {
             if (info.id == id)
             {
