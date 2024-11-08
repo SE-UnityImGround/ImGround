@@ -99,18 +99,16 @@ public class Debug_Image_Controller : MonoBehaviour
 
         try
         {
-            img = ItemInfoManager.getItemImage(id);
             description = ItemInfoManager.getItemName(id) + "\nid : " + id.ToString();
-        }
-        catch (Exception e)
-        {
-            img = null;
-            description = "아이템 정보 미등록 오류\nid: " + id.ToString();
-        }
-        try
-        {
-            img = ItemInfoManager.getItemImage(id);
-            description = ItemInfoManager.getItemName(id) + "\nid : " + id.ToString();
+            try
+            {
+                img = ItemInfoManager.getItemImage(id);
+            }
+            catch (Exception e)
+            {
+                img = null;
+                description = description + "\n아이템 이미지 미등록 오류\nid: " + id.ToString();
+            }
         }
         catch (Exception e)
         {
