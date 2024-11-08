@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 public enum ImageIdEnum
 {
+    /*=============================
+     *            System
+     *=============================*/
+
     NULL,
+
+    /*=============================
+     *            ITEM
+     *=============================*/
 
     ITEM_NULL,
     ITEM_MILK_PACK,
@@ -26,6 +34,10 @@ public enum ImageIdEnum
     ITEM_RICE_SEED,
     ITEM_TOMATO_SEED,
     ITEM_WATERMELON_SEED,
+
+    /*=============================
+     *            ICON
+     *=============================*/
 
     ICON_COIN,
     ICON_MEAT,

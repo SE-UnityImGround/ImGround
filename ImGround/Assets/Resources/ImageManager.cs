@@ -2,13 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-/// <summary>
-/// 이 클래스는 ScriptableObject로, 에셋으로 생성하여 사용해야 합니다!
-/// </summary>
-[CreateAssetMenu(menuName = "ScriptableObjects/Images")]
-public class ImageManager : ScriptableObject
+public class ImageManager
 {
     /*==================================================
      *                 싱글톤 관리자
@@ -25,10 +20,28 @@ public class ImageManager : ScriptableObject
         if (instance == null)
         {
             instance = new ImageManager();
-            setImageFiles(instance);
+            loadImageFiles();
             checkImageLoaded();
         }
         return instance;
+    }
+
+    /// <summary>
+    /// 현재 클래스에 등록되어 있는 이미지 정보에 대해 Resource 폴더로부터 이미지 파일 에셋을 로딩합니다.
+    /// </summary>
+    /// <param name="instance"></param>
+    private static void loadImageFiles()
+    {
+        string faildList = "";
+        foreach (ImageInfo info in getImagesSO().imageData)
+        {
+            if (!info.load())
+            {
+                faildList += info.resourcePath + "\n";
+            }
+        }
+        if (faildList.Length > 0)
+            Debug.LogError("다음의 이미지를 로딩하지 못했습니다! :\n" + faildList);
     }
 
     /// <summary>
@@ -36,88 +49,94 @@ public class ImageManager : ScriptableObject
     /// </summary>
     private static void checkImageLoaded()
     {
-        foreach (ImageIdEnum d in Enum.GetValues(typeof(ImageIdEnum)))
+        string omittedImages = "";
+        foreach (ImageIdEnum id in Enum.GetValues(typeof(ImageIdEnum)))
         {
             try
             {
-                if (getImage(d) == null
-                    && d != ImageIdEnum.NULL
-                    && d != ImageIdEnum.ITEM_NULL)
-                {
-                    Debug.Log("Image Null : " + d.ToString());
-                }
+                findImageInfo(id);
             }
             catch (Exception e)
             {
-                Debug.LogError("● 이미지가 등록되지 않았습니다!!");
-                throw e;
+                omittedImages += id.ToString() + "\n";
             }
         }
+        if (omittedImages.Length > 0)
+            Debug.LogError("다음의 이미지가 아직 등록되지 않았습니다! :\n" + omittedImages);
+    }
+
+    /*==================================================
+     *                 Util Method
+     *==================================================*/
+
+    private static ImageInfo findImageInfo(ImageIdEnum id)
+    {
+        // 현재 O(N) 알고리즘. 성능 개선 필요시 고려해야 할 부분임!
+        foreach (ImageInfo info in getImagesSO().imageData)
+        {
+            if (info.id == id)
+            {
+                return info;
+            }
+        }
+        throw new Exception("오류 : " + id.ToString() + "에 대한 이미지가 등록되지 않았습니다!");
     }
 
     /*==================================================
      *                 Image 데이터 
      *==================================================*/
 
-    private readonly Sprite NULL = null;
+    /// <summary>
+    /// 이미지 데이터를 Image ID에 따라 저장합니다. 로드되기 전에는 이미지는 모두 null입니다.
+    /// </summary>
+    private ImageInfo[] imageData = {
+        
+        /*=============================
+         *            System
+         *=============================*/
 
-    private readonly Sprite ITEM_NULL = null;
-    private Sprite ITEM_MILK_PACK;
-    private Sprite ITEM_MILK_BUCKET;
-    private Sprite ITEM_HORSE_LEATHER;
-    private Sprite ITEM_GOLD_ORE;
-    private Sprite ITEM_GOLD_INGOT;
-    private Sprite ITEM_GOLD_NECKLACE;
-    private Sprite ITEM_SILVER_ORE;
-    private Sprite ITEM_SILVER_INGOT;
-    private Sprite ITEM_SILVER_NECKLACE;
-    private Sprite ITEM_IRON_ORE;
-    private Sprite ITEM_IRON_INGOT;
-    private Sprite ITEM_IRON_NECKLACE;
-    private Sprite ITEM_CARROT_SEED;
-    private Sprite ITEM_LEMMON_SEED;
-    private Sprite ITEM_RICE_SEED;
-    private Sprite ITEM_TOMATO_SEED;
-    private Sprite ITEM_WATERMELON_SEED;
+        new ImageInfo(ImageIdEnum.NULL, null),
+        
+        /*=============================
+         *            ITEM
+         *=============================*/
+        
+        new ImageInfo(ImageIdEnum.ITEM_NULL, null),
+        new ImageInfo(ImageIdEnum.ITEM_MILK_PACK, "Images/Item2D/곽우유"),
+        new ImageInfo(ImageIdEnum.ITEM_MILK_BUCKET, "Images/Item2D/양동이우유"),
+        new ImageInfo(ImageIdEnum.ITEM_HORSE_LEATHER, "Images/Item2D/horse leather"),
+        new ImageInfo(ImageIdEnum.ITEM_GOLD_ORE, "Images/Item2D/mineral/before gold"),
+        new ImageInfo(ImageIdEnum.ITEM_GOLD_INGOT, "Images/Item2D/mineral/gold"),
+        new ImageInfo(ImageIdEnum.ITEM_GOLD_NECKLACE, "Images/Item2D/mineral/gold necklace"),
+        new ImageInfo(ImageIdEnum.ITEM_SILVER_ORE, "Images/Item2D/mineral/before silver"),
+        new ImageInfo(ImageIdEnum.ITEM_SILVER_INGOT, "Images/Item2D/mineral/silver"),
+        new ImageInfo(ImageIdEnum.ITEM_SILVER_NECKLACE, "Images/Item2D/mineral/silver necklace"),
+        new ImageInfo(ImageIdEnum.ITEM_IRON_ORE, "Images/Item2D/mineral/before iron"),
+        new ImageInfo(ImageIdEnum.ITEM_IRON_INGOT, "Images/Item2D/mineral/iron"),
+        new ImageInfo(ImageIdEnum.ITEM_IRON_NECKLACE, "Images/Item2D/mineral/iron neck lave"),
+        new ImageInfo(ImageIdEnum.ITEM_CARROT_SEED, "Images/Item2D/seed/carrot seed"),
+        new ImageInfo(ImageIdEnum.ITEM_LEMMON_SEED, "Images/Item2D/seed/lemon seed"),
+        new ImageInfo(ImageIdEnum.ITEM_RICE_SEED, "Images/Item2D/seed/rice seed"),
+        new ImageInfo(ImageIdEnum.ITEM_TOMATO_SEED, "Images/Item2D/seed/tomato seed"),
+        new ImageInfo(ImageIdEnum.ITEM_WATERMELON_SEED, "Images/Item2D/seed/watermelon seed"),
 
-    private Sprite ICON_COIN;
-    private Sprite ICON_MEAT;
-    private Sprite ICON_GEM;
-    private Sprite ICON_INGOT;
-    private Sprite ICON_HAMMER;
-    private Sprite ICON_WOOD;
-    private Sprite ICON_ARCHER;
-    private Sprite ICON_ATTACK;
+        /*=============================
+         *            ICON
+         *=============================*/
 
-    private static void setImageFiles(ImageManager instance)
-    {
-        instance.ITEM_MILK_PACK = Resources.Load<Sprite>("Images/Item2D/곽우유");
-        instance.ITEM_MILK_BUCKET = Resources.Load<Sprite>("Images/Item2D/양동이우유");
-        instance.ITEM_HORSE_LEATHER = Resources.Load<Sprite>("Images/Item2D/horse leather");
-        instance.ITEM_GOLD_ORE = Resources.Load<Sprite>("Images/Item2D/mineral/before gold");
-        instance.ITEM_GOLD_INGOT = Resources.Load<Sprite>("Images/Item2D/mineral/gold");
-        instance.ITEM_GOLD_NECKLACE = Resources.Load<Sprite>("Images/Item2D/mineral/gold necklace");
-        instance.ITEM_SILVER_ORE = Resources.Load<Sprite>("Images/Item2D/mineral/before silver");
-        instance.ITEM_SILVER_INGOT = Resources.Load<Sprite>("Images/Item2D/mineral/silver");
-        instance.ITEM_SILVER_NECKLACE = Resources.Load<Sprite>("Images/Item2D/mineral/silver necklace");
-        instance.ITEM_IRON_ORE = Resources.Load<Sprite>("Images/Item2D/mineral/before iron");
-        instance.ITEM_IRON_INGOT = Resources.Load<Sprite>("Images/Item2D/mineral/iron");
-        instance.ITEM_IRON_NECKLACE = Resources.Load<Sprite>("Images/Item2D/mineral/iron neck lave");
-        instance.ITEM_CARROT_SEED = Resources.Load<Sprite>("Images/Item2D/seed/carrot seed");
-        instance.ITEM_LEMMON_SEED = Resources.Load<Sprite>("Images/Item2D/seed/lemon seed");
-        instance.ITEM_RICE_SEED = Resources.Load<Sprite>("Images/Item2D/seed/rice seed");
-        instance.ITEM_TOMATO_SEED = Resources.Load<Sprite>("Images/Item2D/seed/tomato seed");
-        instance.ITEM_WATERMELON_SEED = Resources.Load<Sprite>("Images/Item2D/seed/watermelon seed");
+        new ImageInfo(ImageIdEnum.ICON_COIN, "Images/Coin"),
+        new ImageInfo(ImageIdEnum.ICON_MEAT, "Images/Meat"),
+        new ImageInfo(ImageIdEnum.ICON_GEM, "Images/Gem"),
+        new ImageInfo(ImageIdEnum.ICON_INGOT, "Images/Ingots"),
+        new ImageInfo(ImageIdEnum.ICON_HAMMER, "Images/Hammer"),
+        new ImageInfo(ImageIdEnum.ICON_WOOD, "Images/Wood"),
+        new ImageInfo(ImageIdEnum.ICON_ARCHER, "Images/Icons/UI_Icon_Archer"),
+        new ImageInfo(ImageIdEnum.ICON_ATTACK, "Images/Icons/UI_Icon_Attack")
+    };
 
-        instance.ICON_COIN = Resources.Load<Sprite>("Images/Coin");
-        instance.ICON_MEAT = Resources.Load<Sprite>("Images/Meat");
-        instance.ICON_GEM = Resources.Load<Sprite>("Images/Gem");
-        instance.ICON_INGOT = Resources.Load<Sprite>("Images/Ingots");
-        instance.ICON_HAMMER = Resources.Load<Sprite>("Images/Hammer");
-        instance.ICON_WOOD = Resources.Load<Sprite>("Images/Wood");
-        instance.ICON_ARCHER = Resources.Load<Sprite>("Images/Icons/UI_Icon_Archer");
-        instance.ICON_ATTACK = Resources.Load<Sprite>("Images/Icons/UI_Icon_Attack");
-    }
+    /*==================================================
+     *                 Image Getter 
+     *==================================================*/
 
     /// <summary>
     /// 주어진 이미지 ID로 이미지를 반환합니다.
@@ -126,83 +145,6 @@ public class ImageManager : ScriptableObject
     /// <returns></returns>
     public static Sprite getImage(ImageIdEnum imageId)
     {
-        switch (imageId)
-        {
-            /*=============================
-             *            System
-             *=============================*/
-
-            case ImageIdEnum.NULL:
-                return getImagesSO().NULL;
-
-            /*=============================
-             *            ITEM
-             *=============================*/
-
-            case ImageIdEnum.ITEM_NULL:
-                return getImagesSO().ITEM_NULL;
-
-            case ImageIdEnum.ITEM_MILK_PACK:
-                return getImagesSO().ITEM_MILK_PACK;
-            case ImageIdEnum.ITEM_MILK_BUCKET:
-                return getImagesSO().ITEM_MILK_BUCKET;
-            case ImageIdEnum.ITEM_HORSE_LEATHER:
-                return getImagesSO().ITEM_HORSE_LEATHER;
-
-            case ImageIdEnum.ITEM_GOLD_ORE:
-                return getImagesSO().ITEM_GOLD_ORE;
-            case ImageIdEnum.ITEM_GOLD_INGOT:
-                return getImagesSO().ITEM_GOLD_INGOT;
-            case ImageIdEnum.ITEM_GOLD_NECKLACE:
-                return getImagesSO().ITEM_GOLD_NECKLACE;
-            case ImageIdEnum.ITEM_SILVER_ORE:
-                return getImagesSO().ITEM_SILVER_ORE;
-            case ImageIdEnum.ITEM_SILVER_INGOT:
-                return getImagesSO().ITEM_SILVER_INGOT;
-            case ImageIdEnum.ITEM_SILVER_NECKLACE:
-                return getImagesSO().ITEM_SILVER_NECKLACE;
-            case ImageIdEnum.ITEM_IRON_ORE:
-                return getImagesSO().ITEM_IRON_ORE;
-            case ImageIdEnum.ITEM_IRON_INGOT:
-                return getImagesSO().ITEM_IRON_INGOT;
-            case ImageIdEnum.ITEM_IRON_NECKLACE:
-                return getImagesSO().ITEM_IRON_NECKLACE;
-
-            case ImageIdEnum.ITEM_CARROT_SEED:
-                return getImagesSO().ITEM_CARROT_SEED;
-            case ImageIdEnum.ITEM_LEMMON_SEED:
-                return getImagesSO().ITEM_LEMMON_SEED;
-            case ImageIdEnum.ITEM_RICE_SEED:
-                return getImagesSO().ITEM_RICE_SEED;
-            case ImageIdEnum.ITEM_TOMATO_SEED:
-                return getImagesSO().ITEM_TOMATO_SEED;
-            case ImageIdEnum.ITEM_WATERMELON_SEED:
-                return getImagesSO().ITEM_WATERMELON_SEED;
-
-
-            /*=============================
-             *            ICON
-             *=============================*/
-
-            case ImageIdEnum.ICON_COIN:
-                return getImagesSO().ICON_COIN;
-            case ImageIdEnum.ICON_MEAT:
-                return getImagesSO().ICON_MEAT;
-            case ImageIdEnum.ICON_GEM:
-                return getImagesSO().ICON_GEM;
-            case ImageIdEnum.ICON_INGOT:
-                return getImagesSO().ICON_INGOT;
-            case ImageIdEnum.ICON_HAMMER:
-                return getImagesSO().ICON_HAMMER;
-            case ImageIdEnum.ICON_WOOD:
-                return getImagesSO().ICON_WOOD;
-            case ImageIdEnum.ICON_ARCHER:
-                return getImagesSO().ICON_ARCHER;
-            case ImageIdEnum.ICON_ATTACK:
-                return getImagesSO().ICON_ATTACK;
-
-            default:
-                throw new Exception(imageId.ToString() + "에 대한 이미지가 등록되지 않았습니다!");
-        }
+        return findImageInfo(imageId).img;
     }
 }
