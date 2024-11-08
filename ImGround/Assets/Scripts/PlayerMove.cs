@@ -161,12 +161,13 @@ public class PlayerMove : MonoBehaviour
     bool isRunning;
     bool isTired = false;
     bool isSleeping = false;
+    bool isSitting = false;
 
     public bool IsJumping { get { return isJumping; } }
     public bool IsWalking { get { return isWalking; } }
     public bool IsTired { get { return isTired; } set { isTired = value; } }
     public bool IsSleeping { get { return isSleeping; } }
-
+    public bool IsSitting { get { return isSitting; } }
     public Player player;
     Animator anim;
     Vector3 moveVec;
@@ -265,7 +266,7 @@ public class PlayerMove : MonoBehaviour
         jumpDelay += Time.deltaTime;
         isJumpReady = 1.1f < jumpDelay;
 
-        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
         {
             isJumping = true;
             rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
@@ -310,7 +311,41 @@ public class PlayerMove : MonoBehaviour
             StartCoroutine(ResetSleep());
         }
     }
+    public void Sit()
+    {
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f);
 
+            // 침대를 발견한 경우
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("Chair"))  // 침대의 태그가 "Chair"인지 확인
+                {
+                    isSitting = true;
+                    isTired = true;
+                    // 자식 오브젝트의 인덱스로 가져오기 (예: 첫 번째 자식)
+                    Transform childTransform = hitCollider.transform.GetChild(0);  // 0번째 자식 가져오기
+
+                    if (childTransform != null)
+                    {
+                        StartCoroutine(Sitting(childTransform));  // 자식 오브젝트의 위치로 이동
+                    }
+                    else
+                    {
+                        Debug.LogWarning("자식 오브젝트를 찾을 수 없습니다.");
+                    }
+                    break;  // 첫 번째 침대에 반응 후 종료
+                }
+            }
+        }
+        if (isSitting && jDown)
+        {
+            anim.SetBool("isSit", false);
+            StopAllCoroutines();
+            StartCoroutine(ResetSit());
+        }
+    }
     IEnumerator Sleeping(Transform bedPosition)
     {
         anim.SetBool("isSleep", true);
@@ -325,13 +360,30 @@ public class PlayerMove : MonoBehaviour
 
         
     }
+
+    IEnumerator Sitting(Transform chairPos)
+    {
+        anim.SetBool("isSit", true);
+        while (Vector3.Distance(transform.position, chairPos.position) > 0.1f)
+        {
+            // 침대에 도착하면 침대의 방향을 따라 회전하도록 설정
+            transform.rotation = Quaternion.Euler(0, chairPos.eulerAngles.y, 0);
+            transform.position = Vector3.MoveTowards(transform.position, chairPos.position, 5f * Time.deltaTime);
+            yield return null;
+        }
+    }
     IEnumerator ResetSleep()
     {
         yield return new WaitForSeconds(2.3f);
         isTired = false;
         isSleeping = false;
     }
-
+    IEnumerator ResetSit()
+    {
+        yield return new WaitForSeconds(2.3f);
+        isTired = false;
+        isSitting = false;
+    }
     IEnumerator Tired()
     {
         isTired = true;
