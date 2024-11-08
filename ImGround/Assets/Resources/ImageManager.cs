@@ -102,9 +102,41 @@ public class ImageManager
          *=============================*/
         
         new ImageInfo(ImageIdEnum.ITEM_NULL, null),
-        new ImageInfo(ImageIdEnum.ITEM_MILK_PACK, "Images/Item2D/곽우유"),
-        new ImageInfo(ImageIdEnum.ITEM_MILK_BUCKET, "Images/Item2D/양동이우유"),
+
+        new ImageInfo(ImageIdEnum.ITEM_MILK_PACK, "Images/Item2D/Food/곽우유"),
+        new ImageInfo(ImageIdEnum.ITEM_MILK_BUCKET, "Images/Item2D/Food/양동이우유"),
+
+        new ImageInfo(ImageIdEnum.ITEM_BANANA_MILK, "Images/Item2D/Food/banana milk"),
+        new ImageInfo(ImageIdEnum.ITEM_CHEESE, "Images/Item2D/Food/치즈"),
+        new ImageInfo(ImageIdEnum.ITEM_BEEF_SUSHI, "Images/Item2D/Food/Beef sushi"),
+        new ImageInfo(ImageIdEnum.ITEM_EGG_SUSHI, "Images/Item2D/Food/egg sushi"),
+        new ImageInfo(ImageIdEnum.ITEM_SALMON_SUSHI, "Images/Item2D/Food/salmon sushi"),
+        new ImageInfo(ImageIdEnum.ITEM_CHICKEN_SALAD, "Images/Item2D/Food/chicken salad"),
+        new ImageInfo(ImageIdEnum.ITEM_STEAK_SALAD, "Images/Item2D/Food/steak salad"),
+        new ImageInfo(ImageIdEnum.ITEM_FROUT_SALAD, "Images/Item2D/Food/과일샐러드"),
+        new ImageInfo(ImageIdEnum.ITEM_UNCOOKED_CHICKEN, "Images/Item2D/Food/uncooked chicken"),
+        new ImageInfo(ImageIdEnum.ITEM_UNCOOKED_LAMB, "Images/Item2D/Food/uncooked lamb"),
+        new ImageInfo(ImageIdEnum.ITEM_UNCOOKED_PORK, "Images/Item2D/Food/uncooked pork"),
+        new ImageInfo(ImageIdEnum.ITEM_UNCOOKED_BEEF, "Images/Item2D/Food/소고기"),
+        new ImageInfo(ImageIdEnum.ITEM_COOKED_CHICKEN, "Images/Item2D/Food/cooked chicken"),
+        new ImageInfo(ImageIdEnum.ITEM_COOKED_LAMB, "Images/Item2D/Food/cooked lamb"),
+        new ImageInfo(ImageIdEnum.ITEM_COOKED_PORK, "Images/Item2D/Food/cooked pork"),
+        new ImageInfo(ImageIdEnum.ITEM_COOKED_BEEF, "Images/Item2D/Food/익힌 소고기"),
+        new ImageInfo(ImageIdEnum.ITEM_STEAK, "Images/Item2D/Food/steak"),
+        new ImageInfo(ImageIdEnum.ITEM_EGG_TOAST, "Images/Item2D/Food/egg toast"),
+        new ImageInfo(ImageIdEnum.ITEM_FISH_AND_CHIPS, "Images/Item2D/Food/fish and chips"),
+        new ImageInfo(ImageIdEnum.ITEM_HALF_WATERMELON, "Images/Item2D/Food/half watermelon"),
+        new ImageInfo(ImageIdEnum.ITEM_HAMBURGER, "Images/Item2D/Food/hamburger"),
+        new ImageInfo(ImageIdEnum.ITEM_MASHED_POTATO, "Images/Item2D/Food/mashed potato"),
+        new ImageInfo(ImageIdEnum.ITEM_PIZZA, "Images/Item2D/Food/pizza"),
+        new ImageInfo(ImageIdEnum.ITEM_RICE, "Images/Item2D/Food/rice"),
+        new ImageInfo(ImageIdEnum.ITEM_BREAD, "Images/Item2D/Food/빵"),
+
         new ImageInfo(ImageIdEnum.ITEM_HORSE_LEATHER, "Images/Item2D/horse leather"),
+        new ImageInfo(ImageIdEnum.ITEM_EGG, "Images/Item2D/Food/egg"),
+        new ImageInfo(ImageIdEnum.ITEM_FISH, "Images/Item2D/Food/fish"),
+        new ImageInfo(ImageIdEnum.ITEM_SALMON, "Images/Item2D/Food/salmon"),
+
         new ImageInfo(ImageIdEnum.ITEM_GOLD_ORE, "Images/Item2D/mineral/before gold"),
         new ImageInfo(ImageIdEnum.ITEM_GOLD_INGOT, "Images/Item2D/mineral/gold"),
         new ImageInfo(ImageIdEnum.ITEM_GOLD_NECKLACE, "Images/Item2D/mineral/gold necklace"),
@@ -114,11 +146,15 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ITEM_IRON_ORE, "Images/Item2D/mineral/before iron"),
         new ImageInfo(ImageIdEnum.ITEM_IRON_INGOT, "Images/Item2D/mineral/iron"),
         new ImageInfo(ImageIdEnum.ITEM_IRON_NECKLACE, "Images/Item2D/mineral/iron neck lave"),
+
         new ImageInfo(ImageIdEnum.ITEM_CARROT_SEED, "Images/Item2D/seed/carrot seed"),
         new ImageInfo(ImageIdEnum.ITEM_LEMMON_SEED, "Images/Item2D/seed/lemon seed"),
         new ImageInfo(ImageIdEnum.ITEM_RICE_SEED, "Images/Item2D/seed/rice seed"),
         new ImageInfo(ImageIdEnum.ITEM_TOMATO_SEED, "Images/Item2D/seed/tomato seed"),
         new ImageInfo(ImageIdEnum.ITEM_WATERMELON_SEED, "Images/Item2D/seed/watermelon seed"),
+        new ImageInfo(ImageIdEnum.ITEM_POTATO, "Images/Item2D/Food/감자"),
+        new ImageInfo(ImageIdEnum.ITEM_CUCUMBER, "Images/Item2D/Food/오이"),
+        new ImageInfo(ImageIdEnum.ITEM_FLOUR, "Images/Item2D/Food/flour"),
 
         /*=============================
          *            ICON
