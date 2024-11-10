@@ -52,7 +52,7 @@ public class Animal : MonoBehaviour
     {
         // 순찰 중 목적지에 도착했는지 확인
         //navAgent.remainingDistance < 0.5f
-        if (!navAgent.pathPending)
+        if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
         {
             anim.SetBool("isWalk", false);
             patrolWaitTimer += Time.deltaTime;

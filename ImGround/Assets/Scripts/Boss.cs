@@ -6,9 +6,9 @@ public class Boss : Enemy
 {
     [Header("Boss Prefabs")]
     public GameObject stonePrefab; // 돌 프리팹
-    float throwForce = 500f; // 돌을 던지는 힘
+    float throwForce = 1000f; // 돌을 던지는 힘
     int numberOfStones = 10; // 스톤 샤워 공격에 사용될 돌의 수
-    float radius = 5f; // 스톤 샤워 돌 생성 반경
+    float radius = 7f; // 스톤 샤워 돌 생성 반경
     public GameObject stonePosition; // 골렘이 꺼내는 돌
     
 
@@ -34,7 +34,7 @@ public class Boss : Enemy
 
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-        if (distanceToPlayer <= 3f)
+        if (distanceToPlayer <= 6f)
         {
             int ranAction = Random.Range(0, 5);
             if (ranAction <= 3)

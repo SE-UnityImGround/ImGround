@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 4631571384175381866}
   m_Layer: 6
   m_Name: Polyart_Golem
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -376,7 +376,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1024790831}
   - {fileID: 1423454223}
@@ -493,8 +493,9 @@ MonoBehaviour:
   punchPosition: {fileID: 5513445366115106238}
   headPosition: {fileID: 0}
   maxHealth: 2
-  isNight: 0
-  item: {fileID: 0}
+  item:
+  - {fileID: 1446560865641495081, guid: 6e76c4f64a5cc31478ab76c770ac247b, type: 3}
+  - {fileID: 3792804309681382392, guid: 0df97e4b6de42a14dae7feb72303476e, type: 3}
   transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
   stonePrefab: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
   stonePosition: {fileID: 6043571350728599342}
@@ -973,7 +974,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 120, y: 120, z: 120}
+  m_Size: {x: 150, y: 150, z: 150}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6043571350728599342
 GameObject:
