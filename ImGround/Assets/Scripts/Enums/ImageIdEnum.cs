@@ -87,4 +87,14 @@ public enum ImageIdEnum
     ICON_WOOD,
     ICON_ARCHER,
     ICON_ATTACK,
+
+    /*=============================
+     *             UI
+     *=============================*/
+
+    UI_LIFE_0,
+    UI_LIFE_30,
+    UI_LIFE_50,
+    UI_LIFE_80,
+    UI_LIFE_100
 }

@@ -175,7 +175,17 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ICON_HAMMER, "Images/Hammer"),
         new ImageInfo(ImageIdEnum.ICON_WOOD, "Images/Wood"),
         new ImageInfo(ImageIdEnum.ICON_ARCHER, "Images/Icons/UI_Icon_Archer"),
-        new ImageInfo(ImageIdEnum.ICON_ATTACK, "Images/Icons/UI_Icon_Attack")
+        new ImageInfo(ImageIdEnum.ICON_ATTACK, "Images/Icons/UI_Icon_Attack"),
+
+        /*=============================
+         *              UI
+         *=============================*/
+
+        new ImageInfo(ImageIdEnum.UI_LIFE_0, "Images/UI/Life_0"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_30, "Images/UI/Life_30"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_50, "Images/UI/Life_50"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_80, "Images/UI/Life_80"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_100, "Images/UI/Life_100")
     };
 
     /*==================================================
