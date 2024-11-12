@@ -26,6 +26,7 @@ public class InGameViewBehavior : MonoBehaviour
     {
         QuestView.initialize();
         ManufactView.initialize();
+        ShopView.GetComponent<ShopBehavior>().initialize("그냥 상점");
         InventoryView.initialize();
 
         displayView(InGameViewMode.DEFAULT);
