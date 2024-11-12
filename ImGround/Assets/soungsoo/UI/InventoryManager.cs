@@ -32,7 +32,7 @@ public class InventoryManager : MonoBehaviour
     /// 현재 인벤토리에서 선택된 아이템을 반환합니다.
     /// </summary>
     /// <returns></returns>
-    public Item getSelectedItem()
+    public ItemBundle getSelectedItem()
     {
         return inventoryUI.getSelectedItem();
     }

@@ -16,7 +16,7 @@ public class InventoryBehavior : MonoBehaviour
 
     private Inventory inventory = new Inventory(20);
 
-    private Item selectedItem = null;
+    private ItemBundle selectedItem = null;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +51,7 @@ public class InventoryBehavior : MonoBehaviour
      *                     이벤트 처리
      *========================================================*/
 
-    private void onItemSelected(Item selection)
+    private void onItemSelected(ItemBundle selection)
     {
         this.selectedItem = selection;
     }
@@ -82,7 +82,7 @@ public class InventoryBehavior : MonoBehaviour
     /// 현재 선택된 아이템을 반환합니다.
     /// </summary>
     /// <returns></returns>
-    public Item getSelectedItem()
+    public ItemBundle getSelectedItem()
     {
         return selectedItem;
     }
@@ -95,7 +95,7 @@ public class InventoryBehavior : MonoBehaviour
     /// <returns></returns>
     public bool addItem(Item item)
     {
-        return inventory.addItem(item);
+        return inventory.addItem(new ItemBundle(item, 1, true));
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class InventoryBehavior : MonoBehaviour
         bool result = false;
         foreach (Item item in items)
         {
-            result = result || inventory.addItem(item);
+            result = result || inventory.addItem(new ItemBundle(item, 1, true));
         }
         return result;
     }

@@ -15,7 +15,7 @@ public class SlotBehavior : MonoBehaviour
     /// 슬롯이 선택된 경우 발생하는 이벤트입니다.
     /// </summary>
     /// <param name="selectedItem">선택된 슬롯의 아이템</param>
-    public delegate void ItemSelectedEvent(Item selectedItem);
+    public delegate void ItemSelectedEvent(ItemBundle selectedItem);
 
     public ItemSelectedEvent itemSelectedEventHandler;
 
@@ -50,16 +50,16 @@ public class SlotBehavior : MonoBehaviour
     /// </summary>
     private void onClick()
     {
-        itemSelectedEventHandler?.Invoke(this.mySlot.item);
+        itemSelectedEventHandler?.Invoke(this.mySlot.bundle);
     }
 
     /// <summary>
     /// 이 슬롯의 아이템 변동 이벤트를 받는 처리기입니다.
     /// </summary>
     /// <param name="updatedItem"></param>
-    private void itemUpdated(Item updatedItem)
+    private void itemUpdated(ItemBundle updatedItem)
     {
-        setImage(updatedItem);
+        setImage(updatedItem.item);
     }
 
     /*=======================================================
