@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7baa2d17764034b935e116e8d7b793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questUI: {fileID: 0}
 --- !u!114 &7944619350763771097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,4 +59,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 0}
-  questUI: {fileID: 0}

@@ -14,7 +14,7 @@ public class InventoryBehavior : UIBehavior
     [SerializeField]
     private GameObject SlotList = null;
 
-    private Inventory inventory = new Inventory(20);
+    private Inventory inventory = new Inventory(24);
 
     private ItemBundle selectedItem = null;
 
@@ -37,12 +37,6 @@ public class InventoryBehavior : UIBehavior
             newSlotScript.initialize(inventory.slots[slotNum - 1]);
             newSlotScript.itemSelectedEventHandler += onItemSelected;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     /*========================================================
