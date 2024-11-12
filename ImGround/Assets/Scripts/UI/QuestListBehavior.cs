@@ -2,23 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestListBehavior : MonoBehaviour
+public class QuestListBehavior : UIBehavior
 {
     public GameObject questsListView;
     public GameObject questPreFab;
 
-    // Start is called before the first frame update
-    void Start()
+    public override void initialize()
     {
         testQuest();
-
-        setActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void testQuest()
@@ -37,23 +28,5 @@ public class QuestListBehavior : MonoBehaviour
     {
         QuestBehavior newQuest = Instantiate(questPreFab, questsListView.transform).GetComponent<QuestBehavior>();
         newQuest.initialize(q);
-    }
-
-    /// <summary>
-    /// 인벤토리의 표시/숨김을 관리합니다.
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void setActive(bool isActive)
-    {
-        gameObject.SetActive(isActive);
-    }
-
-    /// <summary>
-    /// 현재 인벤토리가 표시되는지를 반환합니다.
-    /// </summary>
-    /// <returns>인벤토리가 표시중이면 true, 그렇지 않으면 false를 반환합니다.</returns>
-    public bool getActive()
-    {
-        return gameObject.activeSelf;
     }
 }

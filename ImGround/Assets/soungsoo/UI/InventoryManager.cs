@@ -6,8 +6,6 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField]
     private InventoryBehavior inventoryUI;
-    [SerializeField]
-    private QuestListBehavior questUI;
 
     // Start is called before the first frame update
     void Start()
@@ -16,16 +14,12 @@ public class InventoryManager : MonoBehaviour
         {
             throw new System.Exception("인벤토리 UI가 등록되지 않았습니다!");
         }
-        if (questUI == null)
-        {
-            throw new System.Exception("퀘스트 UI가 등록되지 않았습니다!");
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     /// <summary>

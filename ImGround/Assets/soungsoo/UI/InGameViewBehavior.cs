@@ -11,19 +11,23 @@ public class InGameViewBehavior : MonoBehaviour
     [SerializeField]
     private GameObject SettingView;
     [SerializeField]
-    private GameObject QuestView;
+    private UIBehavior QuestView;
     [SerializeField]
-    private GameObject ManufactView;
+    private UIBehavior ManufactView;
     [SerializeField]
     private GameObject ShopView;
     [SerializeField]
-    private GameObject InventoryView;
+    private UIBehavior InventoryView;
     [SerializeField]
     private GameObject TalkView;
 
     // Start is called before the first frame update
     void Start()
     {
+        QuestView.initialize();
+        ManufactView.initialize();
+        InventoryView.initialize();
+
         displayView(InGameViewMode.DEFAULT);
     }
 
@@ -44,10 +48,10 @@ public class InGameViewBehavior : MonoBehaviour
             || mode == InGameViewMode.MANUFACT
             || mode == InGameViewMode.TALK);
         SettingView.SetActive(mode == InGameViewMode.SETTING);
-        QuestView.SetActive(mode == InGameViewMode.QUEST);
-        ManufactView.SetActive(mode == InGameViewMode.MANUFACT);
+        QuestView.setActive(mode == InGameViewMode.QUEST);
+        ManufactView.setActive(mode == InGameViewMode.MANUFACT);
         ShopView.SetActive(mode == InGameViewMode.SHOP);
-        InventoryView.SetActive(mode == InGameViewMode.INVENTORY);
+        InventoryView.setActive(mode == InGameViewMode.INVENTORY);
         TalkView.SetActive(mode == InGameViewMode.TALK);
 
         this.mode = mode;
