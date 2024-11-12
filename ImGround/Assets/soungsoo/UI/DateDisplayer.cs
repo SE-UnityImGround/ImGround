@@ -22,7 +22,6 @@ public class DateDisplayer : MonoBehaviour
                 current.Year,
                 current.Month,
                 current.Day);
-        Debug.Log(startDate.ToString());
     }
 
     // Update is called once per frame

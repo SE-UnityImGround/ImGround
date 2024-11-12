@@ -24,7 +24,7 @@ public class InGameViewBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        displayView(InGameViewMode.DEFAULT);
     }
 
     // Update is called once per frame
