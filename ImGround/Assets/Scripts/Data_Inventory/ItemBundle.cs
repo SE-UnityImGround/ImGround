@@ -29,11 +29,15 @@ public class ItemBundle
         }
     }
 
+    public ItemBundle(ItemIdEnum itemId, int count, bool isLimited) : this(new Item(itemId), count, isLimited)
+    {
+    }
+
     /// <summary>
     /// 기존 ItemBundle과 똑같은 ItemBundle을 복사합니다.
     /// </summary>
     /// <param name="bundle">내용을 복사할 ItemBundle 객체</param>
-    public ItemBundle(ItemBundle bundle) : this(bundle.item, bundle.count, bundle.isLimited)
+    public ItemBundle(ItemBundle bundle) : this(bundle.item.itemId, bundle.count, bundle.isLimited)
     {
     }
 
