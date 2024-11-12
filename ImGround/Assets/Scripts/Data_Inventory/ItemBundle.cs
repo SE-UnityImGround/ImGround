@@ -25,7 +25,7 @@ public class ItemBundle
         this.count = count;
         if (isLimited && count > maxCount)
         {
-            count = maxCount;
+            this.count = maxCount;
         }
     }
 
