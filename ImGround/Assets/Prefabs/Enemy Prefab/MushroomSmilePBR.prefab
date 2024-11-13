@@ -249,7 +249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3724026275503789907}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.0340796, y: -4.5018053, z: -10.778885}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -299,8 +299,10 @@ MonoBehaviour:
   punchPosition: {fileID: 9174243219340851603}
   headPosition: {fileID: 9195612672906736312}
   maxHealth: 5
-  isNight: 1
-  item: {fileID: 6576735527821680563, guid: 38961af266cf4da4e8ac7d6ed37d075c, type: 3}
+  item:
+  - {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
+  expPrefab: {fileID: 592310022102497824, guid: d64e1af8e06ba5341b28dd2589471bf4, type: 3}
+  expDropCount: 3
   transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
 --- !u!195 &8133131480521786457
 NavMeshAgent:
@@ -315,7 +317,7 @@ NavMeshAgent:
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 200
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

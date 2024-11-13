@@ -35,6 +35,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pointH;
+    public Transform ItemPoint; // 음식을 먹는 손의 위치
     private GameObject pickedItem; // 현재 주운 아이템
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
@@ -84,6 +85,8 @@ public class PlayerBehavior : MonoBehaviour
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
+            if (ItemPoint.childCount == 0)
+                return;
             isEating = true;
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());

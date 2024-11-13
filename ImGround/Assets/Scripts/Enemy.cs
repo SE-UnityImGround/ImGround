@@ -27,6 +27,9 @@ public class Enemy : MonoBehaviour
     public bool IsDie { get { return isDie; } }
     [Header("Item Reward")]
     public GameObject[] item;
+    [Header("Experience Drop")]
+    public GameObject expPrefab; // 드랍할 경험치 프리팹
+    public int expDropCount = 3; // 드랍할 경험치 갯수
 
     private DayAndNight dayAndNightScript;
 
@@ -307,17 +310,22 @@ public class Enemy : MonoBehaviour
             }
         }
 
-            gameObject.SetActive(false);
-            if (item.Length <= 1)
-                Instantiate(item[0], transform.position, item[0].transform.rotation);
-            else
+        gameObject.SetActive(false);
+        if (item.Length <= 1)
+            Instantiate(item[0], transform.position, item[0].transform.rotation);
+        else
+        {
+            foreach (GameObject reward in item)
             {
-                foreach (GameObject reward in item)
-                {
-                    Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-                    Instantiate(reward, transform.position + randomOffset, reward.transform.rotation);
-                }
+                Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+                Instantiate(reward, transform.position + randomOffset, reward.transform.rotation);
             }
+        }
+        for (int i = 0; i < expDropCount; i++)
+        {
+            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
+            Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
     public void Respawn()

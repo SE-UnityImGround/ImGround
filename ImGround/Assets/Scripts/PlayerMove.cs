@@ -145,6 +145,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -177,6 +178,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private float runningEnergyTime = 10f;
     private float runningTime = 0f;
+
+    [SerializeField]
+    private GameObject particle;
+    private GameObject particleInstance;
+    private ParticleSystem particleSystem;
 
     private void Awake()
     {
@@ -357,8 +363,13 @@ public class PlayerMove : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, bedPosition.position, 5f * Time.deltaTime);
             yield return null;
         }
+        if (particleInstance == null)
+        {
+            particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
+            particleSystem = particleInstance.GetComponent<ParticleSystem>();
+        }
+        particleSystem?.Play();
 
-        
     }
 
     IEnumerator Sitting(Transform chairPos)
@@ -375,6 +386,7 @@ public class PlayerMove : MonoBehaviour
     IEnumerator ResetSleep()
     {
         yield return new WaitForSeconds(2.3f);
+        particleSystem?.Stop();
         isTired = false;
         isSleeping = false;
     }
