@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     protected bool isChase;
     protected bool isAttack;
     protected bool isNight = false;
+    private bool isRespawned = false; // 리스폰 여부 체크
     public bool IsDie { get { return isDie; } }
     [Header("Item Reward")]
     public GameObject[] item;
@@ -70,17 +71,16 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
-       if (nav.enabled)
-        {
-            nav.SetDestination(target.position);
-            nav.isStopped = !isChase;
-        }
         if (isDie)
         {
             return;
         }
-
-        
+        if (nav.enabled)
+        {
+            nav.SetDestination(target.position);
+            nav.isStopped = !isChase;
+        }
+             
         if (dayAndNightScript != null)
         {
             isNight = dayAndNightScript.isNight; // isNight ���� ��������
@@ -91,12 +91,23 @@ public class Enemy : MonoBehaviour
     {
         if (isChase && !isAttack)
             Targetting();
-        if (!isNight && type != Type.Boss && isChase)
+
+        // 낮 상태에서 몬스터가 한 번만 죽고 가만히 있도록 설정
+        if (!isNight && type != Type.Boss && isChase && !isRespawned)
         {
+            isRespawned = true;  // 낮 상태에서는 리스폰된 상태로 설정
             ChaseStop();
+        }
+        else if(!isNight && type != Type.Boss && isRespawned)
+        {
+            anim.SetBool("isIdle", true);
+            if (nav.isActiveAndEnabled && nav.isOnNavMesh)
+                nav.isStopped = true;
         }
         else if (isNight && type != Type.Boss && !isAttack)
         {
+            // 밤이 되면 다시 움직이도록 설정
+            isRespawned = false; // 밤 상태에서는 리스폰되지 않은 상태로 설정
             ChaseStart();
         }
         else if (type == Type.Boss && !isAttack)
@@ -114,8 +125,7 @@ public class Enemy : MonoBehaviour
         anim.SetBool("isRun", true);
     }
     void ChaseStop()
-    {   
-        nav.isStopped = false;
+    {
         isChase = false;
         StopAllCoroutines();
         Die();
@@ -137,11 +147,13 @@ public class Enemy : MonoBehaviour
         nav.isStopped = true; // �̵��� ���߱�
         anim.SetTrigger("doDie");
         StartCoroutine(FadeOut());
+
+        isRespawned = true; // 죽은 후 리스폰 상태로 설정
     }
 
     void Targetting()
     {
-        if (!isDie)
+        if (!isDie && isNight)
         {
             float targetRadius = 0;
             float targetRange = 0;
@@ -327,6 +339,8 @@ public class Enemy : MonoBehaviour
         isDie = false;
         isChase = true;
         isAttack = false;
+        //if (isNight)
+        //    isRespawned = false;
         if (nav.isActiveAndEnabled && nav.isOnNavMesh)
             nav.isStopped = false;
     }
