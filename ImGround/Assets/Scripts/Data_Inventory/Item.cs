@@ -32,8 +32,8 @@ public class Item
     {
         this.itemId = itemId;
         this.count = count;
-        this.name = ItemsInfo.getItemName(itemId);
-        this.maxCount = ItemsInfo.getMaxCount(itemId);
+        this.name = ItemInfoManager.getItemName(itemId);
+        this.maxCount = ItemInfoManager.getMaxCount(itemId);
     }
 
     /// <summary>
