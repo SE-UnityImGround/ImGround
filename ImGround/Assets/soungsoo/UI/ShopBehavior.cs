@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopBehavior : MonoBehaviour
+public class ShopBehavior : UIBehavior
 {
     [SerializeField]
     private GameObject ShopItemListView;
@@ -11,7 +11,7 @@ public class ShopBehavior : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_Text ShopNameView;
 
-    public void initialize(string shopName)
+    public override void initialize()
     {
         if (ShopItemListView == null)
         {
@@ -21,7 +21,10 @@ public class ShopBehavior : MonoBehaviour
         {
             Debug.LogErrorFormat("{0}에 {1}가 등록되지 않았습니다!", this.GetType().Name, ShopItemPrefab);
         }
+    }
 
+    public void setUp(string shopName)
+    {
         ShopNameView.text = shopName;
         test();
     }
