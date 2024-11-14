@@ -24,10 +24,10 @@ public class QuestBehavior : MonoBehaviour
     /// <param name="slotIdx"></param>
     public void initialize(Quest myQuest)
     {
-        UI_QuestImage.sprite = ImagesSO.getImage(myQuest.questIconImage);
+        UI_QuestImage.sprite = ImageManager.getImage(myQuest.questIconImage);
         UI_Description.text = myQuest.description;
 
-        UI_RewardImage.sprite = ImagesSO.getImage(myQuest.rewardIconImage);
+        UI_RewardImage.sprite = ImageManager.getImage(myQuest.rewardIconImage);
         setRewardAmount(myQuest.rewardAmount);
 
         setProgress(myQuest.progressValue, myQuest.progressSize);

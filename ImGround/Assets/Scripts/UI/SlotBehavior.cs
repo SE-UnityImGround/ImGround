@@ -76,9 +76,10 @@ public class SlotBehavior : MonoBehaviour
         else
         {
             itemImg.color = new Color(255, 255, 255, 255);
-            if (itemImg.sprite != ImagesSO.getImage(i.itemId))
+            Sprite itemImage = ItemInfoManager.getItemImage(i.itemId);
+            if (itemImg.sprite != itemImage)
             {
-                itemImg.sprite = ImagesSO.getImage(i.itemId);
+                itemImg.sprite = itemImage;
             }
         }
     }
