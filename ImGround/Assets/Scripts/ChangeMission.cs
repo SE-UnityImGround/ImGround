@@ -8,13 +8,13 @@ public class ChangeMission : MonoBehaviour
     public void LoadMissionScene()
     {
         // "Mission_scenes"라는 이름의 씬이 존재하는지 확인
-        if (Application.CanStreamedLevelBeLoaded("Achievements_scenes"))
+        if (Application.CanStreamedLevelBeLoaded("Quest_scenes"))
         {
-            SceneManager.LoadScene("Achievements_scenes");
+            SceneManager.LoadScene("Quest_scenes");
         }
         else
         {
-            Debug.LogError("Scene 'Achievements" +
+            Debug.LogError("Scene 'Quest_scenes" +
                 "' not found!");
         }
     }
