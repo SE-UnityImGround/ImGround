@@ -28,7 +28,6 @@ public class SlotBehavior : MonoBehaviour
         this.mySlot = mySlot;
         mySlot.itemUpdatedEventHandler += itemUpdated;
         itemImg = transform.GetChild(0).gameObject.GetComponent<Image>();
-
     }
 
     /// <summary>
