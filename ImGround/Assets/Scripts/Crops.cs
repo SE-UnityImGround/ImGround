@@ -15,26 +15,39 @@ public class Crops : MonoBehaviour
     private GameObject particleInstance;
     private GameObject cropInstance;
     private ParticleSystem particleSystem;
+    private Coroutine[] growCoroutines; // 각 작물의 성장 코루틴을 추적하는 배열
 
     private void Start()
     {
-        if (!cropData.isBig)
+        if (cropData.isBig)
         {
-            currentCrops = new GameObject[spots.Length];
-            for (int i = 0; i < spots.Length; i++)
-            {
-                currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
-                currentCrops[i].transform.SetParent(spots[i]);
-                StartCoroutine(GrowCrop(i));
-            }
+            StartBigCrop();
         }
-        else if(cropData.isBig)
+        else
         {
-            currentCrops = new GameObject[1];
-            currentCrops[0] = Instantiate(cropData.growthStages[0], bigSpot.position, Quaternion.identity);
-            currentCrops[0].transform.SetParent(bigSpot);
-            StartCoroutine(GrowBigCrop());
+            StartSmallCrops();
         }
+    }
+
+    private void StartSmallCrops()
+    {
+        currentCrops = new GameObject[spots.Length];
+        growCoroutines = new Coroutine[spots.Length];
+        for (int i = 0; i < spots.Length; i++)
+        {
+            currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
+            currentCrops[i].transform.SetParent(spots[i]);
+            growCoroutines[i] = StartCoroutine(GrowCrop(i));
+        }
+    }
+
+    private void StartBigCrop()
+    {
+        currentCrops = new GameObject[1];
+        growCoroutines = new Coroutine[1];
+        currentCrops[0] = Instantiate(cropData.growthStages[0], bigSpot.position, Quaternion.identity);
+        currentCrops[0].transform.SetParent(bigSpot);
+        growCoroutines[0] = StartCoroutine(GrowBigCrop());
     }
 
     private IEnumerator GrowCrop(int index)
@@ -96,19 +109,14 @@ public class Crops : MonoBehaviour
                 particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
                 particleSystem = particleInstance.GetComponent<ParticleSystem>();
             }
-            if (particleSystem != null)
-                particleSystem.Play();
+            particleSystem?.Play();
         }
         else
         {
-            if (particleSystem != null && particleSystem.isPlaying)
-            {
-                particleSystem.Stop();
-            }
+            particleSystem?.Stop();
         }
     }
 
-    // "Harvest" 태그와 충돌 시 작물을 흩뿌리는 기능
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Harvest"))
@@ -125,9 +133,49 @@ public class Crops : MonoBehaviour
             if (crop != null)
             {
                 Destroy(crop);
-                if(cropInstance == null)
+                if (cropInstance == null)
                     cropInstance = Instantiate(cropData.cropH, bigSpot.position, Quaternion.identity);
             }
         }
     }
+
+    // 농사를 초기화하는 메서드
+    public void ResetCrops(bool isCultivated)
+    {
+        // 1. 모든 코루틴을 중지합니다.
+        StopAllCoroutines();
+        // 2. 현재 작물 오브젝트가 존재하면 모두 삭제합니다.
+        if (currentCrops != null)
+        {
+            for (int i = 0; i < currentCrops.Length; i++)
+            {
+                if (currentCrops[i] != null)
+                {
+                    Destroy(currentCrops[i]);
+                    currentCrops[i] = null; // 참조 제거
+                }
+            }
+        }
+
+        // 3. 파티클 인스턴스가 존재하면 삭제합니다.
+        if (particleInstance != null)
+        {
+            Destroy(particleInstance);
+            particleInstance = null; // 참조 제거
+        }
+
+        // 4. 경작지 상태에서만 농사 재시작
+        if (isCultivated)
+        {
+            if (cropData.isBig)
+            {
+                StartBigCrop();
+            }
+            else
+            {
+                StartSmallCrops();
+            }
+        }
+    }
+
 }
