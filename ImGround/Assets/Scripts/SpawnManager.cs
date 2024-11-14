@@ -6,10 +6,20 @@ public class SpawnManager : MonoBehaviour
 {
     private GameObject[] enemies;
     public float enemyRespawnTime = 10.0f; // 적이 다시 활성화될 시간
-    public float bossRespawnTime = 30.0f;
+    public float bossRespawnTime = 10.0f;
+    private Dictionary<GameObject, bool> respawnInProgress = new Dictionary<GameObject, bool>(); // 리스폰 진행 여부 확인
+
     void Start()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        // 모든 적에 대해 리스폰 진행 여부 초기화
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                respawnInProgress[enemy] = false;
+            }
+        }
     }
 
     void Update()
@@ -17,13 +27,14 @@ public class SpawnManager : MonoBehaviour
         // 매 프레임마다 적의 활성화 상태를 확인
         foreach (GameObject enemy in enemies)
         {
-            if (enemy != null && !enemy.activeSelf)
+            if (enemy != null && !enemy.activeSelf && !respawnInProgress[enemy])
             {
                 // 적이 비활성화된 경우 리스폰 시간 결정
                 Enemy enemyComponent = enemy.GetComponent<Enemy>();
                 if (enemyComponent != null)
                 {
                     float respawnTime = (enemyComponent.type == Enemy.Type.Boss) ? bossRespawnTime : enemyRespawnTime;
+                    respawnInProgress[enemy] = true; // 리스폰이 진행 중임을 표시
                     StartCoroutine(RespawnEnemy(enemy, respawnTime));
                     enemyComponent.Respawn();
                 }
@@ -39,5 +50,6 @@ public class SpawnManager : MonoBehaviour
 
         // 적 다시 활성화
         enemy.SetActive(true);
+        respawnInProgress[enemy] = false; // 리스폰이 완료되었음을 표시
     }
 }

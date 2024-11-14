@@ -116,6 +116,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int maxHealth = 10;
     public int health;
+    private int exp;
+    public int[] requiredExp = new int[10];
+    public int level = 0;
+
+    [Header("Effect Info")]
+    [SerializeField]
+    private GameObject effect;
+    private GameObject effectInstance;
+    private ParticleSystem particleSystem;
 
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
@@ -167,6 +176,11 @@ public class Player : MonoBehaviour
             StartCoroutine(DeathCooldown());
             return;
         }
+
+        if (LevelUpCheck() && level < requiredExp.Length)
+        {
+            LevelUp();
+        }
         // 플레이어 동작 업데이트
         pBehavior.getInput();
         pBehavior.Use();
@@ -204,5 +218,34 @@ public class Player : MonoBehaviour
 
         // 사망 상태 해제
         pBehavior.IsDie = false;
+    }
+    private bool LevelUpCheck()
+    {
+        if (exp >= requiredExp[level])
+        {
+            level++;
+            return true;
+        }
+        else
+            return false;
+    }
+    private void LevelUp()
+    {
+        if (effectInstance == null)
+        {
+            // y축 위치를 1.0f만큼 올려서 파티클을 생성 (필요에 따라 높이 조정 가능)
+            Vector3 adjustedPos = transform.position + new Vector3(0, 2.0f, 0);
+
+            effectInstance = Instantiate(effect, adjustedPos, Quaternion.identity);
+            particleSystem = effectInstance.GetComponent<ParticleSystem>();
+        }
+        particleSystem?.Play();
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Exp"))
+        {
+            exp++;
+        }
     }
 }
