@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.ParticleSystem;
 
 public class Enemy : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class Enemy : MonoBehaviour
     protected bool isNight = false;
     private bool isRespawned = false; // 리스폰 여부 체크
     public bool IsDie { get { return isDie; } }
+    [Header("Die Effect")]
+    [SerializeField]
+    private GameObject dieEffect;
+    private GameObject effectInstance;
+    private ParticleSystem particleSystem;
     [Header("Item Reward")]
     public GameObject[] item;
     [Header("Experience Drop")]
@@ -149,6 +155,7 @@ public class Enemy : MonoBehaviour
         isChase = false;
         nav.isStopped = true; // �̵��� ���߱�
         anim.SetTrigger("doDie");
+        StartCoroutine(DieEffect());
         StartCoroutine(FadeOut());
 
         isRespawned = true; // 죽은 후 리스폰 상태로 설정
@@ -328,6 +335,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    IEnumerator DieEffect()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if (effectInstance == null)
+        {
+            Vector3 adjustedPos = transform.position + new Vector3(0, 2.0f, 0);
+
+            effectInstance = Instantiate(dieEffect, adjustedPos, Quaternion.identity);
+            particleSystem = effectInstance.GetComponent<ParticleSystem>();
+        }
+            particleSystem?.Play();
+        
+    }
     public void Respawn()
     {
         // ü���� �ʱ�ȭ
