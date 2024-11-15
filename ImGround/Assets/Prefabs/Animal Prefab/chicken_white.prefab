@@ -399,15 +399,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64b539b85b20e1645b14cfc071339766, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60.946655
+      value: 12.960001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64b539b85b20e1645b14cfc071339766, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49152088
+      value: -4.4180884
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64b539b85b20e1645b14cfc071339766, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -77.73546
+      value: -5.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 64b539b85b20e1645b14cfc071339766, type: 3}
       propertyPath: m_LocalRotation.w
@@ -596,9 +596,10 @@ MonoBehaviour:
   nav: {fileID: 6522069838940478378}
   patrolRadius: 10
   patrolWaitTime: 3
+  isHuntAble: 1
   anim: {fileID: 6568752000799975958}
   target: {fileID: 0}
-  item: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
   runSpeed: 3
   walkSpeed: 1
   detectionRadius: 3

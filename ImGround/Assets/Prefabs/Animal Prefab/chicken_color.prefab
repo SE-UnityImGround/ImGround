@@ -215,8 +215,10 @@ MonoBehaviour:
   nav: {fileID: 9209958450370105864}
   patrolRadius: 10
   patrolWaitTime: 3
+  isHuntAble: 1
   anim: {fileID: 1112878657047530753}
   target: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
   runSpeed: 3
   walkSpeed: 1
   detectionRadius: 5

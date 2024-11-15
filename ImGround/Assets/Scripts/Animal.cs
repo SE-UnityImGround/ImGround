@@ -21,6 +21,8 @@ public class Animal : MonoBehaviour
     protected bool surprised = false; // 닭 전용 플래그
     protected bool flying = false; // 공중에 날아다니는 동물(곤충) 전용
     private bool isDie = false;
+    [SerializeField]
+    private bool isHuntAble = true;
 
     protected NavMeshAgent navAgent;
     private Vector3 patrolTarget;
@@ -51,7 +53,6 @@ public class Animal : MonoBehaviour
     void Patrol()
     {
         // 순찰 중 목적지에 도착했는지 확인
-        //navAgent.remainingDistance < 0.5f
         if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
         {
             anim.SetBool("isWalk", false);
@@ -69,9 +70,12 @@ public class Animal : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        if (health <= 0)
-            StartCoroutine(Die());
+        if (isHuntAble)
+        {
+            health -= damage;
+            if (health <= 0)
+                StartCoroutine(Die());
+        }
     }
 
     public void StartDie()

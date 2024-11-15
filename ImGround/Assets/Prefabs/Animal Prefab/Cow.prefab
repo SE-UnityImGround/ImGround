@@ -363,13 +363,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d8d25d2dd40974ea185204e7f2e97d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   health: 0
   nav: {fileID: 8940799132043013301}
   patrolRadius: 5
   patrolWaitTime: 6
+  isHuntAble: 1
   anim: {fileID: 6781750496845713519}
   target: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
 --- !u!195 &8940799132043013301
 NavMeshAgent:
   m_ObjectHideFlags: 0

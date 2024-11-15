@@ -403,15 +403,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58.903805
+      value: 5.24592
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.51585126
+      value: -4.5018053
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -73.346535
+      value: -10.208885
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalRotation.w
@@ -687,14 +687,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d8d25d2dd40974ea185204e7f2e97d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   health: 0
   nav: {fileID: 2144626657001434094}
   patrolRadius: 5
   patrolWaitTime: 5
+  isHuntAble: 1
   anim: {fileID: 6171411304916579663}
   target: {fileID: 0}
-  item: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
 --- !u!195 &2144626657001434094
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -375,7 +375,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1024790831}
@@ -492,7 +492,7 @@ MonoBehaviour:
   respawnPosition: {x: 0, y: 0, z: 0}
   punchPosition: {fileID: 5513445366115106238}
   headPosition: {fileID: 0}
-  maxHealth: 2
+  maxHealth: 50
   dieEffect: {fileID: 6061642004597504214, guid: fe3aaa85d5162b54fbe607f1579350ec, type: 3}
   item:
   - {fileID: 1446560865641495081, guid: 6e76c4f64a5cc31478ab76c770ac247b, type: 3}

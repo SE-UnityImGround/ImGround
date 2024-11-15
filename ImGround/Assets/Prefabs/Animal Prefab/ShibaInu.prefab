@@ -392,8 +392,10 @@ MonoBehaviour:
   nav: {fileID: 6961075316367089315}
   patrolRadius: 5
   patrolWaitTime: 5
+  isHuntAble: 0
   anim: {fileID: 8336573752001210113}
   target: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
 --- !u!195 &6961075316367089315
 NavMeshAgent:
   m_ObjectHideFlags: 0
