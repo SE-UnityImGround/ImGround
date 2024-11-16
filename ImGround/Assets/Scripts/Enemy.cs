@@ -166,7 +166,7 @@ public class Enemy : MonoBehaviour
 
     void Targetting()
     {
-        if (!isDie && isNight)
+        if (!isDie && (isNight || type == Type.Boss))
         {
             float targetRadius = 0;
             float targetRange = 0;

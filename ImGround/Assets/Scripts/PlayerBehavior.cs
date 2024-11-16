@@ -8,7 +8,7 @@ public class PlayerBehavior : MonoBehaviour
     private Player player;
     public GameObject[] tools;
 
-    bool dDown;
+    public bool dDown;
     bool fDown;
     bool eDown;
     bool[] sDown; // 0~7번까지의 도구 인덱스 번호 모음

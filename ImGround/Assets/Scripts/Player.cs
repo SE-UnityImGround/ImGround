@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
+    [SerializeField]
+    private Transform[] hat = new Transform[5];
 
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
@@ -94,6 +96,7 @@ public class Player : MonoBehaviour
         pMove.Sleep();
         pMove.Sit();
         pAttack.Attack();
+        pAttack.SpinAttack();
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()
@@ -136,6 +139,12 @@ public class Player : MonoBehaviour
             particleSystem = effectInstance.GetComponent<ParticleSystem>();
         }
         particleSystem?.Play();
+
+        if (hat[level - 1] != null)
+        {
+            hat[level - 1].gameObject.SetActive(false);
+        }
+        hat[level].gameObject.SetActive(true);    
     }
     private void OnCollisionEnter(Collision collision)
     {
