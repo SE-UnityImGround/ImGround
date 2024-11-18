@@ -53,7 +53,7 @@ public class QuestBehavior : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message + "\n" + nameof(InventoryManager) + "가 아직 실행되지 않았습니다!");
+            Debug.LogError(nameof(InventoryManager) + "가 아직 올바르게 실행되지 않았습니다!\n" + e.Message);
         }
     }
 

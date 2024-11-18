@@ -17,6 +17,8 @@ public class QuestManager : MonoBehaviour
         return instance;
     }
 
+    private List<QuestIdEnum> doneList = new List<QuestIdEnum>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,9 +40,25 @@ public class QuestManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 현재 특정 퀘스트가 이미 수행되었는지 여부를 반환합니다.
+    /// </summary>
+    /// <param name="questid"></param>
+    /// <returns></returns>
+    public bool isDone(QuestIdEnum questid)
+    {
+        foreach (QuestIdEnum done in doneList)
+        {
+            if (done == questid)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void doneQuest(QuestIdEnum questId)
     {
-        Debug.LogError("퀘스트 완료 로직 미구현");
-        throw new System.NotImplementedException("퀘스트 로직 미구현");
+        doneList.Add(questId);
     }
 }

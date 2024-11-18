@@ -31,8 +31,18 @@ public class QuestListBehavior : UIBehavior
         currentQuests.Add(quest.gameObject);
     }
 
+    private void removeQuest(QuestBehavior q)
+    {
+        if (currentQuests.Contains(q.gameObject))
+        {
+            currentQuests.Remove(q.gameObject);
+            Destroy(q.gameObject);
+        }
+    }
+
     private void onQuestRewardStart(QuestBehavior questUI)
     {
-        Debug.Log(questUI.questID.ToString());
+        QuestManager.getInstance().doneQuest(questUI.questID);
+        removeQuest(questUI);
     }
 }
