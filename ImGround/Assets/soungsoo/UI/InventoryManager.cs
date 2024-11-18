@@ -2,68 +2,203 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager
 {
-    [SerializeField]
-    private InventoryBehavior inventoryUI;
+    private const int INVENTORY_SIZE = 24;
+    private static ItemBundle[] inventory = new ItemBundle[INVENTORY_SIZE];
+    private static int selectedSlotIdx = -1;
+    private static int money;
 
-    private static InventoryManager instance = null;
-    public static InventoryManager getInstance()
+    /// <summary>
+    /// 인벤토리의 슬롯 선택값이 변경될 경우 발생하는 이벤트입니다.
+    /// </summary>
+    /// <param name="selectedIdx"></param>
+    public delegate void onSelectionChanged(int selectedIdx);
+    public static onSelectionChanged onSelectionChangedHandler;
+
+    /// <summary>
+    /// 인벤토리의 특정 슬롯에 아이템 갱신이 발생할 경우 발생하는 이벤트입니다.
+    /// </summary>
+    /// <param name="selectedIdx"></param>
+    public delegate void onSlotItemChanged(int slotIdx);
+    public static onSlotItemChanged onSlotItemChangedHandler;
+
+    /*====================================
+     *      Selection Management
+     *===================================*/
+
+    /// <summary>
+    /// 인벤토리의 특정 슬롯을 선택합니다.
+    /// </summary>
+    /// <param name="idx"></param>
+    public static void selectSlot(int idx)
     {
-        if (instance == null)
-        {
-            throw new System.Exception(nameof(InventoryManager) + "가 게임 내에 사용되지 않았습니다!");
-        }
-        return instance;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (instance != null)
-        {
-            throw new System.Exception(nameof(InventoryManager) + "는 하나만 존재해야합니다!");
-        }
-        instance = this;
-
-        if (inventoryUI == null)
-        {
-            throw new System.Exception("인벤토리 UI가 등록되지 않았습니다!");
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        selectedSlotIdx = idx;
+        if (selectedSlotIdx < -1 || selectedSlotIdx > INVENTORY_SIZE)
+            selectedSlotIdx = -1;
+        onSelectionChangedHandler?.Invoke(selectedSlotIdx);
     }
 
     /// <summary>
-    /// 인벤토리에 특정 아이템이 몇개 있는지를 반환합니다.
+    /// 현재 선택된 슬롯 번호를 반환합니다.
     /// </summary>
     /// <returns></returns>
-    public int getItemAmount(ItemIdEnum itemType)
+    public static int getSelectedSlotIndex()
     {
-        return inventoryUI.getItemAmount(itemType);
+        return selectedSlotIdx;
+    }
+
+    /*====================================
+     *       Inventory Information
+     *===================================*/
+
+    /// <summary>
+    /// 인벤토리에 존재하는 특정 아이템의 갯수를 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public static int getItemAmount(ItemIdEnum item)
+    {
+        int count = 0;
+        foreach (ItemBundle bundle in inventory)
+        {
+            if (bundle != null && bundle.item.itemId == item && bundle.count > 0)
+            {
+                count += bundle.count;
+            }
+        }
+        return count;
     }
 
     /// <summary>
-    /// 현재 인벤토리에서 선택된 아이템을 반환합니다.
+    /// 인벤토리의 크기를 반환합니다.
     /// </summary>
     /// <returns></returns>
-    public ItemBundle getSelectedItem()
+    public static int getInventorySize()
     {
-        return inventoryUI.getSelectedItem();
+        return INVENTORY_SIZE;
+    }
+
+    /*====================================
+     *         Money Getter/Setter
+     *===================================*/
+
+    /// <summary>
+    /// 주어진 액수만큼 가진 돈을 추가/제거합니다.
+    /// </summary>
+    /// <param name="money"></param>
+    public static void changeMoney(int money)
+    {
+        InventoryManager.money += money;
     }
 
     /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
-    /// <br/>주의 : 아이템을 추가한 후 남은 수량이 입력된 item 객체에 남아있습니다.
+    /// 현재 가진 돈의 액수를 반환합니다.
     /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public bool addItem(Item item)
+    public static int getMoney()
     {
-        return inventoryUI.addItem(item);
+        return money;
+    }
+
+    /*====================================
+     *         Item Getter/Setter
+     *===================================*/
+
+    /// <summary>
+    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 성공하면 true를 반환합니다.
+    /// </summary>
+    /// <param name="item">인벤토리에 추가할 아이템</param>
+    /// <returns></returns>
+    public static bool addItem(Item item)
+    {
+        return addItems(new ItemBundle(item, 1, true));
+    }
+
+    /// <summary>
+    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템 추가에 성공하면 true를 반환합니다.
+    /// <br/>아이템을 추가한 후 남은 수량이 입력된 <paramref name="items"/> 객체에 반영됩니다.
+    /// </summary>
+    /// <param name="items">인벤토리에 추가할 아이템</param>
+    /// <returns></returns>
+    public static bool addItems(ItemBundle items)
+    {
+        bool added = false;
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            if (inventory[i] == null)
+            {
+                inventory[i] = new ItemBundle(items.item, 0, true);
+            }
+            
+            if (inventory[i].addItem(items))
+            {
+                onSlotItemChangedHandler?.Invoke(i);
+                added = true;
+            }
+
+            if (items.count == 0)
+                break;
+        }
+
+        return added;
+    }
+
+    /// <summary>
+    /// 특정 슬롯의 아이템 ID를 반환합니다.
+    /// </summary>
+    /// <param name="slotIdx"></param>
+    /// <returns></returns>
+    public static ItemIdEnum getItemId(int slotIdx)
+    {
+        if ((slotIdx < 0 && slotIdx > INVENTORY_SIZE)
+            || inventory[slotIdx] == null)
+            return ItemIdEnum.TEST_NULL_ITEM;
+        else
+            return inventory[slotIdx].item.itemId;
+    }
+
+    /// <summary>
+    /// 모든 슬롯의 아이템을 꺼냅니다.
+    /// </summary>
+    /// <returns>꺼낸 모든 인벤토리의 아이템</returns>
+    public static ItemBundle[] popAllItems()
+    {
+        List<ItemBundle> items = new List<ItemBundle>(INVENTORY_SIZE);
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            ItemBundle getItem = takeItem(i, -1);
+            if (getItem != null && getItem.count > 0)
+                items.Add(getItem);
+        }
+        return items.ToArray();
+    }
+
+    /// <summary>
+    /// 슬롯에서 아이템을 주어진 갯수만큼 꺼냅니다.
+    /// <br/> 갯수가 음수이면 모두 꺼냅니다.
+    /// <br/> 아이템이 없다면 null을 반환합니다.
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public static ItemBundle takeItem(int slotIdx, int count)
+    {
+        if (inventory[slotIdx] == null)
+            return null;
+
+        ItemBundle result;
+
+        if (count < 0 || count >= inventory[slotIdx].count)
+        {
+            result = inventory[slotIdx];
+            inventory[slotIdx] = null;
+        }
+        else
+        {
+            result = inventory[slotIdx].getDividedItems(count);
+            if (inventory[slotIdx].count == 0)
+                inventory[slotIdx] = null;
+        }
+
+        onSlotItemChangedHandler?.Invoke(slotIdx);
+        return result;
     }
 }

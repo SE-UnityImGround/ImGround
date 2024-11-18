@@ -10,13 +10,10 @@ public class InventoryBehavior : UIBehavior
 {
     [SerializeField]
     private GameObject slotPrefab = null;
-
     [SerializeField]
     private GameObject SlotList = null;
 
-    private Inventory inventory = new Inventory(24);
-
-    private ItemBundle selectedItem = null;
+    private SlotBehavior[] slots;
 
     public override void initialize()
     {
@@ -27,81 +24,23 @@ public class InventoryBehavior : UIBehavior
         }
 
         generateSlots();
+        InventoryManager.onSlotItemChangedHandler += onSlotChanged;
     }
 
     private void generateSlots()
     {
-        for (int slotNum = 1; slotNum <= inventory.size; slotNum++)
+        slots = new SlotBehavior[InventoryManager.getInventorySize()];
+        for (int slotNum = 0; slotNum < slots.Length; slotNum++)
         {
             SlotBehavior newSlotScript = Instantiate(slotPrefab, SlotList.transform).GetComponent<SlotBehavior>();
-            newSlotScript.initialize(inventory.slots[slotNum - 1]);
-            newSlotScript.itemSelectedEventHandler += onItemSelected;
+            newSlotScript.initialize(slotNum);
+            newSlotScript.slotSelectedEventHandler += InventoryManager.selectSlot;
+            slots[slotNum] = newSlotScript;
         }
     }
 
-    /*========================================================
-     *                     이벤트 처리
-     *========================================================*/
-
-    private void onItemSelected(ItemBundle selection)
+    private void onSlotChanged(int slotIdx)
     {
-        this.selectedItem = selection;
-    }
-
-    /*========================================================
-     *                     외부 지원 메소드
-     *========================================================*/
-
-    /// <summary>
-    /// 현재 선택된 아이템을 반환합니다.
-    /// </summary>
-    /// <returns></returns>
-    public ItemBundle getSelectedItem()
-    {
-        return selectedItem;
-    }
-
-    /// <summary>
-    /// 인벤토리에 존재하는 특정 아이템의 갯수를 반환합니다.
-    /// </summary>
-    /// <returns></returns>
-    public int getItemAmount(ItemIdEnum item)
-    {
-        int count = 0;
-        foreach (Slot slot in inventory.slots)
-        {
-            if (slot.hasItem() && slot.bundle.item.itemId == item)
-            {
-                count += slot.bundle.count;
-            }
-        }
-        return count;
-    }
-
-    /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
-    /// <br/>아이템을 추가한 후 남은 수량이 입력된 item 객체에 반영됩니다.
-    /// </summary>
-    /// <param name="item">인벤토리에 추가할 아이템</param>
-    /// <returns></returns>
-    public bool addItem(Item item)
-    {
-        return inventory.addItem(new ItemBundle(item, 1, true));
-    }
-
-    /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
-    /// <br/>아이템을 추가한 후 남은 수량이 입력된 items의 각 아이템에 반영됩니다.
-    /// </summary>
-    /// <param name="items">인벤토리에 추가할 아이템들</param>
-    /// <returns></returns>
-    public bool addItems(Item[] items)
-    {
-        bool result = false;
-        foreach (Item item in items)
-        {
-            result = result || inventory.addItem(new ItemBundle(item, 1, true));
-        }
-        return result;
+        slots[slotIdx].itemUpdated(InventoryManager.getItemId(slotIdx));
     }
 }

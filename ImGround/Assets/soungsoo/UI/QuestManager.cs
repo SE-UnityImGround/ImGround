@@ -2,50 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager
 {
-    [SerializeField]
-    private QuestListBehavior questUI;
-
-    private static QuestManager instance = null;
-    public static QuestManager getInstance()
-    {
-        if (instance == null)
-        {
-            throw new System.Exception(nameof(QuestManager) + "가 게임 내에 사용되지 않았습니다!");
-        }
-        return instance;
-    }
-
-    private List<QuestIdEnum> doneList = new List<QuestIdEnum>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (instance != null)
-        {
-            throw new System.Exception(nameof(QuestManager) + "는 하나만 존재해야합니다!");
-        }
-        instance = this;
-
-        if (questUI == null)
-        {
-            throw new System.Exception("퀘스트 UI가 등록되지 않았습니다!");
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private static List<QuestIdEnum> doneList = new List<QuestIdEnum>();
 
     /// <summary>
     /// 현재 특정 퀘스트가 이미 수행되었는지 여부를 반환합니다.
     /// </summary>
     /// <param name="questid"></param>
     /// <returns></returns>
-    public bool isDone(QuestIdEnum questid)
+    public static bool isDone(QuestIdEnum questid)
     {
         foreach (QuestIdEnum done in doneList)
         {
@@ -57,8 +23,25 @@ public class QuestManager : MonoBehaviour
         return false;
     }
 
-    public void doneQuest(QuestIdEnum questId)
+    /// <summary>
+    /// 퀘스트 완료 처리를 진행합니다.
+    /// </summary>
+    /// <param name="questId"></param>
+    public static void doneQuest(QuestIdEnum questId)
     {
+        Quest questInfo = QuestInfoManager.getQuestInfo(questId);
+
+        InventoryManager.changeMoney(questInfo.rewardMoney);
+        foreach (ItemBundle bundle in questInfo.rewardItems)
+        {
+            ItemBundle insert = new ItemBundle(bundle);
+            InventoryManager.addItems(insert);
+            if (insert.count > 0)
+            {
+                Debug.LogError("퀘스트 아이템을 더 이상 추가하지 못할 때의 처리 로직이 아직 없어요...");
+            }
+        }
+
         doneList.Add(questId);
     }
 }
