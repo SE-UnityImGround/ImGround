@@ -15,6 +15,11 @@ public class NPCBehavior : MonoBehaviour
     public Vector3 PlayerLookOffset;
     public Vector3 IconOffset = new Vector3(0, 3, 0);
 
+    [Tooltip("무작위 이동 중 대기하는 최소시간입니다.")]
+    public float minDuration = 5.0f;
+    [Tooltip("무작위 이동 중 대기하는 최대시간입니다.")]
+    public float maxDuration = 30.0f;
+
     private Animator animator; // 이동 애니메이션 관리 컴포넌트 (인스펙터에서 입력받지 않고, 직접 검색합니다)
 
     private NpcGazer npcGazer; // npc 시선 처리 모듈
@@ -32,7 +37,7 @@ public class NPCBehavior : MonoBehaviour
             Origin = transform.position;
 
         npcGazer = new NpcGazer(transform);
-        npcMover = new NpcMover(gameObject);
+        npcMover = new NpcMover(gameObject, minDuration, maxDuration);
         npcMover.onMoveStateChangedEventHandler += onMoveStart;
         npcIcon = new NPCIconController(transform, IconOffset);
     }
