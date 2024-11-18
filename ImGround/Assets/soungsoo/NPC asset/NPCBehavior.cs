@@ -10,7 +10,7 @@ public class NPCBehavior : MonoBehaviour
     public Vector3 Origin;
     [Tooltip("만약 True이면 Origin 값은 오브젝트의 처음 위치로 덮어씌웁니다.")]
     public bool SetOriginAsStartPos;
-    public NPCType type = NPCType.CROWD;
+    public NPCType type = NPCType.NPC_NORMAL;
     public float Radius; // 랜덤 이동 위치의 범위
     public Vector3 PlayerLookOffset;
     public Vector3 IconOffset = new Vector3(0, 3, 0);
