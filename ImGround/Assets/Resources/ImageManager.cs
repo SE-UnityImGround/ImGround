@@ -64,7 +64,7 @@ public class ImageManager
             {
                 findImageInfo(id);
             }
-            catch (Exception e)
+            catch
             {
                 omittedImages += id.ToString() + "\n";
             }

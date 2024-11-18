@@ -43,7 +43,7 @@ public class ItemInfoManager
             {
                 findItemInfo(id);
             }
-            catch (Exception e)
+            catch
             {
                 omittedImages += id.ToString() + "\n";
             }

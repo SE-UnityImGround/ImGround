@@ -47,7 +47,7 @@ public class QuestInfoManager
                     cantLoaded += id.ToString() + "\n";
                 }
             }
-            catch (Exception e)
+            catch
             {
                 omittedData += id.ToString() + "\n";
             }
