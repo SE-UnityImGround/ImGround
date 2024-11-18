@@ -26,6 +26,9 @@ public class NPCBehavior : MonoBehaviour
     private NpcMover npcMover; // npc 이동 모듈
     private NPCIconController npcIcon; // npc 아이콘 관리 모듈
 
+    private bool isTalkingWithPlayer = false;
+    private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +57,14 @@ public class NPCBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        npcMover.moveRandomPosition(Origin, Radius);
+        if (isTalkingWithPlayer)
+        {
+            npcMover.talkWithPlayer(player.transform.position);
+        }
+        else
+        {
+            npcMover.moveRandomPosition(Origin, Radius);
+        }
     }
 
     void LateUpdate()
@@ -65,6 +75,12 @@ public class NPCBehavior : MonoBehaviour
     public void setSelected(bool isSelected)
     {
         npcIcon.setSelected(isSelected);
+    }
+
+    public void setTalkingState(bool isTalking, GameObject player)
+    {
+        this.isTalkingWithPlayer = isTalking;
+        this.player = player;
     }
 
     /// <summary>

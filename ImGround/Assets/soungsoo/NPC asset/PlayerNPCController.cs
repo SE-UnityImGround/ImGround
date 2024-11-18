@@ -8,6 +8,7 @@ public class PlayerNPCController : MonoBehaviour
     private static readonly float MAX_INTERACTION_ANGLE = 70.0f;
 
     private GameObject selectedNPC;
+    private GameObject talkingNPC;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,19 @@ public class PlayerNPCController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && selectedNPC != null)
         {
             Debug.Log("선택된 npc : " + selectedNPC.name + " 타입 : " + selectedNPC.GetComponent<NPCBehavior>().type);
+            if (talkingNPC != null)
+            {
+                talkingNPC.GetComponent<NPCBehavior>().setTalkingState(false, null);
+            }
+            if (talkingNPC != selectedNPC)
+            {
+                talkingNPC = selectedNPC;
+                talkingNPC.GetComponent<NPCBehavior>().setTalkingState(true, gameObject);
+            }
+            else
+            {
+                talkingNPC = null;
+            }
         }
     }
 
