@@ -65,6 +65,7 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.MILK_PACK, ImageIdEnum.ITEM_MILK_PACK, "우유 팩", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.MILK_BUCKET, ImageIdEnum.ITEM_MILK_BUCKET, "우유 양동이", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.APPLE, ImageIdEnum.ITEM_APPLE, "사과", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.APPLE_JUICE, ImageIdEnum.NULL, "사과 쥬스", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.BANANA, ImageIdEnum.ITEM_BANANA, "바나나", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.BANANA_MILK, ImageIdEnum.ITEM_BANANA_MILK, "바나나 우유", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.WATERMELON, ImageIdEnum.ITEM_WATERMELON, "수박", DEFAULT_COUNT),

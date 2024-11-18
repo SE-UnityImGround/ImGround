@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,65 +6,59 @@ using UnityEngine.UI;
 
 public class QuestBehavior : MonoBehaviour
 {
-    public Image UI_QuestImage;
-    public Text UI_Description;
+    private const string TEXT_COMPLETE = "done";
 
-    public Image UI_RewardImage;
-    public Text UI_RewardAmount;
+    [SerializeField]
+    private Text[] UI_progressText;
+    [SerializeField]
+    private Button UI_Claim;
+    [SerializeField]
+    public QuestIdEnum questID;
 
-    public Button UI_Claim;
-
-    public GameObject UI_ProgressDisplay;
-    public Slider UI_ProgressSlider;
-    public Text UI_ProgressText;
+    public delegate void onQuestRewardClick(QuestBehavior questUI);
+    public onQuestRewardClick onQuestRewardClickHandler;
 
     /// <summary>
     /// 퀘스트 객체 등록시 초기화!
     /// </summary>
     /// <param name="parent"></param>
     /// <param name="slotIdx"></param>
-    public void initialize(Quest myQuest)
+    public void initialize()
     {
-        UI_QuestImage.sprite = ImageManager.getImage(myQuest.questIconImage);
-        UI_Description.text = myQuest.description;
-
-        UI_RewardImage.sprite = ImageManager.getImage(myQuest.rewardIconImage);
-        setRewardAmount(myQuest.rewardAmount);
-
-        setProgress(myQuest.progressValue, myQuest.progressSize);
+        setProgress();
     }
 
-    private void setRewardAmount(int amount)
+    private void setProgress()
     {
-        UI_RewardAmount.text = "x " + amount;
-    }
-
-    private void setProgress(int progress, int fullValue)
-    {
-        UI_ProgressText.text = progress + " of " + fullValue;
-
-        if (progress == fullValue)
+        try
         {
-            UI_Claim.gameObject.SetActive(true);
-            UI_ProgressDisplay.SetActive(false);
-            UI_ProgressSlider.value = progress / (float)fullValue;
+            bool done = true;
+            ItemBundle[] requestItems = QuestInfoManager.getQuestInfo(questID).requestItems;
+            for (int i = 0; i < requestItems.Length; i++)
+            {
+                int itemCount = InventoryManager.getInstance().getItemAmount(requestItems[i].item.itemId);
+                int reqestCount = requestItems[i].count;
+                if (reqestCount <= itemCount)
+                {
+                    UI_progressText[i].text = TEXT_COMPLETE;
+                }
+                else
+                {
+                    UI_progressText[i].text = string.Format("({0}/{1})", itemCount, reqestCount);
+                    done = false;
+                }
+            }
+
+            UI_Claim.interactable = done;
         }
-        else
+        catch (Exception e)
         {
-            UI_Claim.gameObject.SetActive(false);
-            UI_ProgressDisplay.SetActive(true);
-            UI_ProgressSlider.value = progress / (float)fullValue;
+            Debug.LogError(e.Message + "\n" + nameof(InventoryManager) + "가 아직 실행되지 않았습니다!");
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void onClickReward()
     {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        onQuestRewardClickHandler.Invoke(this);
     }
 }

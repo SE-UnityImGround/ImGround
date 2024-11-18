@@ -11,6 +11,7 @@ public class Inventory
 {
     public int size { get; private set; }
     public Slot[] slots { get; private set; }
+    public  int money { get; private set; }
 
     public Inventory(int size)
     {

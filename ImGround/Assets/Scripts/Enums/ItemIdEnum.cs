@@ -19,6 +19,7 @@ public enum ItemIdEnum
     MILK_PACK,
     MILK_BUCKET,
     APPLE,
+    APPLE_JUICE,
     BANANA,
     BANANA_MILK,
     WATERMELON,

@@ -1,32 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestListBehavior : UIBehavior
 {
-    public GameObject questsListView;
-    public GameObject questPreFab;
+    [SerializeField]
+    private GameObject QuestListView;
+
+    private List<GameObject> currentQuests = new List<GameObject>();
 
     public override void initialize()
     {
-        testQuest();
+        test();
     }
 
-    private void testQuest()
+    private void test()
     {
-        addQuest(new Quest(ImageIdEnum.ICON_ATTACK, "Lorem ipsum dolor sit amet consetetur", ImageIdEnum.ICON_GEM, 2000, 0));
-        addQuest(new Quest(ImageIdEnum.ICON_ARCHER, "Lorem ipsum dolor sit amet consetetur", ImageIdEnum.ICON_MEAT, 30, 9, 5));
-        addQuest(new Quest(ImageIdEnum.ICON_ATTACK, "test1", ImageIdEnum.ICON_COIN, 512, 10));
-        addQuest(new Quest(ImageIdEnum.ICON_GEM, "test2", ImageIdEnum.ICON_COIN, 128, 2));
+        foreach (QuestIdEnum id in Enum.GetValues(typeof(QuestIdEnum)))
+        {
+            addQuest(id);
+        }
     }
 
-    /// <summary>
-    /// 퀘스트를 추가합니다.
-    /// </summary>
-    /// <param name="q"></param>
-    public void addQuest(Quest q)
+    private void addQuest(QuestIdEnum id)
     {
-        QuestBehavior newQuest = Instantiate(questPreFab, questsListView.transform).GetComponent<QuestBehavior>();
-        newQuest.initialize(q);
+        QuestBehavior quest = Instantiate(QuestInfoManager.getQuestUIPrefab(id), QuestListView.transform).GetComponent<QuestBehavior>();
+        quest.initialize();
+        quest.onQuestRewardClickHandler += onQuestRewardStart;
+        currentQuests.Add(quest.gameObject);
+    }
+
+    private void onQuestRewardStart(QuestBehavior questUI)
+    {
+        Debug.Log(questUI.questID.ToString());
     }
 }

@@ -62,6 +62,23 @@ public class InventoryBehavior : UIBehavior
     }
 
     /// <summary>
+    /// 인벤토리에 존재하는 특정 아이템의 갯수를 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public int getItemAmount(ItemIdEnum item)
+    {
+        int count = 0;
+        foreach (Slot slot in inventory.slots)
+        {
+            if (slot.hasItem() && slot.bundle.item.itemId == item)
+            {
+                count += slot.bundle.count;
+            }
+        }
+        return count;
+    }
+
+    /// <summary>
     /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
     /// <br/>아이템을 추가한 후 남은 수량이 입력된 item 객체에 반영됩니다.
     /// </summary>
