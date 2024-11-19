@@ -1,107 +1,3 @@
-/*using UnityEngine;
-
-public class Player : MonoBehaviour
-{
-    [Header("Player Class")]
-    public PlayerMove pMove;
-    public PlayerAttack pAttack;
-    public PlayerBehavior pBehavior;
-
-    [Header("Player Status")]
-    public int health = 5;
-
-    public Rigidbody rigid;
-
-    void Awake()
-    {
-        pMove = GetComponent<PlayerMove>();
-        pAttack = GetComponent<PlayerAttack>();
-        pBehavior = GetComponent<PlayerBehavior>();
-        rigid = GetComponent<Rigidbody>();
-    }
-
-    void Update()
-    {
-        pBehavior.getInput();
-        pBehavior.Use();
-        pBehavior.Swap();
-        pMove.MoveInput();
-        pAttack.AttackInput();
-        if (!pMove.IsTired)
-        {
-            pMove.Move();
-        }
-        pMove.Turn();
-        pMove.Jump();
-        pMove.Sleep();
-        pAttack.Attack();
-    }
-}*/
-
-
-
-//유진-수정1
-/*using UnityEngine;
-
-public class Player : MonoBehaviour
-{
-    [Header("Player Class")]
-    public PlayerMove pMove;
-    public PlayerAttack pAttack;
-    public PlayerBehavior pBehavior;
-
-    [Header("Player Status")]
-    public int health = 5;
-
-    public Rigidbody rigid;
-
-    private static Player instance;
-
-    void Awake()
-    {
-        // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // 플레이어를 씬 전환 시 유지
-        }
-        else
-        {
-            Destroy(gameObject); // 중복된 플레이어 파괴
-            return;
-        }
-
-        // 플레이어 컴포넌트 초기화
-        pMove = GetComponent<PlayerMove>();
-        pAttack = GetComponent<PlayerAttack>();
-        pBehavior = GetComponent<PlayerBehavior>();
-        rigid = GetComponent<Rigidbody>();
-    }
-
-    void Update()
-    {
-        // 플레이어 동작 업데이트
-        pBehavior.getInput();
-        pBehavior.Use();
-        pBehavior.Swap();
-        pMove.MoveInput();
-        pAttack.AttackInput();
-
-        if (!pMove.IsTired)
-        {
-            pMove.Move();
-        }
-
-        pMove.Turn();
-        pMove.Jump();
-        pMove.Sleep();
-        pAttack.Attack();
-    }
-}
-*/
-
-
-//유진-수정2
 using UnityEngine;
 using System.Collections;
 
@@ -114,7 +10,7 @@ public class Player : MonoBehaviour
 
     [Header("Player Status")]
     [SerializeField]
-    private int maxHealth = 10;
+    private int maxHealth = 30;
     public int health;
     private int exp;
     public int[] requiredExp = new int[10];
@@ -128,6 +24,8 @@ public class Player : MonoBehaviour
 
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
+    [SerializeField]
+    private Transform[] hat = new Transform[5];
 
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
@@ -198,6 +96,7 @@ public class Player : MonoBehaviour
         pMove.Sleep();
         pMove.Sit();
         pAttack.Attack();
+        pAttack.SpinAttack();
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()
@@ -240,6 +139,12 @@ public class Player : MonoBehaviour
             particleSystem = effectInstance.GetComponent<ParticleSystem>();
         }
         particleSystem?.Play();
+
+        if (hat[level - 1] != null)
+        {
+            hat[level - 1].gameObject.SetActive(false);
+        }
+        hat[level].gameObject.SetActive(true);    
     }
     private void OnCollisionEnter(Collision collision)
     {

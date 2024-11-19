@@ -36,63 +36,61 @@ public class PlayerAttack : MonoBehaviour
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
-            Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
-            Collider[] hitAnimals = Physics.OverlapSphere(attackPoint.position, attackRange, animalLayer);
-            if (hitEnemies.Length > 0)
-            {
-                foreach (Collider enemy in hitEnemies)
-                {
-                    Enemy enemyHealth = enemy.GetComponent<Enemy>();
-                    if (enemyHealth != null && !enemyHealth.IsDie)
-                    {
-                        if (player.pBehavior.ToolIndex == 6)
-                        {
-                            enemyHealth.TakeDamage(5);
-                        }
-                        else if (player.pBehavior.ToolIndex == 2)
-                        {
-                            enemyHealth.TakeDamage(3);
-                        }
-                        else if (player.pBehavior.ToolIndex == 0)
-                        {
-                            enemyHealth.TakeDamage(1);
-                        }
-                        else
-                        {
-                            enemyHealth.TakeDamage(2);
-                        }
-                    }
-                }
-            }
-            if (hitAnimals.Length > 0)
-            {
-                foreach(Collider animal in hitAnimals)
-                {
-                    Animal animalHealth = animal.GetComponent<Animal>();
-                    if(animalHealth != null)
-                    {
-                        if (player.pBehavior.ToolIndex == 6)
-                        {
-                            animalHealth.TakeDamage(5);
-                        }
-                        else if(player.pBehavior.ToolIndex == 2)
-                        {
-                            animalHealth.TakeDamage(3);
-                        }
-                        else if(player.pBehavior.ToolIndex == 0)
-                        {
-                            animalHealth.TakeDamage(1);
-                        }
-                        else
-                        {
-                            animalHealth.TakeDamage(2);
-                        }
-                    }
-                }
-            }
+            StartAttack();
             attackDelay = 0f;
             StartCoroutine(ResetAttack());
         }
+    }
+    public void SpinAttack()
+    {
+        attackDelay += Time.deltaTime;
+        isReady = 2f < attackDelay;
+        if (player.pBehavior.dDown && (player.pBehavior.ToolIndex == 6 || player.pBehavior.ToolIndex == 7) && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        {
+            anim.SetTrigger("doSpinAttack");
+            isAttacking = true;
+            StartAttack();
+            attackDelay = 0f;
+            StartCoroutine(ResetSpinAtk());
+        }
+    }
+
+    private void StartAttack()
+    {
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+        Collider[] hitAnimals = Physics.OverlapSphere(attackPoint.position, attackRange, animalLayer);
+        if (hitEnemies.Length > 0)
+        {
+            foreach (Collider enemy in hitEnemies)
+            {
+                Enemy enemyHealth = enemy.GetComponent<Enemy>();
+                if (enemyHealth != null && !enemyHealth.IsDie)
+                {
+                    int damage = GetDamageByTool();
+                    enemyHealth.TakeDamage(damage);
+                }
+            }
+        }
+        if (hitAnimals.Length > 0)
+        {
+            foreach (Collider animal in hitAnimals)
+            {
+                Animal animalHealth = animal.GetComponent<Animal>();
+                if (animalHealth != null)
+                {
+                    int damage = GetDamageByTool();
+                    animalHealth.TakeDamage(damage);
+                }
+            }
+        }
+    }
+    // 도구별 데미지 계산
+    int GetDamageByTool()
+    {
+        if (player.pBehavior.ToolIndex == 6) return 5;
+        if (player.pBehavior.ToolIndex == 2) return 3;
+        if (player.pBehavior.ToolIndex == 0) return 1;
+        return 2;
     }
     // 공격 범위 테스트용 클래스 (추후에 삭제 예정)
     private void OnDrawGizmosSelected()
@@ -107,6 +105,11 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator ResetAttack()
     {
         yield return new WaitForSeconds(0.5f); // 공격 애니메이션이 끝나는 시간 (임의로 설정)
+        isAttacking = false;
+    }
+    IEnumerator ResetSpinAtk()
+    {
+        yield return new WaitForSeconds(2f);
         isAttacking = false;
     }
 }
