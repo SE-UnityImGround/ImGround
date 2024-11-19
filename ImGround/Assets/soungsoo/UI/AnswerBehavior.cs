@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 대화창 내 단일 대답 텍스트 UI를 관리하는 스크립트입니다.
+/// </summary>
 public class AnswerBehavior : MonoBehaviour
 {
     private const string POINTED = "->";
@@ -34,7 +37,7 @@ public class AnswerBehavior : MonoBehaviour
 
     public void onClick()
     {
-        AnswerSelectedEventHandler.Invoke(answerIdx);
+        AnswerSelectedEventHandler?.Invoke(answerIdx);
     }
 
     public void onPointerEnter()

@@ -12,15 +12,7 @@ public class QuestListBehavior : UIBehavior
 
     public override void initialize()
     {
-        test();
-    }
-
-    private void test()
-    {
-        foreach (QuestIdEnum id in Enum.GetValues(typeof(QuestIdEnum)))
-        {
-            addQuest(id);
-        }
+        QuestManager.onQuestAddedHandler += addQuest;
     }
 
     private void addQuest(QuestIdEnum id)

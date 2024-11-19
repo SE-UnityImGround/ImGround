@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 대화 중 대답 텍스트 UI 오브젝트를 관리하는 자원 관리 클래스입니다.
+/// </summary>
 public class AnswerItemManager
 {
     private GameObject AnswerItemPrefab;

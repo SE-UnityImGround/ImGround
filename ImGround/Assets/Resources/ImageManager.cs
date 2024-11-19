@@ -192,7 +192,14 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.UI_LIFE_30, "Images/UI/Life_30"),
         new ImageInfo(ImageIdEnum.UI_LIFE_50, "Images/UI/Life_50"),
         new ImageInfo(ImageIdEnum.UI_LIFE_80, "Images/UI/Life_80"),
-        new ImageInfo(ImageIdEnum.UI_LIFE_100, "Images/UI/Life_100")
+        new ImageInfo(ImageIdEnum.UI_LIFE_100, "Images/UI/Life_100"),
+
+        new ImageInfo(ImageIdEnum.UI_TALK_GC, "Images/UI/규찬"),
+        new ImageInfo(ImageIdEnum.UI_TALK_MJ, "Images/UI/민지"),
+        new ImageInfo(ImageIdEnum.UI_TALK_SS, "Images/UI/성수"),
+        new ImageInfo(ImageIdEnum.UI_TALK_YJ, "Images/UI/유진"),
+        new ImageInfo(ImageIdEnum.UI_TALK_EJ, "Images/UI/은주"),
+        new ImageInfo(ImageIdEnum.UI_TALK_JY, "Images/UI/지영")
     };
 
     /*==================================================
