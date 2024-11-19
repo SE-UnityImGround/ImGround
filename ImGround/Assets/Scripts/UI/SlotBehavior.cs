@@ -8,27 +8,25 @@ using UnityEngine.UI;
 /// </summary>
 public class SlotBehavior : MonoBehaviour
 {
-    private Slot mySlot;
+    private int slotIdx;
     private Image itemImg;
 
     /// <summary>
     /// 슬롯이 선택된 경우 발생하는 이벤트입니다.
     /// </summary>
-    /// <param name="selectedItem">선택된 슬롯의 아이템</param>
-    public delegate void ItemSelectedEvent(Item selectedItem);
+    /// <param name="slotIdx">선택된 슬롯의 번호</param>
+    public delegate void SlotSelectedEvent(int slotIdx);
 
-    public ItemSelectedEvent itemSelectedEventHandler;
+    public SlotSelectedEvent slotSelectedEventHandler;
 
     /// <summary>
     /// 슬롯 객체 등록시 초기화!
     /// </summary>
     /// <param name="mySlot"></param>
-    public void initialize(Slot mySlot)
+    public void initialize(int slotIdx)
     {
-        this.mySlot = mySlot;
-        mySlot.itemUpdatedEventHandler += itemUpdated;
-        itemImg = transform.GetChild(0).gameObject.GetComponent<Image>();
-
+        this.slotIdx = slotIdx;
+        this.itemImg = transform.GetChild(0).gameObject.GetComponent<Image>();
     }
 
     /// <summary>
@@ -51,25 +49,25 @@ public class SlotBehavior : MonoBehaviour
     /// </summary>
     private void onClick()
     {
-        itemSelectedEventHandler?.Invoke(this.mySlot.item);
+        slotSelectedEventHandler?.Invoke(slotIdx);
     }
 
     /// <summary>
     /// 이 슬롯의 아이템 변동 이벤트를 받는 처리기입니다.
     /// </summary>
     /// <param name="updatedItem"></param>
-    private void itemUpdated(Item updatedItem)
+    public void itemUpdated(ItemIdEnum itemId)
     {
-        setImage(updatedItem);
+        setImage(itemId);
     }
 
     /*=======================================================
      *                    내부 처리 메소드
      *=======================================================*/
 
-    private void setImage(Item i)
+    private void setImage(ItemIdEnum i)
     {
-        if (i == null)
+        if (i == ItemIdEnum.TEST_NULL_ITEM)
         {
             itemImg.sprite = null;
             itemImg.color = new Color(255, 255, 255, 0);
@@ -77,7 +75,7 @@ public class SlotBehavior : MonoBehaviour
         else
         {
             itemImg.color = new Color(255, 255, 255, 255);
-            Sprite itemImage = ItemInfoManager.getItemImage(i.itemId);
+            Sprite itemImage = ItemInfoManager.getItemImage(i);
             if (itemImg.sprite != itemImage)
             {
                 itemImg.sprite = itemImage;

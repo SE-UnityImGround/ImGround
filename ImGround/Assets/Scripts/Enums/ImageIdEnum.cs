@@ -22,7 +22,15 @@ public enum ImageIdEnum
     // foods
     ITEM_MILK_PACK,
     ITEM_MILK_BUCKET,
+    ITEM_APPLE,
+    ITEM_BANANA,
     ITEM_BANANA_MILK,
+    ITEM_WATERMELON,
+    ITEM_HALF_WATERMELON,
+    ITEM_WATERMELON_JUICE,
+    ITEM_CARROT_JUICE,
+    ITEM_LEMON,
+    ITEM_LEMON_JUICE,
     ITEM_CHEESE,
     ITEM_BEEF_SUSHI,
     ITEM_EGG_SUSHI,
@@ -41,7 +49,6 @@ public enum ImageIdEnum
     ITEM_STEAK,
     ITEM_EGG_TOAST,
     ITEM_FISH_AND_CHIPS,
-    ITEM_HALF_WATERMELON,
     ITEM_HAMBURGER,
     ITEM_MASHED_POTATO,
     ITEM_PIZZA,
@@ -87,4 +94,14 @@ public enum ImageIdEnum
     ICON_WOOD,
     ICON_ARCHER,
     ICON_ATTACK,
+
+    /*=============================
+     *             UI
+     *=============================*/
+
+    UI_LIFE_0,
+    UI_LIFE_30,
+    UI_LIFE_50,
+    UI_LIFE_80,
+    UI_LIFE_100
 }
