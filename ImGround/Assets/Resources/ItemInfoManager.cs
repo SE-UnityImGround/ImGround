@@ -43,7 +43,7 @@ public class ItemInfoManager
             {
                 findItemInfo(id);
             }
-            catch (Exception e)
+            catch
             {
                 omittedImages += id.ToString() + "\n";
             }
@@ -64,7 +64,16 @@ public class ItemInfoManager
 
         new ItemInfo(ItemIdEnum.MILK_PACK, ImageIdEnum.ITEM_MILK_PACK, "우유 팩", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.MILK_BUCKET, ImageIdEnum.ITEM_MILK_BUCKET, "우유 양동이", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.APPLE, ImageIdEnum.ITEM_APPLE, "사과", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.APPLE_JUICE, ImageIdEnum.NULL, "사과 쥬스", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.BANANA, ImageIdEnum.ITEM_BANANA, "바나나", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.BANANA_MILK, ImageIdEnum.ITEM_BANANA_MILK, "바나나 우유", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.WATERMELON, ImageIdEnum.ITEM_WATERMELON, "수박", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.HALF_WATERMELON, ImageIdEnum.ITEM_HALF_WATERMELON, "수박 반 통", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.WATERMELON_JUICE, ImageIdEnum.ITEM_WATERMELON_JUICE, "수박 쥬스", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.CARROT_JUICE, ImageIdEnum.ITEM_CARROT_JUICE, "당근 쥬스", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.LEMON, ImageIdEnum.ITEM_LEMON, "레몬", DEFAULT_COUNT),
+        new ItemInfo(ItemIdEnum.LEMON_JUICE, ImageIdEnum.ITEM_LEMON_JUICE, "레몬 에이드", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.CHEESE, ImageIdEnum.ITEM_CHEESE, "치즈", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.BEEF_SUSHI, ImageIdEnum.ITEM_BEEF_SUSHI, "소고기 초밥", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.EGG_SUSHI, ImageIdEnum.ITEM_EGG_SUSHI, "계란 초밥", DEFAULT_COUNT),
@@ -83,7 +92,6 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.STEAK, ImageIdEnum.ITEM_STEAK, "스테이크", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.EGG_TOAST, ImageIdEnum.ITEM_EGG_TOAST, "계란빵 토스트", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.FISH_AND_CHIPS, ImageIdEnum.ITEM_FISH_AND_CHIPS, "피시 앤 칩스", DEFAULT_COUNT),
-        new ItemInfo(ItemIdEnum.HALF_WATERMELON, ImageIdEnum.ITEM_HALF_WATERMELON, "수박 반 통", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.HAMBURGER, ImageIdEnum.ITEM_HAMBURGER, "햄버거", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.MASHED_POTATO, ImageIdEnum.ITEM_MASHED_POTATO, "으깬 감자", DEFAULT_COUNT),
         new ItemInfo(ItemIdEnum.PIZZA, ImageIdEnum.ITEM_PIZZA, "피자", DEFAULT_COUNT),
