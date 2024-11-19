@@ -245,6 +245,7 @@ public class PlayerMove : MonoBehaviour
     {
         yield return new WaitForSeconds(2.3f);
         particleSystem?.Stop();
+        Destroy(particleInstance);
         isTired = false;
         isSleeping = false;
     }

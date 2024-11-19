@@ -5,12 +5,14 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     private GameObject[] enemies;
+    private GameObject[] animals;
     public float enemyRespawnTime = 10.0f; // 적이 다시 활성화될 시간
     public float bossRespawnTime = 10.0f;
     private Dictionary<GameObject, bool> respawnInProgress = new Dictionary<GameObject, bool>(); // 리스폰 진행 여부 확인
 
     void Start()
     {
+        animals = GameObject.FindGameObjectsWithTag("Animal");
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // 모든 적에 대해 리스폰 진행 여부 초기화
         foreach (GameObject enemy in enemies)
@@ -18,6 +20,13 @@ public class SpawnManager : MonoBehaviour
             if (enemy != null)
             {
                 respawnInProgress[enemy] = false;
+            }
+        }
+        foreach (GameObject animal in animals)
+        {
+            if (animal != null)
+            {
+                respawnInProgress[animal] = false;
             }
         }
     }
@@ -40,6 +49,29 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
+        foreach (GameObject animal in animals)
+        {
+            if (animal != null && !animal.activeSelf && !respawnInProgress[animal])
+            {
+                // 적이 비활성화된 경우 리스폰 시간 결정
+                Animal animalComponent = animal.GetComponent<Animal>();
+                if (animalComponent != null)
+                {
+                    float respawnTime = 5f;
+                    respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
+                    StartCoroutine(RespawnAnimal(animal, respawnTime));
+                    animalComponent.Respawn();
+                }
+                else
+                {
+                    Chicken chicken = animal.GetComponent<Chicken>();
+                    float respawnTime = 5f;
+                    respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
+                    StartCoroutine(RespawnAnimal(animal, respawnTime));
+                    chicken.Respawn();
+                }
+            }
+        }
     }
 
     // 적이 비활성화된 후 일정 시간 뒤에 다시 활성화하는 함수
@@ -51,5 +83,14 @@ public class SpawnManager : MonoBehaviour
         // 적 다시 활성화
         enemy.SetActive(true);
         respawnInProgress[enemy] = false; // 리스폰이 완료되었음을 표시
+    }
+    IEnumerator RespawnAnimal(GameObject animal, float delay)
+    {
+        // 일정 시간 대기
+        yield return new WaitForSeconds(delay);
+
+        // 적 다시 활성화
+        animal.SetActive(true);
+        respawnInProgress[animal] = false; // 리스폰이 완료되었음을 표시
     }
 }

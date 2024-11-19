@@ -45,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
     {
         attackDelay += Time.deltaTime;
         isReady = 2f < attackDelay;
-        if (player.pBehavior.dDown && (player.pBehavior.ToolIndex == 6 || player.pBehavior.ToolIndex == 0) && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        if (player.pBehavior.dDown && (player.pBehavior.ToolIndex == 6 || player.pBehavior.ToolIndex == 7) && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
         {
             anim.SetTrigger("doSpinAttack");
             isAttacking = true;
