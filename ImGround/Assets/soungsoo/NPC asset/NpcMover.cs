@@ -99,10 +99,32 @@ public class NpcMover
         return false;
     }
 
+    private void returnToMoveState()
+    {
+        currentState = NpcMoveState.MOVE;
+        onMoveStateChangedEventHandler?.Invoke(currentState);
+    }
+
+    private void returnToIdleState()
+    {
+        agent.ResetPath();
+
+        stdTime = Time.time;
+        timerDuration = Random.Range(minDuration, maxDuration);
+
+        currentState = NpcMoveState.IDLE;
+        onMoveStateChangedEventHandler?.Invoke(currentState);
+    }
+
     /* ===========================
      *        기능 메소드
      * ===========================*/
 
+    /// <summary>
+    /// 무작위 이동을 진행합니다. (Update에서 사용)
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="radius"></param>
     public void moveRandomPosition(Vector3 origin, float radius)
     {
         if (currentState == NpcMoveState.IDLE)
@@ -132,8 +154,7 @@ public class NpcMover
                     }
                 }
 
-                currentState = NpcMoveState.MOVE;
-                onMoveStateChangedEventHandler?.Invoke(currentState);
+                returnToMoveState();
                 return;
             }
         }
@@ -143,13 +164,7 @@ public class NpcMover
             // 도착 상태
             if ((agent.pathEndPosition - npcObject.transform.position).sqrMagnitude < IN_POSITION_RADIUS_SQUARE)
             {
-                agent.ResetPath();
-
-                stdTime = Time.time;
-                timerDuration = Random.Range(minDuration, maxDuration);
-
-                currentState = NpcMoveState.IDLE;
-                onMoveStateChangedEventHandler?.Invoke(currentState);
+                returnToIdleState();
                 return;
             }
 
@@ -163,5 +178,17 @@ public class NpcMover
                         Time.deltaTime / 0.1f);
             return;
         }
+    }
+
+    /// <summary>
+    /// 플레이어와 대화하도록 바라봅니다. (Update에서 사용)
+    /// </summary>
+    public void talkWithPlayer(Vector3 playerPos)
+    {
+        returnToIdleState();
+        npcObject.transform.rotation = Quaternion.Slerp(
+            npcObject.transform.rotation,
+            Quaternion.LookRotation(playerPos - npcObject.transform.position),
+            Time.deltaTime / 0.25f);
     }
 }

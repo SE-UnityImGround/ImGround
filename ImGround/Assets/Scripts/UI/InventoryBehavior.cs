@@ -6,20 +6,16 @@ using UnityEngine.UI;
 /// <summary>
 /// 게임 내에서 인벤토리 UI의 컨트롤을 담당하는 컨트롤 클래스입니다.
 /// </summary>
-public class InventoryBehavior : MonoBehaviour
+public class InventoryBehavior : UIBehavior
 {
     [SerializeField]
     private GameObject slotPrefab = null;
-
     [SerializeField]
     private GameObject SlotList = null;
 
-    private Inventory inventory = new Inventory(20);
+    private SlotBehavior[] slots;
 
-    private Item selectedItem = null;
-
-    // Start is called before the first frame update
-    void Start()
+    public override void initialize()
     {
         if (slotPrefab == null)
         {
@@ -28,89 +24,23 @@ public class InventoryBehavior : MonoBehaviour
         }
 
         generateSlots();
-        setActive(false);
+        InventoryManager.onSlotItemChangedHandler += onSlotChanged;
     }
 
     private void generateSlots()
     {
-        for (int slotNum = 1; slotNum <= inventory.size; slotNum++)
+        slots = new SlotBehavior[InventoryManager.getInventorySize()];
+        for (int slotNum = 0; slotNum < slots.Length; slotNum++)
         {
             SlotBehavior newSlotScript = Instantiate(slotPrefab, SlotList.transform).GetComponent<SlotBehavior>();
-            newSlotScript.initialize(inventory.slots[slotNum - 1]);
-            newSlotScript.itemSelectedEventHandler += onItemSelected;
+            newSlotScript.initialize(slotNum);
+            newSlotScript.slotSelectedEventHandler += InventoryManager.selectSlot;
+            slots[slotNum] = newSlotScript;
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void onSlotChanged(int slotIdx)
     {
-
-    }
-
-    /*========================================================
-     *                     이벤트 처리
-     *========================================================*/
-
-    private void onItemSelected(Item selection)
-    {
-        this.selectedItem = selection;
-    }
-
-    /*========================================================
-     *                     외부 지원 메소드
-     *========================================================*/
-
-    /// <summary>
-    /// 인벤토리의 표시/숨김을 관리합니다.
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void setActive(bool isActive)
-    {
-        gameObject.SetActive(isActive);
-    }
-
-    /// <summary>
-    /// 현재 인벤토리가 표시되는지를 반환합니다.
-    /// </summary>
-    /// <returns>인벤토리가 표시중이면 true, 그렇지 않으면 false를 반환합니다.</returns>
-    public bool getActive()
-    {
-        return gameObject.activeSelf;
-    }
-
-    /// <summary>
-    /// 현재 선택된 아이템을 반환합니다.
-    /// </summary>
-    /// <returns></returns>
-    public Item getSelectedItem()
-    {
-        return selectedItem;
-    }
-
-    /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
-    /// <br/>아이템을 추가한 후 남은 수량이 입력된 item 객체에 반영됩니다.
-    /// </summary>
-    /// <param name="item">인벤토리에 추가할 아이템</param>
-    /// <returns></returns>
-    public bool addItem(Item item)
-    {
-        return inventory.addItem(item);
-    }
-
-    /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템이 추가되면 true를 반환합니다.
-    /// <br/>아이템을 추가한 후 남은 수량이 입력된 items의 각 아이템에 반영됩니다.
-    /// </summary>
-    /// <param name="items">인벤토리에 추가할 아이템들</param>
-    /// <returns></returns>
-    public bool addItems(Item[] items)
-    {
-        bool result = false;
-        foreach (Item item in items)
-        {
-            result = result || inventory.addItem(item);
-        }
-        return result;
+        slots[slotIdx].itemUpdated(InventoryManager.getItemId(slotIdx));
     }
 }

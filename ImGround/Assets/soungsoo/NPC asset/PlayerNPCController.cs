@@ -7,7 +7,8 @@ public class PlayerNPCController : MonoBehaviour
     private static readonly float MAX_INTERACTION_DISTANCE = 5.0f;
     private static readonly float MAX_INTERACTION_ANGLE = 70.0f;
 
-    private GameObject selected;
+    private GameObject selectedNPC;
+    private GameObject talkingNPC;
 
     // Start is called before the first frame update
     void Start()
@@ -18,22 +19,46 @@ public class PlayerNPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject selectedNPC = findInteractableNPC();
-        if (selected != selectedNPC)
+        selectInteractableNPC();
+        if (Input.GetKeyDown(KeyCode.F) && selectedNPC != null)
         {
-            if (selected != null)
+            Debug.Log("선택된 npc : " + selectedNPC.name + " 타입 : " + selectedNPC.GetComponent<NPCBehavior>().type);
+            if (talkingNPC != null)
+            {
+                talkingNPC.GetComponent<NPCBehavior>().setTalkingState(false, null);
+            }
+            if (talkingNPC != selectedNPC)
+            {
+                talkingNPC = selectedNPC;
+                talkingNPC.GetComponent<NPCBehavior>().setTalkingState(true, gameObject);
+            }
+            else
+            {
+                talkingNPC = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 상호작용 가능한 NPC를 탐색합니다.
+    /// 속성 <see cref="selectedNPC"/>에 저장됩니다.
+    /// </summary>
+    private void selectInteractableNPC()
+    {
+        GameObject selectedNPC = findInteractableNPC();
+        if (this.selectedNPC != selectedNPC)
+        {
+            if (this.selectedNPC != null)
             {
                 // 이전 선택된 NPC 처리
-                selected.GetComponent<NPCBehavior>().setSelected(false);
-                Debug.Log("취소됨 : " + selected.name);
+                this.selectedNPC.GetComponent<NPCBehavior>().setSelected(false);
             }
             if (selectedNPC != null)
             {
                 // 새로 선택된 NPC 처리
                 selectedNPC.GetComponent<NPCBehavior>().setSelected(true);
-                Debug.Log("새로 선택됨 : " + selectedNPC.name);
             }
-            selected = selectedNPC;
+            this.selectedNPC = selectedNPC;
         }
     }
 
