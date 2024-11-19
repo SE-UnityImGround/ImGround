@@ -72,6 +72,7 @@ public class PlayerBehavior : MonoBehaviour
         pickDelay += Time.deltaTime;
         harvestDelay += Time.deltaTime;
         plantDelay += Time.deltaTime;
+
         isDigReady = 1.5f < digDelay;
         isPickReady = 1.2f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
@@ -85,7 +86,7 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
         }
-        else if (toolIndex == 0 && fDown && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
@@ -146,7 +147,7 @@ public class PlayerBehavior : MonoBehaviour
             pickDelay = 0f;
             StartCoroutine(ResetPick());
         }
-        else if (toolIndex == 4 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 땅파기
             anim.SetTrigger("doDigUp");
             isDigging = true;
@@ -154,7 +155,7 @@ public class PlayerBehavior : MonoBehaviour
             curtivatePoint[1].gameObject.SetActive(true);
             StartCoroutine(ResetDigUp());
         }
-        else if(toolIndex == 5 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if(toolIndex == 5 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 작물 수확하기
             anim.SetTrigger("doHarvest");
             isHarvest = true;
@@ -267,7 +268,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetHarvest()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
         pointH.gameObject.SetActive(false);
         isHarvest = false;
     }

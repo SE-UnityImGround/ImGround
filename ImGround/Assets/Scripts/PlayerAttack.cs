@@ -14,6 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private Player player;
     Animator anim;
     public Transform attackPoint;
+    public Transform[] spinAtkPoint = new Transform[2];
     [SerializeField]
     private float attackRange = 1.1f;
     public LayerMask enemyLayer;
@@ -31,8 +32,9 @@ public class PlayerAttack : MonoBehaviour
     public void Attack()
     {
         attackDelay += Time.deltaTime;
-        isReady = 0.4f < attackDelay;
-        if (aDown && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        isReady = 0.8f < attackDelay;
+        if (aDown && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating &&
+            !player.pBehavior.IsPickingUp && !player.pBehavior.IsHarvest)
         {
             anim.SetTrigger("doAttack");
             isAttacking = true;
@@ -45,16 +47,40 @@ public class PlayerAttack : MonoBehaviour
     {
         attackDelay += Time.deltaTime;
         isReady = 2f < attackDelay;
-        if (player.pBehavior.dDown && (player.pBehavior.ToolIndex == 6 || player.pBehavior.ToolIndex == 7) && isReady && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        if (player.level >= 4 && player.pBehavior.dDown && (player.pBehavior.ToolIndex == 6 || player.pBehavior.ToolIndex == 7) && isReady &&
+            !player.pBehavior.IsHarvest && !player.pBehavior.IsDigging && !player.pBehavior.IsPicking && !player.pBehavior.IsEating &&
+            !player.pBehavior.IsPickingUp)
         {
+            int index = player.pBehavior.ToolIndex == 6 ? 0 : 1;
             anim.SetTrigger("doSpinAttack");
             isAttacking = true;
             StartAttack();
             attackDelay = 0f;
-            StartCoroutine(ResetSpinAtk());
+            StartCoroutine(ResetSpinAtk(index));
         }
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Enemy")
+        {
+            Enemy enemyHealth = other.GetComponent<Enemy>();
+            if (enemyHealth != null && !enemyHealth.IsDie)
+            {
+                int damage = GetDamageByTool();
+                enemyHealth.TakeDamage(damage);
+            }
+        }
+        else if(other.tag == "Animal")
+        {
+            Animal animalHealth = other.GetComponent<Animal>();
+            if (animalHealth != null)
+            {
+                int damage = GetDamageByTool();
+                animalHealth.TakeDamage(damage);
+                Debug.Log("타격");
+            }
+        }
+    }
     private void StartAttack()
     {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
@@ -107,9 +133,17 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(0.5f); // 공격 애니메이션이 끝나는 시간 (임의로 설정)
         isAttacking = false;
     }
-    IEnumerator ResetSpinAtk()
+    IEnumerator ResetSpinAtk(int index)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.4f);
+        spinAtkPoint[index].gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+        spinAtkPoint[index].gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.4f);
+        spinAtkPoint[index].gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+
         isAttacking = false;
+        spinAtkPoint[index].gameObject.SetActive(false);
     }
 }

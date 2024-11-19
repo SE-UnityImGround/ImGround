@@ -227,7 +227,12 @@ public class PlayerMove : MonoBehaviour
             particleSystem = particleInstance.GetComponent<ParticleSystem>();
         }
         particleSystem?.Play();
-
+        yield return new WaitForSeconds(1f);
+        while(player.health < player.MaxHealth)
+        {
+            player.health += 3;
+            yield return new WaitForSeconds(1.2f);
+        }
     }
 
     IEnumerator Sitting(Transform chairPos)
