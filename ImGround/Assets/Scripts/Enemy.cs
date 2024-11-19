@@ -35,7 +35,8 @@ public class Enemy : MonoBehaviour
     public GameObject[] item;
     [Header("Experience Drop")]
     public GameObject expPrefab; // 드랍할 경험치 프리팹
-    public int expDropCount = 3; // 드랍할 경험치 갯수
+    [SerializeField]
+    private int expDropCount = 3; // 드랍할 경험치 갯수
 
     private DayAndNight dayAndNightScript;
 
@@ -165,7 +166,7 @@ public class Enemy : MonoBehaviour
 
     void Targetting()
     {
-        if (!isDie && isNight)
+        if (!isDie && (isNight || type == Type.Boss))
         {
             float targetRadius = 0;
             float targetRange = 0;

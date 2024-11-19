@@ -18,25 +18,28 @@ public class FlipGround : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Dig"))
+        if (other.CompareTag("Hoe"))
         {
             Flip();
+        }
+        else if (other.CompareTag("Dig"))
+        {
+            Restore();
         }
     }
 
     private void Flip()
     {
-        isCultivated = !isCultivated;
-        ground.SetActive(!isCultivated);
-        farmGround.SetActive(isCultivated);
-        if (isCultivated)
-        {
-            crops?.ResetCrops(isCultivated); // 경작지로 전환되면 농사 시작
-        }
-        else
-        {
-            crops?.ResetCrops(isCultivated); // 일반 땅으로 복원되면 농사 초기화
-        }
-        
+        isCultivated = true;
+        ground.SetActive(false);
+        farmGround.SetActive(true);
+        crops?.ResetCrops(true);
+    }
+    private void Restore()
+    {
+        isCultivated = false;
+        ground.SetActive(true);
+        farmGround.SetActive(false);
+        crops?.ResetCrops(false);
     }
 }
