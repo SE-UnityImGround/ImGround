@@ -70,6 +70,27 @@ public class InventoryManager
     }
 
     /// <summary>
+    /// 인벤토리 내 존재하는 아이템과 수량 정보를 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public static Dictionary<ItemIdEnum, int> getInventoryInfo()
+    {
+        Dictionary<ItemIdEnum, int> info = new Dictionary<ItemIdEnum, int>();
+        foreach (ItemBundle item in inventory)
+        {
+            if (item != null && item.count > 0)
+            {
+                if (!info.ContainsKey(item.item.itemId))
+                {
+                    info.Add(item.item.itemId, 0);
+                }
+                info[item.item.itemId] += item.count;
+            }
+        }
+        return info;
+    }
+
+    /// <summary>
     /// 인벤토리의 크기를 반환합니다.
     /// </summary>
     /// <returns></returns>
@@ -124,7 +145,7 @@ public class InventoryManager
         bool added = false;
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            if (inventory[i] == null)
+            if (inventory[i] == null || inventory[i].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
             {
                 inventory[i] = new ItemBundle(items.item, 0, true);
             }
@@ -154,6 +175,34 @@ public class InventoryManager
             return ItemIdEnum.TEST_NULL_ITEM;
         else
             return inventory[slotIdx].item.itemId;
+    }
+
+    /// <summary>
+    /// 주어진 id의 아이템을 주어진 갯수만큼 꺼내려 시도합니다. 성공한 만큼의 아이템이 반환됩니다.
+    /// <br/> 음수를 입력하면 모든 갯수를 꺼냅니다.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public static ItemBundle removeItem(ItemIdEnum id, int amount)
+    {
+        if (amount < 0) amount = -1; // 오버플로우 완화
+        ItemBundle result = new ItemBundle(id, 0, false);
+        for (int i = 0; i < inventory.Length; i++)
+        {
+            if (amount == 0)
+                break;
+            if (inventory[i] != null && inventory[i].item.itemId == id && inventory[i].count > 0)
+            {
+                ItemBundle getItem = inventory[i].getDividedItems(amount);
+                if (inventory[i].count == 0)
+                    inventory[i] = null;
+                onSlotItemChangedHandler?.Invoke(i);
+                amount -= getItem.count;
+                result.addItem(getItem);
+            }
+        }
+        return result;
     }
 
     /// <summary>

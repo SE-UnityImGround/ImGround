@@ -12,6 +12,7 @@ public class ManufactBehavior : MonoBehaviour
     [SerializeField]
     private GameObject itemDisplayPrefab;
 
+    private List<ManufactItemIconBehavior> manufactIcons = new List<ManufactItemIconBehavior>();
     private ManufactInfo manufactInfo;
 
     public delegate void doMakeClick(ManufactInfo manufactInfo);
@@ -40,13 +41,33 @@ public class ManufactBehavior : MonoBehaviour
         this.manufactInfo = manufactInfo;
         foreach(ItemBundle item in manufactInfo.inputItems)
         {
-            addItemIcon(item, inputItemDisplayer.transform);
+            ManufactItemIconBehavior icon =
+                Instantiate(itemDisplayPrefab, inputItemDisplayer.transform)
+                .GetComponent<ManufactItemIconBehavior>();
+            icon.initialize(item, true);
+            manufactIcons.Add(icon);
         }
-        addItemIcon(manufactInfo.outputItem, outputItemDisplayer.transform);
+        Instantiate(itemDisplayPrefab, outputItemDisplayer.transform)
+            .GetComponent<ManufactItemIconBehavior>().initialize(manufactInfo.outputItem, false);
     }
 
-    private void addItemIcon(ItemBundle item, Transform parent)
+    /// <summary>
+    /// 아이템 아이콘의 수량을 업데이트합니다. null로 인벤토리가 비었음을 표시합니다.
+    /// </summary>
+    /// <param name="inventoryInfo"></param>
+    public void updateInfo(Dictionary<ItemIdEnum, int> inventoryInfo)
     {
-        Instantiate(itemDisplayPrefab, parent).GetComponent<ManufactItemIconBehavior>().initialize(item);
+        foreach (ManufactItemIconBehavior icon in manufactIcons)
+        {
+            ItemIdEnum itemid = icon.getItemId();
+            if (inventoryInfo != null && inventoryInfo.ContainsKey(itemid))
+            {
+                icon.updateAmount(inventoryInfo[itemid]);
+            }
+            else
+            {
+                icon.updateAmount(0);
+            }
+        }
     }
 }
