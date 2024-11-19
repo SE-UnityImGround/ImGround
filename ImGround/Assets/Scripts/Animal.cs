@@ -2,8 +2,6 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
 
 public class Animal : MonoBehaviour
 {
