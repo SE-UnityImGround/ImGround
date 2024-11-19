@@ -27,35 +27,28 @@ public class ManufactListBehavior : UIBehavior
 
     void test()
     {
-        for (int i = 0; i < 10; i++)
+        foreach (ManufactInfo info in ManufactInfoManager.manufactInfos)
         {
-            addManufactItem(
-                new ItemBundle(ItemIdEnum.MILK_PACK, 8, false),
-                new ItemBundle(ItemIdEnum.CHEESE, 2, false));
-
-            addManufactItem(
-                new ItemBundle(ItemIdEnum.GOLD_INGOT, 8, false),
-                new ItemBundle(ItemIdEnum.GOLD_NECKLACE, 6, false));
-
-            addManufactItem(
-                new ItemBundle(ItemIdEnum.HORSE_LEATHER, 8, true),
-                new ItemBundle(ItemIdEnum.BANANA_MILK, 6, true));
+            addManufactItem(info);
         }
     }
 
-    public void addManufactItem(ItemBundle inItem, ItemBundle outItem)
+    public void addManufactItem(ManufactInfo manufactInfo)
     {
         ManufactBehavior man = Instantiate(ManufactPrefab, ManufactListView.transform).GetComponent<ManufactBehavior>();
         if (man == null)
         {
             Debug.LogError("프리팹 " + nameof(ManufactPrefab) + "에서 " + nameof(ManufactBehavior) + "을 찾을 수 없습니다!");
         }
-        man.initialize(inItem, outItem);
+        man.initialize(manufactInfo);
+        man.doMakeClickHandler += startMake;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void startMake(ManufactInfo manufactInfo)
     {
-        
+        string input = "";
+        foreach (ItemBundle item in manufactInfo.inputItems)
+            input += item.item.itemId.ToString() + " " + item.count + "\n";
+        Debug.Log("input : \n" + input + "\n output : \n" + manufactInfo.outputItem.item.itemId.ToString() + " " + manufactInfo.outputItem.count);
     }
 }

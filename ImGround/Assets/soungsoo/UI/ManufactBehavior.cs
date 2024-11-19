@@ -6,48 +6,47 @@ using UnityEngine.UI;
 public class ManufactBehavior : MonoBehaviour
 {
     [SerializeField]
-    private Image InItemImg;
+    private GameObject inputItemDisplayer;
     [SerializeField]
-    private TMPro.TMP_Text InItemAmount;
+    private GameObject outputItemDisplayer;
     [SerializeField]
-    private TMPro.TMP_Text InItemName;
+    private GameObject itemDisplayPrefab;
 
-    [SerializeField]
-    private Image OutItemImg;
-    [SerializeField]
-    private TMPro.TMP_Text OutItemAmount;
-    [SerializeField]
-    private TMPro.TMP_Text OutItemName;
+    private ManufactInfo manufactInfo;
 
-    private void checkValue(object v, string name)
+    public delegate void doMakeClick(ManufactInfo manufactInfo);
+    public doMakeClick doMakeClickHandler;
+
+    public void doMakeClickTrigger()
     {
-        if (v == null)
+        doMakeClickHandler?.Invoke(manufactInfo);
+    }
+
+    public void initialize(ManufactInfo manufactInfo)
+    {
+        if (inputItemDisplayer == null)
         {
-            Debug.LogErrorFormat("{0}에 {1}가 등록되지 않았습니다!", this.GetType().Name, name);
-            return;
+            Debug.LogError(nameof(inputItemDisplayer) + " 없음.");
         }
+        if (outputItemDisplayer == null)
+        {
+            Debug.LogError(nameof(outputItemDisplayer) + " 없음.");
+        }
+        if (itemDisplayPrefab == null)
+        {
+            Debug.LogError(nameof(itemDisplayPrefab) + " 없음.");
+        }
+
+        this.manufactInfo = manufactInfo;
+        foreach(ItemBundle item in manufactInfo.inputItems)
+        {
+            addItemIcon(item, inputItemDisplayer.transform);
+        }
+        addItemIcon(manufactInfo.outputItem, outputItemDisplayer.transform);
     }
 
-    public void initialize(ItemBundle inItemBundle, ItemBundle outItemBundle)
+    private void addItemIcon(ItemBundle item, Transform parent)
     {
-        checkValue(InItemImg, nameof(InItemImg));
-        checkValue(InItemAmount, nameof(InItemAmount));
-        checkValue(InItemName, nameof(InItemName));
-        checkValue(OutItemImg, nameof(OutItemImg));
-        checkValue(OutItemAmount, nameof(OutItemAmount));
-        checkValue(OutItemName, nameof(OutItemName));
-
-        InItemImg.sprite = inItemBundle.item.image;
-        InItemAmount.text = inItemBundle.count.ToString();
-        InItemName.text = inItemBundle.item.name;
-        OutItemImg.sprite = outItemBundle.item.image;
-        OutItemAmount.text = outItemBundle.count.ToString();
-        OutItemName.text = outItemBundle.item.name;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Instantiate(itemDisplayPrefab, parent).GetComponent<ManufactItemIconBehavior>().initialize(item);
     }
 }

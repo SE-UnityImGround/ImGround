@@ -42,7 +42,7 @@ public class InGameViewBehavior : MonoBehaviour
         
     }
 
-    public bool displayView(InGameViewMode mode)
+    public void displayView(InGameViewMode mode)
     {
         InGameView.SetActive(
             mode == InGameViewMode.DEFAULT
@@ -60,6 +60,13 @@ public class InGameViewBehavior : MonoBehaviour
         TalkView.setActive(mode == InGameViewMode.TALK);
 
         this.mode = mode;
-        return true;
+    }
+
+    public void toggleView(InGameViewMode mode)
+    {
+        if (this.mode == mode)
+            displayView(InGameViewMode.DEFAULT);
+        else
+            displayView(mode);
     }
 }
