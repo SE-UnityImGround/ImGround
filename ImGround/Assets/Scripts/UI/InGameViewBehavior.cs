@@ -33,10 +33,11 @@ public class InGameViewBehavior : MonoBehaviour
         displayView(InGameViewMode.DEFAULT);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void onGameCloseButtonClick()
     {
-        
+        // 추가 처리 가능 : 메인화면으로 다시 돌아간다던지
+        Debug.LogWarning("프로그램 종료");
+        Application.Quit();
     }
 
     public void displayView(InGameViewMode mode)
