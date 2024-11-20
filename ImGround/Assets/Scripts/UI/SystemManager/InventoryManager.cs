@@ -171,6 +171,31 @@ public class InventoryManager
     }
 
     /// <summary>
+    /// 아이템 패키지를 풀어서 인벤토리에 담습니다.
+    /// <br/> 모든 아이템을 담으려 시도하며, 실패한 아이템이 다시 패키지로 반환됩니다.
+    /// <br/> 만약 남은 아이템이 없다면 null을 반환합니다.
+    /// </summary>
+    /// <param name="pack"></param>
+    /// <returns></returns>
+    public static ItemPackage addPackage(ItemPackage pack)
+    {
+        List<ItemBundle> remains = new List<ItemBundle>();
+        foreach (ItemBundle bundle in pack.items)
+        {
+            addItems(bundle);
+            if (bundle.count > 0)
+            {
+                remains.Add(new ItemBundle(bundle));
+            }
+        }
+
+        if (remains.Count == 0)
+            return null;
+        else 
+            return new ItemPackage(remains.ToArray());
+    }
+
+    /// <summary>
     /// 특정 슬롯의 아이템 ID를 반환합니다.
     /// </summary>
     /// <param name="slotIdx"></param>
@@ -224,6 +249,15 @@ public class InventoryManager
             }
         }
         return result;
+    }
+
+    /// <summary>
+    /// 모든 슬롯의 아이템을 패키지 형태로 꺼냅니다.
+    /// </summary>
+    /// <returns></returns>
+    public static ItemPackage popAllItemsByPackage()
+    {
+        return new ItemPackage(popAllItems());
     }
 
     /// <summary>
