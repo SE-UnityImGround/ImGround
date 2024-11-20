@@ -107,6 +107,5 @@ public enum ItemIdEnum
      *         Unclassified
      *=============================*/
 
-    MONEY,
     BED
 }

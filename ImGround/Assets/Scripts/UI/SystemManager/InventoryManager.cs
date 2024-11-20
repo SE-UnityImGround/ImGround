@@ -156,7 +156,7 @@ public class InventoryManager
             {
                 inventory[i] = new ItemBundle(items.item, 0, true);
             }
-            
+
             if (inventory[i].addItem(items))
             {
                 onSlotItemChangedHandler?.Invoke(i);

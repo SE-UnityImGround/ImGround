@@ -132,7 +132,6 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.KNIFE, ImageIdEnum.NULL, "칼", DEFAULT_COUNT, 20000),
         new ItemInfo(ItemIdEnum.SICKLE, ImageIdEnum.NULL, "낫", DEFAULT_COUNT, 12000),
 
-        new ItemInfo(ItemIdEnum.MONEY, ImageIdEnum.ICON_COIN, "돈", DEFAULT_COUNT, 0),
         new ItemInfo(ItemIdEnum.BED, ImageIdEnum.NULL, "침대", DEFAULT_COUNT, 50000)
     };
 
