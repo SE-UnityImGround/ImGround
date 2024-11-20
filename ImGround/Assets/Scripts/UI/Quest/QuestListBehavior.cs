@@ -8,11 +8,12 @@ public class QuestListBehavior : UIBehavior
     [SerializeField]
     private GameObject QuestListView;
 
-    private List<GameObject> currentQuests = new List<GameObject>();
+    private List<QuestBehavior> currentQuests = new List<QuestBehavior>();
 
     public override void initialize()
     {
         QuestManager.onQuestAddedHandler += addQuest;
+        InventoryManager.onSlotItemChangedHandler += onInventoryUpdate;
     }
 
     private void addQuest(QuestIdEnum id)
@@ -20,14 +21,14 @@ public class QuestListBehavior : UIBehavior
         QuestBehavior quest = Instantiate(QuestInfoManager.getQuestUIPrefab(id), QuestListView.transform).GetComponent<QuestBehavior>();
         quest.initialize();
         quest.onQuestRewardClickHandler += onQuestRewardStart;
-        currentQuests.Add(quest.gameObject);
+        currentQuests.Add(quest);
     }
 
     private void removeQuest(QuestBehavior q)
     {
-        if (currentQuests.Contains(q.gameObject))
+        if (currentQuests.Contains(q))
         {
-            currentQuests.Remove(q.gameObject);
+            currentQuests.Remove(q);
             Destroy(q.gameObject);
         }
     }
@@ -36,5 +37,13 @@ public class QuestListBehavior : UIBehavior
     {
         QuestManager.doneQuest(questUI.questID);
         removeQuest(questUI);
+    }
+
+    private void onInventoryUpdate(int slotIdx)
+    {
+        foreach (QuestBehavior quest in currentQuests)
+        {
+            quest.updateProcess();
+        }
     }
 }

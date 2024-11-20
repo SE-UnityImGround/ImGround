@@ -25,10 +25,13 @@ public class QuestBehavior : MonoBehaviour
     /// <param name="slotIdx"></param>
     public void initialize()
     {
-        setProgress();
+        updateProcess();
     }
 
-    private void setProgress()
+    /// <summary>
+    /// 퀘스트 진행 상황을 적용합니다.
+    /// </summary>
+    public void updateProcess()
     {
         bool done = true;
         ItemBundle[] requestItems = QuestInfoManager.getQuestInfo(questID).requestItems;
