@@ -89,7 +89,8 @@ public class PlayerMove : MonoBehaviour
     public void Move()
     {
         // followCamera가 null이 아니면 이동 처리
-        if (followCamera != null)
+        if (followCamera != null && !player.pBehavior.dDown && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating &&
+            !player.pBehavior.IsPickingUp && !player.pBehavior.IsHarvest && !player.pBehavior.IsPicking)
         {
             moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
             transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;

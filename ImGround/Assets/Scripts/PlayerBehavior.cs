@@ -73,7 +73,7 @@ public class PlayerBehavior : MonoBehaviour
         harvestDelay += Time.deltaTime;
         plantDelay += Time.deltaTime;
 
-        isDigReady = 1.5f < digDelay;
+        isDigReady = 1.8f < digDelay;
         isPickReady = 1.2f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
         isPlantReady = 2f < plantDelay;
@@ -182,60 +182,62 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void Swap()
     {
-        int currentIndex = toolIndex;
-        if (sDown[1]) // ÁÖ¸Ô
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 0;
-        }
-        if (sDown[2]) // ±ªÀÌ
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 1;
-        }
-        if (sDown[3]) // »ïÁöÃ¢(°úÀÏ ¼öÈ®¿ë)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 2;
-        }
-        if (sDown[4]) // °î±ªÀÌ
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 3;
-        }
-        if (sDown[5]) // »ð
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 4;
-        }
-        if (sDown[6]) // ³´
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 5;
-        }
-        if (sDown[7]) // °Ë
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 6;
-        }
-        if (sDown[0]) // ÀÌ½ºÅÍ¿¡±×
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 7;
-        }
+        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest) {
+            int currentIndex = toolIndex;
+            if (sDown[1]) // ÁÖ¸Ô
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 0;
+            }
+            if (sDown[2]) // ±ªÀÌ
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 1;
+            }
+            if (sDown[3]) // »ïÁöÃ¢(°úÀÏ ¼öÈ®¿ë)
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 2;
+            }
+            if (sDown[4]) // °î±ªÀÌ
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 3;
+            }
+            if (sDown[5]) // »ð
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 4;
+            }
+            if (sDown[6]) // ³´
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 5;
+            }
+            if (sDown[7]) // °Ë
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 6;
+            }
+            if (sDown[0]) // ÀÌ½ºÅÍ¿¡±×
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 7;
+            }
 
-        tools[toolIndex].gameObject.SetActive(true);
+            tools[toolIndex].gameObject.SetActive(true);
+        }
     }
     IEnumerator ResetDig()
     {
-        yield return new WaitForSeconds(1.5f); 
+        yield return new WaitForSeconds(1.8f);
         isDigging = false;
         curtivatePoint[0].gameObject.SetActive(false);
     }
 
     IEnumerator ResetDigUp()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.7f);
         isDigging = false;
         curtivatePoint[1].gameObject.SetActive(false);
     }
