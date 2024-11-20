@@ -88,13 +88,19 @@ public class PlayerMove : MonoBehaviour
 
     public void Move()
     {
-        // followCamera가 null이 아니면 이동 처리
-        if (followCamera != null && !player.pBehavior.dDown && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating &&
-            !player.pBehavior.IsPickingUp && !player.pBehavior.IsHarvest && !player.pBehavior.IsPicking)
+        // 플레이어가 행동 중인지 확인
+        bool isPerformingAction = player.pBehavior.dDown || player.pBehavior.IsDigging || isSleeping ||
+                                  isSitting || player.pBehavior.IsEating || player.pBehavior.IsPickingUp ||
+                                  player.pBehavior.IsHarvest || player.pBehavior.IsPicking;
+
+        // 행동 중이면 이동 불가
+        if (followCamera != null && !isPerformingAction)
         {
+            // 카메라의 방향을 기준으로 이동 벡터 계산
             moveVec = (Quaternion.Euler(0.0f, followCamera.transform.rotation.eulerAngles.y, 0.0f) * new Vector3(hAxis, 0.0f, vAxis)).normalized;
             transform.position += moveVec * speed * (rDown ? 1f : 0.5f) * Time.deltaTime;
 
+            // 이동 및 달리기 상태 업데이트
             isWalking = moveVec != Vector3.zero;
             isRunning = rDown && moveVec != Vector3.zero;
 
@@ -102,6 +108,7 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("isWalk", isWalking);
             anim.SetBool("isRun", isRunning);
 
+            // 달리는 중 피로도 처리
             if (isRunning)
             {
                 runningTime += Time.deltaTime;
@@ -114,6 +121,17 @@ public class PlayerMove : MonoBehaviour
             {
                 runningTime = 0;
             }
+        }
+        else
+        {
+            // 행동 중이면 이동 애니메이션 비활성화
+            moveVec = Vector3.zero;
+            isWalking = false;
+            isRunning = false;
+
+            // 애니메이션 상태 초기화
+            anim.SetBool("isWalk", false);
+            anim.SetBool("isRun", false);
         }
     }
 
