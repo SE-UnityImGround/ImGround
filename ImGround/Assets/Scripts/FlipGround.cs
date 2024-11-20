@@ -30,6 +30,12 @@ public class FlipGround : MonoBehaviour
 
     private void Flip()
     {
+        // 수확작물이 존재하면 경작을 중단
+        if (crops != null && crops.IsCropExist() && farmGround.activeSelf)
+        {
+            Debug.Log("작물이 재배중이거나 수확작물이 존재하여 경작을 시작할 수 없습니다.");
+            return;
+        }
         isCultivated = true;
         ground.SetActive(false);
         farmGround.SetActive(true);
