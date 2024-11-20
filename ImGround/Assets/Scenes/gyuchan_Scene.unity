@@ -8108,6 +8108,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &1624778090 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8738899103423819794, guid: e557b3bcbc1979c49a1b8a39c6c86da1, type: 3}
+  m_PrefabInstance: {fileID: 6926705965431124987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1634357892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11002,6 +11007,11 @@ Transform:
   - {fileID: 115504389}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2114633100 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5736816578468427203, guid: e557b3bcbc1979c49a1b8a39c6c86da1, type: 3}
+  m_PrefabInstance: {fileID: 6926705965431124987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2115062615 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 011af6e28de45484d92ef8293ea25855, type: 3}
@@ -11545,6 +11555,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2292487397957572338, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
+      propertyPath: cultivatePoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292487397957572338, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
+      propertyPath: cultivatePoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1624778090}
+    - target: {fileID: 2292487397957572338, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
+      propertyPath: cultivatePoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 2114633100}
     - target: {fileID: 2723851214982213589, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
       propertyPath: m_Name
       value: Player

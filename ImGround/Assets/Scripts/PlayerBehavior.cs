@@ -13,10 +13,7 @@ public class PlayerBehavior : MonoBehaviour
     bool eDown;
     bool[] sDown; // 0~7번까지의 도구 인덱스 번호 모음
 
-    bool isDigReady;
-    bool isPickReady;
-    bool isHarvestReady;
-    bool isPlantReady;
+    bool isDigReady, isPickReady, isHarvestReady, isPlantReady;
     bool isEating = false;
     bool isPickingUp = false;
     bool isDigging = false;
@@ -38,10 +35,8 @@ public class PlayerBehavior : MonoBehaviour
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
-    float digDelay;
-    float pickDelay;
-    float harvestDelay;
-    float plantDelay;
+    float digDelay, pickDelay, harvestDelay, plantDelay;
+
     int toolIndex = 0; // 현재 플레이어가 손에 든 도구의 인덱스
 
     private void Awake()
@@ -52,8 +47,8 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void getInput()
     {
-        dDown = Input.GetButton("Fire2");
-        fDown = Input.GetKeyDown(KeyCode.F);
+        dDown = Input.GetButton("Fire2"); // 도구 동작 키
+        fDown = Input.GetKeyDown(KeyCode.F); // 줍기 키
         eDown = Input.GetKeyDown(KeyCode.E);
         sDown[1] = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
         sDown[2] = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
