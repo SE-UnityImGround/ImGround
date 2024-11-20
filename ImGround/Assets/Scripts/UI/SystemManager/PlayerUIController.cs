@@ -27,14 +27,18 @@ public class PlayerUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && npcController.selectedNPC != null)
+        // 대화 시작하기 가능 조건
+        if (inGameUI.mode == InGameViewMode.DEFAULT
+            && Input.GetKeyDown(KeyCode.F) && npcController.selectedNPC != null)
         {
             NPCBehavior npc = npcController.selectedNPC.GetComponent<NPCBehavior>();
             Debug.Log("선택된 npc : " + npc.name + " 타입 : " + npc.type);
             talkView.startTalk(npc);
         }
 
-        if (Input.GetKeyDown(KeyCode.M))
+        // 제조 UI 열기 조건
+        if ((inGameUI.mode == InGameViewMode.DEFAULT || inGameUI.mode == InGameViewMode.MANUFACT)
+            && Input.GetKeyDown(KeyCode.M))
         {
             inGameUI.toggleView(InGameViewMode.MANUFACT);
         }

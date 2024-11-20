@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InGameViewBehavior : MonoBehaviour
 {
-    private InGameViewMode mode = InGameViewMode.DEFAULT;
+    public InGameViewMode mode { get; private set; } = InGameViewMode.DEFAULT;
 
     [SerializeField]
     private GameObject InGameView;
