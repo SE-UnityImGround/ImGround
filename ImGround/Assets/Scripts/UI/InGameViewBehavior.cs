@@ -40,6 +40,48 @@ public class InGameViewBehavior : MonoBehaviour
         Application.Quit();
     }
 
+    public void doEscapeProcess()
+    {
+        if (mode == InGameViewMode.DEFAULT)
+        {
+            displayView(InGameViewMode.SETTING);
+            return;
+        }
+
+        if (mode != InGameViewMode.TALK)
+        {
+            hideView(mode);
+            return;
+        }
+    }
+
+    public void hideView(InGameViewMode mode)
+    {
+        if (this.mode == mode)
+            this.mode = InGameViewMode.DEFAULT;
+        switch (mode)
+        {
+            case InGameViewMode.SETTING:
+                SettingView.SetActive(false);
+                return;
+            case InGameViewMode.SHOP:
+                ShopView.setActive(false);
+                return;
+            case InGameViewMode.TALK:
+                TalkView.setActive(false);
+                return;
+            case InGameViewMode.QUEST:
+                QuestView.setActive(false);
+                return;
+            case InGameViewMode.MANUFACT:
+                ManufactView.setActive(false);
+                return;
+            case InGameViewMode.INVENTORY:
+                InventoryView.setActive(false);
+                return;
+        }
+    }
+
     public void displayView(InGameViewMode mode)
     {
         InGameView.SetActive(

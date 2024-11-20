@@ -6,6 +6,8 @@ using UnityEngine;
 public class ShopBehavior : UIBehavior
 {
     [SerializeField]
+    private InGameViewBehavior inGameUI;
+    [SerializeField]
     private GameObject ShopItemListView;
     [SerializeField]
     private GameObject ShopItemPrefab;
@@ -17,16 +19,21 @@ public class ShopBehavior : UIBehavior
 
     private Action onClose;
 
+    private void checkValue(object v, string name)
+    {
+        if (v == null)
+        {
+            Debug.LogErrorFormat("{0}에 {1}가 등록되지 않았습니다!", this.GetType().Name, name);
+            return;
+        }
+    }
+
     public override void initialize()
     {
-        if (ShopItemListView == null)
-        {
-            Debug.LogErrorFormat("{0}에 {1}가 등록되지 않았습니다!", this.GetType().Name, ShopItemListView);
-        }
-        if (ShopItemPrefab == null)
-        {
-            Debug.LogErrorFormat("{0}에 {1}가 등록되지 않았습니다!", this.GetType().Name, ShopItemPrefab);
-        }
+        checkValue(inGameUI, nameof(inGameUI));
+        checkValue(ShopItemListView, nameof(ShopItemListView));
+        checkValue(ShopItemPrefab, nameof(ShopItemPrefab));
+        checkValue(ShopNameView, nameof(ShopNameView));
 
         InventoryManager.onSlotItemChangedHandler += onInventoryChanged;
         InventoryManager.onMoneyChangedHandler += onMoneyChanged;
@@ -81,7 +88,7 @@ public class ShopBehavior : UIBehavior
                 addShopItem(new Item(item.Key), sellPrice);
             }
         }
-        gameObject.SetActive(true);
+        inGameUI.displayView(InGameViewMode.SHOP);
     }
 
     private void clearShopItems()
@@ -135,14 +142,18 @@ public class ShopBehavior : UIBehavior
     }
 
     /// <summary>
-    /// 닫기 버튼 클릭시 발생하는 이벤트 처리기입니다.
+    /// 닫기 과정에서 추가 처리를 위해 오버라이딩 된 함수입니다.
     /// </summary>
-    public void onCloseButtonClick()
+    /// <param name="isActive"></param>
+    public override void setActive(bool isActive)
     {
-        Action closeFunc = onClose;
-        onClose = null;
-        gameObject.SetActive(false);
-        closeFunc.Invoke();
+        if (!isActive)
+        {
+            Action closeFunc = onClose;
+            onClose = null;
+            closeFunc?.Invoke();
+        }
+        base.setActive(isActive);
     }
 
     /// <summary>

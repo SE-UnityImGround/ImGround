@@ -16,7 +16,7 @@ public abstract class UIBehavior : MonoBehaviour
     /// UI 창의 표시/숨김을 관리합니다.
     /// </summary>
     /// <param name="isActive"></param>
-    public void setActive(bool isActive)
+    public virtual void setActive(bool isActive)
     {
         gameObject.SetActive(isActive);
     }

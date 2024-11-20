@@ -2472,6 +2472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 0
 --- !u!1 &3206821830596729843
 GameObject:
@@ -4250,6 +4251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 0
 --- !u!1 &4612587341197135409
 GameObject:
@@ -5996,6 +5998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 2
 --- !u!1 &6058709058390229496
 GameObject:
@@ -6009,6 +6012,7 @@ GameObject:
   - component: {fileID: 2159690209458865611}
   - component: {fileID: 2772703294863316778}
   - component: {fileID: 1645866591593944317}
+  - component: {fileID: 8948070067116595793}
   m_Layer: 5
   m_Name: Close_Button
   m_TagString: Untagged
@@ -6117,9 +6121,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5909366692690374486}
-        m_TargetAssemblyTypeName: ShopBehavior, Assembly-CSharp
-        m_MethodName: onCloseButtonClick
+      - m_Target: {fileID: 8948070067116595793}
+        m_TargetAssemblyTypeName: InGameButton, Assembly-CSharp
+        m_MethodName: onClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6129,6 +6133,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8948070067116595793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6058709058390229496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846e8da8627dd2f47ab46f9b9f43cb75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 1
+  LinkedView: 4
 --- !u!1 &6147214042348699851
 GameObject:
   m_ObjectHideFlags: 0
@@ -6710,6 +6729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 0
 --- !u!1 &6487152056917539385
 GameObject:
@@ -6802,6 +6822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4047fd7f1adfc640972584e56ca5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGameUI: {fileID: 4559323035960113168}
   ShopItemListView: {fileID: 7975442939657483803}
   ShopItemPrefab: {fileID: 4397443470808418991, guid: 86473dbcf0aa9bb4ca03f81e7296e88d, type: 3}
   ShopNameView: {fileID: 5881147737249498949}
@@ -7031,6 +7052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 1
 --- !u!1 &6934319127274611829
 GameObject:
@@ -7795,6 +7817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 3
 --- !u!1 &7269012928243094140
 GameObject:
@@ -9000,6 +9023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
+  hideOrDisplay: 0
   LinkedView: 0
 --- !u!1 &9188873006162371221
 GameObject:

@@ -42,5 +42,10 @@ public class PlayerUIController : MonoBehaviour
         {
             inGameUI.toggleView(InGameViewMode.MANUFACT);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            inGameUI.doEscapeProcess();
+        }
     }
 }

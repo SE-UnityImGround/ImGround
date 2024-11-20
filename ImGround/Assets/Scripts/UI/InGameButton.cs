@@ -6,22 +6,15 @@ public class InGameButton : MonoBehaviour
 {
     public InGameViewBehavior inGameViewBehavior;
     [SerializeField]
+    private bool hideOrDisplay;
+    [SerializeField]
     private InGameViewMode LinkedView;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void onClick()
     {
-        inGameViewBehavior.displayView(LinkedView);
+        if (hideOrDisplay)
+            inGameViewBehavior.hideView(LinkedView);
+        else
+            inGameViewBehavior.displayView(LinkedView);
     }
 }

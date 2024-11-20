@@ -42,6 +42,8 @@ public class TalkBehavior : UIBehavior
 
     public override void initialize()
     {
+        checkValue(inGameUI, nameof(inGameUI));
+        checkValue(shopView, nameof(shopView));
         checkValue(TalkerCircle, nameof(TalkerCircle));
         checkValue(TalkerName, nameof(TalkerName));
         checkValue(TalkText, nameof(TalkText));
@@ -101,7 +103,7 @@ public class TalkBehavior : UIBehavior
         if (eventType == TalkEventEnum.OPEN_SHOP)
         {
             shopView.startShop(ShopInfoManager.getShopInfo(talkingNPC.type), onShopViewClose);
-            gameObject.SetActive(false);
+            inGameUI.hideView(InGameViewMode.TALK);
         }
 
         // 다음 대화 처리
@@ -109,7 +111,7 @@ public class TalkBehavior : UIBehavior
         {
             talkingNPC = null;
             currentTalk = null;
-            gameObject.SetActive(false);
+            inGameUI.hideView(InGameViewMode.TALK);
         }
         else
         {
@@ -168,7 +170,7 @@ public class TalkBehavior : UIBehavior
     {
         if (currentTalk != null)
         {
-            gameObject.SetActive(true);
+            inGameUI.displayView(InGameViewMode.TALK);
         }
     }
 }
