@@ -14,12 +14,14 @@ public class ItemInfo
     public readonly ImageIdEnum itemImg;
     public readonly string itemName;
     public readonly int maxCount;
+    public readonly int buyingPrice;
 
-    public ItemInfo(ItemIdEnum itemId, ImageIdEnum itemImg, string itemName, int maxCount)
+    public ItemInfo(ItemIdEnum itemId, ImageIdEnum itemImg, string itemName, int maxCount, int buyingPrice)
     {
         this.itemId = itemId;
         this.itemImg = itemImg;
         this.itemName = itemName;
         this.maxCount = maxCount;
+        this.buyingPrice = buyingPrice;
     }
 }

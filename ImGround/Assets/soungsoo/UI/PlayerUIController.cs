@@ -7,6 +7,8 @@ public class PlayerUIController : MonoBehaviour
     [SerializeField]
     private InGameViewBehavior inGameUI;
     [SerializeField]
+    private TalkBehavior talkView;
+    [SerializeField]
     private PlayerNPCController npcController;
 
     // Start is called before the first frame update
@@ -29,8 +31,7 @@ public class PlayerUIController : MonoBehaviour
         {
             NPCBehavior npc = npcController.selectedNPC.GetComponent<NPCBehavior>();
             Debug.Log("선택된 npc : " + npc.name + " 타입 : " + npc.type);
-            TalkManager.setTalk(npc);
-            inGameUI.displayView(InGameViewMode.TALK);
+            talkView.startTalk(npc);
         }
 
         if (Input.GetKeyDown(KeyCode.M))

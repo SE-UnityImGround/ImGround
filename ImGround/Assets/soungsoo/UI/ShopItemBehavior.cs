@@ -11,12 +11,14 @@ public class ShopItemBehavior : MonoBehaviour
     private Text itemName;
     [SerializeField]
     private Text itemPrice;
+    [SerializeField]
+    private Button buyButton;
 
     private Item item;
     private int price;
 
-    public delegate void BuyItemEvent(Item item, int price);
-    public BuyItemEvent BuyItemEventHandler;
+    public delegate void TradeItemEvent(Item item, int price);
+    public TradeItemEvent TradeItemEventHandler;
 
     public void initialize(Item sellingItem, int price)
     {
@@ -32,14 +34,24 @@ public class ShopItemBehavior : MonoBehaviour
         return price.ToString() + " $";
     }
 
-    public void onBuyBtnClick()
+    /// <summary>
+    /// 주어진 가격에 대해 구매 가능한지를 표시합니다.
+    /// </summary>
+    /// <param name="money"></param>
+    public void setBuyable(int money)
     {
-        BuyItemEventHandler.Invoke(item, price);
+        if (this.price > money)
+        {
+            buyButton.interactable = false;
+        }
+        else
+        {
+            buyButton.interactable = true;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void onTradeBtnClick()
     {
-        
+        TradeItemEventHandler.Invoke(item, price);
     }
 }

@@ -89,5 +89,23 @@ public enum ItemIdEnum
     WATERMELON_SEED,
     POTATO,
     CUCUMBER,
-    FLOUR
+    FLOUR,
+
+    /*=============================
+     *            Tools
+     *=============================*/
+
+    HOE, // 괭이
+    RAKE, // 갈퀴
+    PICKAXE,
+    SHOVEL,
+    KNIFE,
+    SICKLE, // 낫
+
+    /*=============================
+     *         Unclassified
+     *=============================*/
+
+    MONEY,
+    BED
 }

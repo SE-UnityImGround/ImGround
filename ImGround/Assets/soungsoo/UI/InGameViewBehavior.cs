@@ -30,8 +30,6 @@ public class InGameViewBehavior : MonoBehaviour
         InventoryView.initialize();
         TalkView.initialize();
 
-        ((ShopBehavior)ShopView).setUp("그냥 상점");
-
         displayView(InGameViewMode.DEFAULT);
     }
 

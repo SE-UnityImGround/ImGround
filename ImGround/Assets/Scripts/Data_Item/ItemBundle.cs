@@ -20,7 +20,7 @@ public class ItemBundle
     public ItemBundle(Item item, int count, bool isLimited)
     {
         this.item = item;
-        this.maxCount = ItemInfoManager.getMaxCount(item.itemId);
+        this.maxCount = ItemInfoManager.getItemInfo(item.itemId).maxCount;
         this.isLimited = isLimited;
         this.count = count;
         if (isLimited && count > maxCount)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class InventoryManager
     private const int INVENTORY_SIZE = 24;
     private static ItemBundle[] inventory = new ItemBundle[INVENTORY_SIZE];
     private static int selectedSlotIdx = -1;
-    private static int money;
+    private static int money = 300000;
 
     /// <summary>
     /// 인벤토리의 슬롯 선택값이 변경될 경우 발생하는 이벤트입니다.
@@ -22,6 +23,11 @@ public class InventoryManager
     /// <param name="selectedIdx"></param>
     public delegate void onSlotItemChanged(int slotIdx);
     public static onSlotItemChanged onSlotItemChangedHandler;
+
+    /// <summary>
+    /// 현재 가진 돈이 변화할 때 발생하는 이벤트입니다.
+    /// </summary>
+    public static Action<int> onMoneyChangedHandler;
 
     /*====================================
      *      Selection Management
@@ -110,6 +116,7 @@ public class InventoryManager
     public static void changeMoney(int money)
     {
         InventoryManager.money += money;
+        onMoneyChangedHandler?.Invoke(InventoryManager.money);
     }
 
     /// <summary>
@@ -175,6 +182,20 @@ public class InventoryManager
             return ItemIdEnum.TEST_NULL_ITEM;
         else
             return inventory[slotIdx].item.itemId;
+    }
+
+    /// <summary>
+    /// 특정 슬롯의 아이템 수량을 반환합니다.
+    /// </summary>
+    /// <param name="slotIdx"></param>
+    /// <returns></returns>
+    public static int getItemAmount(int slotIdx)
+    {
+        if ((slotIdx < 0 && slotIdx > INVENTORY_SIZE)
+            || inventory[slotIdx] == null)
+            return 0;
+        else
+            return inventory[slotIdx].count;
     }
 
     /// <summary>
