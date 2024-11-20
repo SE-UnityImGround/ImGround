@@ -7,7 +7,7 @@ public class InGameViewBehavior : MonoBehaviour
     public InGameViewMode mode { get; private set; } = InGameViewMode.DEFAULT;
 
     [SerializeField]
-    private GameObject InGameView;
+    private UIBehavior InGameView;
     [SerializeField]
     private GameObject SettingView;
     [SerializeField]
@@ -24,6 +24,7 @@ public class InGameViewBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InGameView.initialize();
         QuestView.initialize();
         ManufactView.initialize();
         ShopView.initialize();
@@ -40,6 +41,9 @@ public class InGameViewBehavior : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// esc 키 입력에 대한 UI 처리입니다.
+    /// </summary>
     public void doEscapeProcess()
     {
         if (mode == InGameViewMode.DEFAULT)
@@ -54,6 +58,32 @@ public class InGameViewBehavior : MonoBehaviour
             return;
         }
     }
+
+    /* ====================================== 
+     *          UI 구성요소 접근자
+     * ====================================== */
+
+    public T getUIBehavior<T>()
+    {
+        if (InGameView is T)
+            return (T)(object)InGameView;
+        if (QuestView is T)
+            return (T)(object)QuestView;
+        if (ManufactView is T)
+            return (T)(object)ManufactView;
+        if (ShopView is T)
+            return (T)(object)ShopView;
+        if (InventoryView is T)
+            return (T)(object)InventoryView;
+        if (TalkView is T)
+            return (T)(object)TalkView;
+        
+        return default(T);
+    }
+
+    /* ====================================== 
+     *          화면 열기/닫기 조작
+     * ====================================== */
 
     public void hideView(InGameViewMode mode)
     {
@@ -84,7 +114,7 @@ public class InGameViewBehavior : MonoBehaviour
 
     public void displayView(InGameViewMode mode)
     {
-        InGameView.SetActive(
+        InGameView.setActive(
             mode == InGameViewMode.DEFAULT
             || mode == InGameViewMode.SETTING
             || mode == InGameViewMode.INVENTORY
