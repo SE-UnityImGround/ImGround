@@ -9,7 +9,10 @@ using UnityEngine.UI;
 public class SlotBehavior : MonoBehaviour
 {
     private int slotIdx;
+    [SerializeField]
     private Image itemImg;
+    [SerializeField]
+    private TMPro.TMP_Text amountText;
 
     /// <summary>
     /// 슬롯이 선택된 경우 발생하는 이벤트입니다.
@@ -26,39 +29,26 @@ public class SlotBehavior : MonoBehaviour
     public void initialize(int slotIdx)
     {
         this.slotIdx = slotIdx;
-        this.itemImg = transform.GetChild(0).gameObject.GetComponent<Image>();
-    }
-
-    /// <summary>
-    /// 게임오브젝트 생성시 초기화(Unity 엔진 초기화)
-    /// (Start is called before the first frame update)
-    /// </summary>
-    void Start()
-    {
-        gameObject.GetComponent<Button>().onClick.AddListener(onClick);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        amountText.text = "";
     }
 
     /// <summary>
     /// 이 슬롯의 클릭 이벤트를 받는 처리기입니다.
     /// </summary>
-    private void onClick()
+    public void onClick()
     {
         slotSelectedEventHandler?.Invoke(slotIdx);
     }
 
     /// <summary>
-    /// 이 슬롯의 아이템 변동 이벤트를 받는 처리기입니다.
+    /// 이 슬롯의 아이템 변동을 UI에 적용합니다.
+    /// <br/> 아이템 수량이 0 이하이면 표기되지 않습니다.
     /// </summary>
     /// <param name="updatedItem"></param>
-    public void itemUpdated(ItemIdEnum itemId)
+    public void updateItemInfo(ItemIdEnum itemId, int amount)
     {
         setImage(itemId);
+        amountText.text = (amount > 0 ? amount.ToString() : "");
     }
 
     /*=======================================================

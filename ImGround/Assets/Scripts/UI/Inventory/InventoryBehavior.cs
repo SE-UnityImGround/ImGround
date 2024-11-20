@@ -41,6 +41,8 @@ public class InventoryBehavior : UIBehavior
 
     private void onSlotChanged(int slotIdx)
     {
-        slots[slotIdx].itemUpdated(InventoryManager.getItemId(slotIdx));
+        slots[slotIdx].updateItemInfo(
+            InventoryManager.getItemId(slotIdx),
+            InventoryManager.getItemAmount(slotIdx));
     }
 }
