@@ -20,7 +20,7 @@ public class ItemBundle
     public ItemBundle(Item item, int count, bool isLimited)
     {
         this.item = item;
-        this.maxCount = ItemInfoManager.getMaxCount(item.itemId);
+        this.maxCount = ItemInfoManager.getItemInfo(item.itemId).maxCount;
         this.isLimited = isLimited;
         this.count = count;
         if (isLimited && count > maxCount)
@@ -43,13 +43,14 @@ public class ItemBundle
 
     /// <summary>
     /// 해당 아이템에서 주어진 갯수만큼을 덜어내어 반환합니다.
+    /// <br/> 만약 주어진 갯수가 초과할 경우 존재하는 만큼을 반환합니다.
     /// <br/> 음수를 입력할 경우 모든 아이템을 반환합니다.
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
     public ItemBundle getDividedItems(int count = -1)
     {
-        if (this.count > count
+        if (this.count < count
             || count < 0)
             count = this.count;
 
@@ -78,6 +79,22 @@ public class ItemBundle
     }
 
     /// <summary>
+    /// 아이템을 주어진 갯수만큼 추가하려고 시도합니다.
+    /// <br/> 주어진 수량 중 추가하지 못한 아이템 수가 반환됩니다.
+    /// <br/> 음수가 주어지면 추가하지 않고 그대로 반환합니다.
+    /// </summary>
+    /// <returns></returns>
+    public int addItem(int amount)
+    {
+        if (amount < 0)
+            return amount;
+
+        int addValue = Math.Min(amount, getRemainCapacity());
+        this.count += addValue;
+        return amount - addValue;
+    }
+
+    /// <summary>
     /// 아이템을 합치려고 시도합니다. 한 개라도 성공하면 true를 반환합니다.
     /// <br/> 동일한 아이템이 아니거나 최대 중복 갯수만큼 가득 찼다면 아이템을 추가하지 않고 false를 반환합니다.
     /// <br/>아이템을 추가한 후 남은 수량이 입력된 item 객체에 반영됩니다.
@@ -86,9 +103,15 @@ public class ItemBundle
     /// <returns></returns>
     public bool addItem(ItemBundle bundle)
     {
-        if (this.item.itemId != bundle.item.itemId
+        if ((this.count > 0 && this.item.itemId != bundle.item.itemId)
             || getRemainCapacity() == 0)
             return false;
+
+        if (this.item.itemId == ItemIdEnum.TEST_NULL_ITEM)
+        {
+            this.item = bundle.item;
+            this.count = 0;
+        }
 
         int getAmount = bundle.count;
         if (isLimited && getAmount > maxCount)

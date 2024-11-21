@@ -103,5 +103,12 @@ public enum ImageIdEnum
     UI_LIFE_30,
     UI_LIFE_50,
     UI_LIFE_80,
-    UI_LIFE_100
+    UI_LIFE_100,
+
+    UI_TALK_GC,
+    UI_TALK_MJ,
+    UI_TALK_SS,
+    UI_TALK_YJ,
+    UI_TALK_EJ,
+    UI_TALK_JY,
 }

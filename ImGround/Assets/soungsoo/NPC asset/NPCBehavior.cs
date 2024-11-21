@@ -10,6 +10,7 @@ public class NPCBehavior : MonoBehaviour
     public Vector3 Origin;
     [Tooltip("만약 True이면 Origin 값은 오브젝트의 처음 위치로 덮어씌웁니다.")]
     public bool SetOriginAsStartPos;
+    public string NPCName;
     public NPCType type = NPCType.NPC_NORMAL;
     public float Radius; // 랜덤 이동 위치의 범위
     public Vector3 PlayerLookOffset;
@@ -27,7 +28,6 @@ public class NPCBehavior : MonoBehaviour
     private NPCIconController npcIcon; // npc 아이콘 관리 모듈
 
     private bool isTalkingWithPlayer = false;
-    private GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +59,11 @@ public class NPCBehavior : MonoBehaviour
     {
         if (isTalkingWithPlayer)
         {
-            npcMover.talkWithPlayer(player.transform.position);
+            GameObject player = findPlayerInDistance(5.0f);
+            if (player != null)
+            {
+                npcMover.talkWithPlayer(player.transform.position);
+            }
         }
         else
         {
@@ -77,10 +81,9 @@ public class NPCBehavior : MonoBehaviour
         npcIcon.setSelected(isSelected);
     }
 
-    public void setTalkingState(bool isTalking, GameObject player)
+    public void setTalkingState(bool isTalking)
     {
         this.isTalkingWithPlayer = isTalking;
-        this.player = player;
     }
 
     /// <summary>
