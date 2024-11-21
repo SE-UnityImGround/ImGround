@@ -149,6 +149,24 @@ public class InventoryManager
     /// <returns></returns>
     public static bool addItems(ItemBundle items)
     {
+        // 시스템 처리 구분
+        if (items.item.itemId == ItemIdEnum.TEST_NULL_ITEM)
+        {
+            return true;
+        }
+        if (items.item.itemId == ItemIdEnum.PACKAGE)
+        {
+            if (items.item is ItemPackage)
+                addPackage((ItemPackage)items.item);
+            // 실패 처리 아직 안됨.
+            return true;
+        }
+        if (items.item.itemId == ItemIdEnum.MONEY)
+        {
+            changeMoney(items.count);
+            return true;
+        }
+
         bool added = false;
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {

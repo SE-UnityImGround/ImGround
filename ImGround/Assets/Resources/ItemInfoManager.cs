@@ -62,6 +62,7 @@ public class ItemInfoManager
     {
         new ItemInfo(ItemIdEnum.TEST_NULL_ITEM, ImageIdEnum.ITEM_NULL, "TestNullItem", DEFAULT_COUNT, 0),
         new ItemInfo(ItemIdEnum.PACKAGE, ImageIdEnum.NULL, "짐 꾸러미", DEFAULT_COUNT, 0),
+        new ItemInfo(ItemIdEnum.MONEY, ImageIdEnum.NULL, "돈", DEFAULT_COUNT, 0),
 
         new ItemInfo(ItemIdEnum.MILK_PACK, ImageIdEnum.ITEM_MILK_PACK, "우유 팩", DEFAULT_COUNT, 1500),
         new ItemInfo(ItemIdEnum.MILK_BUCKET, ImageIdEnum.ITEM_MILK_BUCKET, "우유 양동이", DEFAULT_COUNT, 1000),

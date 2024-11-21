@@ -10,7 +10,6 @@ namespace ReadmeSystem.Editor
 
 
     [CustomEditor(typeof(Readme))]
-    [InitializeOnLoad]
     public class ReadmeEditor : UnityEditor.Editor
     {
 
