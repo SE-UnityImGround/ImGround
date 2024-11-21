@@ -220,6 +220,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f5fce928050b612448f3f69834af1e99, type: 3}
+      propertyPath: m_TagString
+      value: Animal
+      objectReference: {fileID: 0}
     - target: {fileID: 1100830779954996672, guid: f5fce928050b612448f3f69834af1e99, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -392,8 +396,10 @@ MonoBehaviour:
   nav: {fileID: 6961075316367089315}
   patrolRadius: 5
   patrolWaitTime: 5
+  isHuntAble: 0
   anim: {fileID: 8336573752001210113}
   target: {fileID: 0}
+  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
 --- !u!195 &6961075316367089315
 NavMeshAgent:
   m_ObjectHideFlags: 0

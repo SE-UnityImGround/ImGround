@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Crops : MonoBehaviour
@@ -15,6 +16,7 @@ public class Crops : MonoBehaviour
     private GameObject particleInstance;
     private GameObject cropInstance;
     private ParticleSystem particleSystem;
+    private bool isGrowing = false;
     private Coroutine[] growCoroutines; // 각 작물의 성장 코루틴을 추적하는 배열
 
     private void Start()
@@ -33,6 +35,7 @@ public class Crops : MonoBehaviour
     {
         currentCrops = new GameObject[spots.Length];
         growCoroutines = new Coroutine[spots.Length];
+        isGrowing = true;
         for (int i = 0; i < spots.Length; i++)
         {
             currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
@@ -45,6 +48,7 @@ public class Crops : MonoBehaviour
     {
         currentCrops = new GameObject[1];
         growCoroutines = new Coroutine[1];
+        isGrowing = true;
         currentCrops[0] = Instantiate(cropData.growthStages[0], bigSpot.position, Quaternion.identity);
         currentCrops[0].transform.SetParent(bigSpot);
         growCoroutines[0] = StartCoroutine(GrowBigCrop());
@@ -123,9 +127,9 @@ public class Crops : MonoBehaviour
         {
             AllGrown(true);
             HarvestCrops();
+            isGrowing = false;
         }
     }
-
     private void HarvestCrops()
     {
         foreach (var crop in currentCrops)
@@ -137,6 +141,11 @@ public class Crops : MonoBehaviour
                     cropInstance = Instantiate(cropData.cropH, bigSpot.position, Quaternion.identity);
             }
         }
+    }
+
+    public bool IsCropExist()
+    {
+        return cropInstance != null || isGrowing; // 수확작물 프리팹이 존재하는지 확인
     }
 
     // 농사를 초기화하는 메서드
@@ -177,5 +186,4 @@ public class Crops : MonoBehaviour
             }
         }
     }
-
 }
