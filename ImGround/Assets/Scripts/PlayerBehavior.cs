@@ -252,7 +252,9 @@ public class PlayerBehavior : MonoBehaviour
         // Destroy the picked-up item
         if (pickedItem != null)
         {
-            Destroy(pickedItem);
+            pickedItem.transform.SetParent(null);
+            pickedItem.gameObject.SetActive(false);
+            //Destroy(pickedItem);
             pickedItem = null; // Reset the reference to the item
         }
     }
