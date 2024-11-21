@@ -4588,6 +4588,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1073519671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1073519672}
+  m_Layer: 0
+  m_Name: testPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1073519672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073519671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14300013, y: 1.5760221, z: -0.7630005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1719462441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1078157443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4642,8 +4673,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 454730, guid: 51c1c04146bac56469780953edd2418c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1073519672}
+    - targetCorrespondingSourceObject: {fileID: 454730, guid: 51c1c04146bac56469780953edd2418c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1519063547}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 141078, guid: 51c1c04146bac56469780953edd2418c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1719462434}
   m_SourcePrefab: {fileID: 100100000, guid: 51c1c04146bac56469780953edd2418c, type: 3}
 --- !u!1001 &1090682202
 PrefabInstance:
@@ -5807,12 +5847,16 @@ PrefabInstance:
       value: SM_Icon_Apple_01 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1304660386900934, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1304660386900934, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
       propertyPath: m_TagString
       value: fruit
       objectReference: {fileID: 0}
     - target: {fileID: 4892002703282902, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.491
+      value: 0.49099994
       objectReference: {fileID: 0}
     - target: {fileID: 4892002703282902, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5828,7 +5872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4892002703282902, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4892002703282902, guid: bd7dc9dc7bc1498469cf9289744f30c3, type: 3}
       propertyPath: m_LocalRotation.y
@@ -7215,6 +7259,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 678878649}
   m_SourcePrefab: {fileID: 100100000, guid: 011af6e28de45484d92ef8293ea25855, type: 3}
+--- !u!1 &1519063546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1519063547}
+  m_Layer: 0
+  m_Name: testPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1519063547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519063546}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.529, y: 1.6550221, z: -0.20899963}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1719462441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1519224034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8778,6 +8853,32 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 338046447b2bb29408a46858bb858434, type: 3}
+--- !u!1 &1719462433 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 141078, guid: 51c1c04146bac56469780953edd2418c, type: 3}
+  m_PrefabInstance: {fileID: 1078157443}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1719462434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719462433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad06b165c0f6bfe43a77bddab3f83c2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fruitPos:
+  - {fileID: 1073519672}
+  - {fileID: 1519063547}
+  fruit: {fileID: 6078586092382014374, guid: 6a6a0f26a08a28d4d90de55587c96538, type: 3}
+--- !u!4 &1719462441 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 454730, guid: 51c1c04146bac56469780953edd2418c, type: 3}
+  m_PrefabInstance: {fileID: 1078157443}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1720624262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 011af6e28de45484d92ef8293ea25855, type: 3}
@@ -12342,7 +12443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4948261458539891087, guid: 6a6a0f26a08a28d4d90de55587c96538, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4948261458539891087, guid: 6a6a0f26a08a28d4d90de55587c96538, type: 3}
       propertyPath: m_LocalRotation.y
@@ -12367,6 +12468,10 @@ PrefabInstance:
     - target: {fileID: 6078586092382014374, guid: 6a6a0f26a08a28d4d90de55587c96538, type: 3}
       propertyPath: m_Name
       value: SM_Icon_Apple_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078586092382014374, guid: 6a6a0f26a08a28d4d90de55587c96538, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
