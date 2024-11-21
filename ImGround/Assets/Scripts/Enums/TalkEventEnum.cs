@@ -12,5 +12,6 @@ public enum TalkEventEnum
     NONE,
     END,
     NEW_QUEST,
-    OPEN_SHOP
+    OPEN_SHOP,
+    OPEN_MANUFACT
 }
