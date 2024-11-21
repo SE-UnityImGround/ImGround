@@ -98,7 +98,7 @@ public class Debug_Image_Controller : MonoBehaviour
 
         try
         {
-            description = ItemInfoManager.getItemName(id) + "\nid : " + id.ToString();
+            description = ItemInfoManager.getItemInfo(id).itemName + "\nid : " + id.ToString();
             try
             {
                 img = ItemInfoManager.getItemImage(id);

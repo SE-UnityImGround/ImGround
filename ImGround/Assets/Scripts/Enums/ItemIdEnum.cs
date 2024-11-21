@@ -11,6 +11,7 @@ public enum ItemIdEnum
      *=============================*/
 
     TEST_NULL_ITEM,
+    PACKAGE,
 
     /*=============================
      *            Foods
@@ -22,9 +23,12 @@ public enum ItemIdEnum
     APPLE_JUICE,
     BANANA,
     BANANA_MILK,
+    TOMATO,
+    TOMATO_JUICE,
     WATERMELON,
     HALF_WATERMELON,
     WATERMELON_JUICE,
+    CARROT,
     CARROT_JUICE,
     LEMON,
     LEMON_JUICE,
@@ -86,5 +90,22 @@ public enum ItemIdEnum
     WATERMELON_SEED,
     POTATO,
     CUCUMBER,
-    FLOUR
+    FLOUR,
+
+    /*=============================
+     *            Tools
+     *=============================*/
+
+    HOE, // 괭이
+    RAKE, // 갈퀴
+    PICKAXE,
+    SHOVEL,
+    KNIFE,
+    SICKLE, // 낫
+
+    /*=============================
+     *         Unclassified
+     *=============================*/
+
+    BED
 }
