@@ -13,10 +13,7 @@ public class PlayerBehavior : MonoBehaviour
     bool eDown;
     bool[] sDown; // 0~7번까지의 도구 인덱스 번호 모음
 
-    bool isDigReady;
-    bool isPickReady;
-    bool isHarvestReady;
-    bool isPlantReady;
+    bool isDigReady, isPickReady, isHarvestReady, isPlantReady;
     bool isEating = false;
     bool isPickingUp = false;
     bool isDigging = false;
@@ -38,10 +35,8 @@ public class PlayerBehavior : MonoBehaviour
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
-    float digDelay;
-    float pickDelay;
-    float harvestDelay;
-    float plantDelay;
+    float digDelay, pickDelay, harvestDelay, plantDelay;
+
     int toolIndex = 0; // 현재 플레이어가 손에 든 도구의 인덱스
 
     private void Awake()
@@ -52,8 +47,8 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void getInput()
     {
-        dDown = Input.GetButton("Fire2");
-        fDown = Input.GetKeyDown(KeyCode.F);
+        dDown = Input.GetButton("Fire2"); // 도구 동작 키
+        fDown = Input.GetKeyDown(KeyCode.F); // 줍기 키
         eDown = Input.GetKeyDown(KeyCode.E);
         sDown[1] = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
         sDown[2] = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
@@ -72,7 +67,8 @@ public class PlayerBehavior : MonoBehaviour
         pickDelay += Time.deltaTime;
         harvestDelay += Time.deltaTime;
         plantDelay += Time.deltaTime;
-        isDigReady = 1.5f < digDelay;
+
+        isDigReady = 1.8f < digDelay;
         isPickReady = 1.2f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
         isPlantReady = 2f < plantDelay;
@@ -85,7 +81,7 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
         }
-        else if (toolIndex == 0 && fDown && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
@@ -146,7 +142,7 @@ public class PlayerBehavior : MonoBehaviour
             pickDelay = 0f;
             StartCoroutine(ResetPick());
         }
-        else if (toolIndex == 4 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 땅파기
             anim.SetTrigger("doDigUp");
             isDigging = true;
@@ -154,7 +150,7 @@ public class PlayerBehavior : MonoBehaviour
             curtivatePoint[1].gameObject.SetActive(true);
             StartCoroutine(ResetDigUp());
         }
-        else if(toolIndex == 5 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if(toolIndex == 5 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 작물 수확하기
             anim.SetTrigger("doHarvest");
             isHarvest = true;
@@ -181,53 +177,55 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void Swap()
     {
-        int currentIndex = toolIndex;
-        if (sDown[1]) // 주먹
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 0;
-        }
-        if (sDown[2]) // 괭이
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 1;
-        }
-        if (sDown[3]) // 삼지창(과일 수확용)
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 2;
-        }
-        if (sDown[4]) // 곡괭이
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 3;
-        }
-        if (sDown[5]) // 삽
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 4;
-        }
-        if (sDown[6]) // 낫
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 5;
-        }
-        if (sDown[7]) // 검
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 6;
-        }
-        if (sDown[0]) // 이스터에그
-        {
-            tools[currentIndex].gameObject.SetActive(false);
-            toolIndex = 7;
-        }
+        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest) {
+            int currentIndex = toolIndex;
+            if (sDown[1]) // 주먹
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 0;
+            }
+            if (sDown[2]) // 괭이
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 1;
+            }
+            if (sDown[3]) // 삼지창(과일 수확용)
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 2;
+            }
+            if (sDown[4]) // 곡괭이
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 3;
+            }
+            if (sDown[5]) // 삽
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 4;
+            }
+            if (sDown[6]) // 낫
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 5;
+            }
+            if (sDown[7]) // 검
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 6;
+            }
+            if (sDown[0]) // 이스터에그
+            {
+                tools[currentIndex].gameObject.SetActive(false);
+                toolIndex = 7;
+            }
 
-        tools[toolIndex].gameObject.SetActive(true);
+            tools[toolIndex].gameObject.SetActive(true);
+        }
     }
     IEnumerator ResetDig()
     {
-        yield return new WaitForSeconds(1.5f); 
+        yield return new WaitForSeconds(1.6f);
         isDigging = false;
         curtivatePoint[0].gameObject.SetActive(false);
     }
@@ -267,7 +265,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetHarvest()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
         pointH.gameObject.SetActive(false);
         isHarvest = false;
     }
