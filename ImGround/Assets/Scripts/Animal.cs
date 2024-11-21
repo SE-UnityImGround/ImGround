@@ -32,6 +32,11 @@ public class Animal : MonoBehaviour
     [Header("Item Reward")]
     public GameObject item;
 
+    [Header("Experience Drop")]
+    public GameObject expPrefab; // 드랍할 경험치 프리팹
+    [SerializeField]
+    private int expDropCount = 3; // 드랍할 경험치 갯수
+
     void Awake()
     {
         health = maxHealth;
@@ -140,6 +145,12 @@ public class Animal : MonoBehaviour
         gameObject.SetActive(false);
         if(item != null)
             Instantiate(item, transform.position, item.transform.rotation);
+
+        for (int i = 0; i < expDropCount; i++)
+        {
+            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
+            Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
 

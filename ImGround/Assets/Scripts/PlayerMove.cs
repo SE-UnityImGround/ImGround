@@ -7,6 +7,7 @@ using static UnityEngine.ParticleSystem;
 
 public class PlayerMove : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     public float speed;
     float hAxis;
     float vAxis;
@@ -268,5 +269,19 @@ public class PlayerMove : MonoBehaviour
     {
         yield return new WaitForSeconds(1.1f);
         isJumping = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isWalking)
+        {
+            effectSound[0].Play();
+        }
+        else if (isRunning)
+        {
+            effectSound[1].Play();
+        }
+
+
     }
 }
