@@ -82,22 +82,21 @@ public class Player : MonoBehaviour
         }
         // 플레이어 동작 업데이트
         pBehavior.getInput();
-        pBehavior.Use();
-        pBehavior.Swap();
         pMove.MoveInput();
         pAttack.AttackInput();
 
         if (!pMove.IsTired)
         {
+            pBehavior.Use();
+            pBehavior.Swap();
             pMove.Move();
+            pMove.Jump();
+            pMove.Sleep();
+            pMove.Sit();
+            pAttack.Attack();
+            pAttack.SpinAttack();
         }
-
         pMove.Turn();
-        pMove.Jump();
-        pMove.Sleep();
-        pMove.Sit();
-        pAttack.Attack();
-        pAttack.SpinAttack();
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()

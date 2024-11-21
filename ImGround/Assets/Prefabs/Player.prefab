@@ -3131,11 +3131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cec55b3ae554448bcdebd3a0132fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
   effectSound:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+
+  effectSound: []
+
   speed: 10
   player: {fileID: 0}
   rigid: {fileID: 3635496703665396742}
@@ -3226,7 +3230,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2723851214982213589}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9666aecd836f1bc43b8005f95786c60f, type: 3}
   m_Name: 
