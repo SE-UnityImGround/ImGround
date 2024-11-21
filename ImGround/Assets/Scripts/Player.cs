@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
     public int MaxHealth { get { return maxHealth; } }
-
+    public int Exp {  get { return exp; } }
     void Awake()
     {
         // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
