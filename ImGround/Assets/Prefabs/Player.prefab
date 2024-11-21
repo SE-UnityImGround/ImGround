@@ -2994,6 +2994,7 @@ GameObject:
   - component: {fileID: 6235837591708017944}
   - component: {fileID: 7112056036623215088}
   - component: {fileID: 2052404618653691677}
+  - component: {fileID: 8593166215986311713}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3130,7 +3131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cec55b3ae554448bcdebd3a0132fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
+  effectSound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+
   effectSound: []
+
   speed: 10
   player: {fileID: 0}
   rigid: {fileID: 3635496703665396742}
@@ -3229,6 +3238,18 @@ MonoBehaviour:
   inGameUI: {fileID: 0}
   npcController: {fileID: 0}
   playerScript: {fileID: 0}
+--- !u!114 &8593166215986311713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723851214982213589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f135728a1cf8c3c428e04ac41267777c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2748259234206898592
 GameObject:
   m_ObjectHideFlags: 0
