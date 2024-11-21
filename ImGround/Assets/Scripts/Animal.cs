@@ -192,6 +192,14 @@ public class Animal : MonoBehaviour
         if(item != null)
             Instantiate(item, transform.position, item.transform.rotation);
 
+
+        yield return new WaitForSeconds(3f);
+        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+        FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
+        floatingItem.Initialize(transform.position);
+        Destroy(gameObject);
+
+
         for (int i = 0; i < expDropCount; i++)
         {
             Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
@@ -277,6 +285,7 @@ public class Animal : MonoBehaviour
             }
         }
     }
+
     public virtual void Respawn()
     {
         health = maxHealth;
