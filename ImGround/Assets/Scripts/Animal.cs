@@ -12,12 +12,19 @@ public class Animal : MonoBehaviour
     [SerializeField]
     private NavMeshAgent nav;
 
+
     public float patrolRadius = 5.0f; // ���� ����
     public float patrolWaitTime = 3.0f; // �� ���� �������� ����ϴ� �ð�
     protected float patrolWaitTimer;
 
     protected bool surprised = false; // �� ���� �÷���
     protected bool flying = false; // ���߿� ���ƴٴϴ� ����(����) ����
+    public float patrolRadius = 5.0f; // 순찰 범위
+    public float patrolWaitTime = 3.0f; // 각 순찰 지점에서 대기하는 시간
+    protected float patrolWaitTimer;
+
+    protected bool surprised = false; // 닭 전용 플래그
+    protected bool flying = false; // 공중에 날아다니는 동물(곤충) 전용
     private bool isDie = false;
     [SerializeField]
     private bool isHuntAble = true;
@@ -27,21 +34,29 @@ public class Animal : MonoBehaviour
     public Animator anim;
     public Transform target;
     private Renderer renderer;
+
     private Color originalColor; // ���� ����
+    private Color originalColor; // 원래 색상
 
     [Header("Item Reward")]
     public GameObject item;
 
     [Header("Experience Drop")]
+
     public GameObject expPrefab; // ����� ����ġ ������
     [SerializeField]
     private int expDropCount = 3; // ����� ����ġ ����
+    public GameObject expPrefab; // 드랍할 경험치 프리팹
+    [SerializeField]
+    private int expDropCount = 3; // 드랍할 경험치 갯수
 
     void Awake()
     {
         health = maxHealth;
         renderer = GetComponentInChildren<Renderer>();
+
         // ���� ���� ����
+        // 원래 색상 저장
         originalColor = renderer.material.color;
         anim = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
@@ -60,13 +75,16 @@ public class Animal : MonoBehaviour
 
     void Patrol()
     {
+
         // ���� �� �������� �����ߴ��� Ȯ��
+        // 순찰 중 목적지에 도착했는지 확인
         if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
         {
             anim.SetBool("isWalk", false);
             patrolWaitTimer += Time.deltaTime;
 
             // ��� �ð��� ������ ���ο� ���� ������ ����
+            // 대기 시간이 끝나면 새로운 랜덤 목적지 설정
             if (patrolWaitTimer >= patrolWaitTime)
             {
 
@@ -101,6 +119,13 @@ public class Animal : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         // ���� �������� ����
+        // 색상을 빨간색으로 변경
+        renderer.material.color = Color.red;
+
+        // 지정된 시간 동안 대기
+        yield return new WaitForSeconds(0.2f);
+
+        // 원래 색상으로 복원
         renderer.material.color = originalColor;
     }
     IEnumerator Die()
@@ -120,6 +145,12 @@ public class Animal : MonoBehaviour
         {
             // ���������� ���������� ���ϰ� ����
             if (renderer != null) // �������� �����ϴ��� Ȯ��
+        float duration = 1f; // 색상이 변하는 시간 (1초 동안)
+
+        while (elapsedTime < duration)
+        {
+            // 점진적으로 붉은색으로 변하게 만듦
+            if (renderer != null) // 렌더러가 존재하는지 확인
             {
                 renderer.material.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
             }
@@ -137,6 +168,21 @@ public class Animal : MonoBehaviour
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
 
         // ���� ���� ���������� ����
+
+            // 회전 각도 점진적으로 변경
+            float t = elapsedTime / duration;
+            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t); // Lerp를 사용해 점진적으로 회전
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, newZAngle);
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        // 회전을 최종적으로 90도에 맞춤
+        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
+
+        // 최종 색상 붉은색으로 고정
+
         if (renderer != null)
         {
             renderer.material.color = targetColor;
@@ -155,7 +201,11 @@ public class Animal : MonoBehaviour
 
 
 
+
     // ������ ��ġ�� ���� �������� ����
+
+    // 랜덤한 위치를 순찰 지점으로 설정
+
     protected void SetNewRandomPatrolTarget()
     {
 
@@ -181,27 +231,47 @@ public class Animal : MonoBehaviour
 
         if (rayHits.Length > 0)
         {
+
             // Player���� �Ÿ� ���
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
             // ���� �Ÿ� �̳��� ���� ��쿡�� �÷��̾ ����
+
+            // Player와의 거리 계산
+            float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+
+            // 일정 거리 이내에 있을 경우에만 플레이어를 향함
+
             if (distanceToPlayer <= targetRange)
             {
                 navAgent.isStopped = true;
                 Vector3 lookDirection = (target.position - transform.position).normalized;
+
                 lookDirection.y = 0; // Y�� ȸ���� �����Ͽ� �������θ� ȸ��
 
                 // ��ǥ ȸ�� �� ���
                 Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
                 // ���� ȸ�� ������ ��ǥ ȸ�� ������ �ε巴�� ȸ�� (Slerp ���)
+
+                lookDirection.y = 0; // Y축 회전을 방지하여 수평으로만 회전
+
+                // 목표 회전 값 계산
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+                // 현재 회전 값에서 목표 회전 값으로 부드럽게 회전 (Slerp 사용)
+
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
 
                 anim.SetBool("isWalk", false);
             }
             else
             {
+
                 // �÷��̾ ������ ����� NavMeshAgent �ٽ� Ȱ��ȭ
+
+                // 플레이어가 범위를 벗어나면 NavMeshAgent 다시 활성화
+
                 navAgent.isStopped = false;
                 anim.SetBool("isWalk", true);
             }
