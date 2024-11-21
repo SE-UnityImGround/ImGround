@@ -68,4 +68,8 @@ public class Chicken : Animal
             transform.rotation = Quaternion.Slerp(transform.rotation, reversedRotation, Time.deltaTime * 5f);
         }
     }
+    public override void Respawn()
+    {
+        base.Respawn();
+    }
 }

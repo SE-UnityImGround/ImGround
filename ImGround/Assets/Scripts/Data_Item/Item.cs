@@ -11,7 +11,7 @@ using UnityEngine;
 public class Item
 {
     public ItemIdEnum itemId { get; private set; }
-    public string name { get { return ItemInfoManager.getItemName(itemId); } }
+    public string name { get { return ItemInfoManager.getItemInfo(itemId).itemName; } }
     public Sprite image { get { return ItemInfoManager.getItemImage(itemId); } }
     
     /// <summary>

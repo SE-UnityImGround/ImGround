@@ -10,9 +10,9 @@ public class Enemy : MonoBehaviour
     public enum Type { Mush, Cact, Boss };
     public Type type;
     public Transform target;
-    public NavMeshAgent nav; // Ÿ���� �����ϴ� AI ���� Ŭ����
+    public NavMeshAgent nav; // 타겟을 따라가는 AI 네비게이션 클래스
     public Animator anim;
-    public Vector3 respawnPosition; // ������ ��ġ ����
+    public Vector3 respawnPosition; // 리스폰 위치 저장
 
     [Header("Attack Position")]
     public GameObject punchPosition;
@@ -35,16 +35,16 @@ public class Enemy : MonoBehaviour
     public GameObject[] item;
     [Header("Experience Drop")]
     public GameObject expPrefab; // 드랍할 경험치 프리팹
-    public int expDropCount = 3; // 드랍할 경험치 갯수
+    [SerializeField]
+    private int expDropCount = 3; // 드랍할 경험치 갯수
 
     private DayAndNight dayAndNightScript;
 
     // ======= Fade Parameters =======
+    private Renderer fadeRenderer; // 페이드 아웃 효과를 위한 Renderer
 
-    private Renderer fadeRenderer; // ���� �� Fadeout ������ ���� Renderer
-
-    public Shader transparentShader = null; // ���� ������ ������ ������ �ٸ� ���̴�
-    private float fadeDuration = 3f; // ������� �ð�
+    public Shader transparentShader = null; // 페이드 효과를 적용하기 위한 다른 셰이더
+    private float fadeDuration = 3f; // 페이드 지속 시간
 
     // ===============================
 
@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
         if (fadeRenderer != null && transparentShader != null)
             fadeRenderer.material.shader = transparentShader;
 
-        // ������ �� �÷��̾��� �⺻ ������ ��ġ�� ���� ��ġ�� ����(ħ�� �߰��� �� �ڵ�� ���� ����)
+        // 시작할 때 플레이어의 기본 위치를 현재 위치로 설정 (추가적인 로직이 없는 경우)
         respawnPosition = transform.position;
 
         GameObject directionalLight = GameObject.Find("Directional Light");
@@ -64,8 +64,8 @@ public class Enemy : MonoBehaviour
         {
             dayAndNightScript = directionalLight.GetComponent<DayAndNight>();
         }
-
     }
+
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -76,7 +76,6 @@ public class Enemy : MonoBehaviour
         else if (type == Type.Boss)
             ChaseStart();
     }
-
 
     protected void Update()
     {
@@ -89,13 +88,13 @@ public class Enemy : MonoBehaviour
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
         }
-             
+
         if (dayAndNightScript != null)
         {
-            isNight = dayAndNightScript.isNight; // isNight ���� ��������
+            isNight = dayAndNightScript.isNight; // isNight 상태 동기화
         }
-
     }
+
     protected void FixedUpdate()
     {
         if (isChase && !isAttack)
@@ -107,7 +106,7 @@ public class Enemy : MonoBehaviour
             isRespawned = true;  // 낮 상태에서는 리스폰된 상태로 설정
             ChaseStop();
         }
-        else if(!isNight && type != Type.Boss && isRespawned)
+        else if (!isNight && type != Type.Boss && isRespawned)
         {
             anim.SetBool("isIdle", true);
             if (nav.isActiveAndEnabled && nav.isOnNavMesh)
@@ -124,6 +123,7 @@ public class Enemy : MonoBehaviour
             ChaseStart();
         }
     }
+
     void ChaseStart()
     {
         if (nav.isActiveAndEnabled && nav.isOnNavMesh)
@@ -133,12 +133,14 @@ public class Enemy : MonoBehaviour
             anim.SetBool("isIdle", false);
         anim.SetBool("isRun", true);
     }
+
     void ChaseStop()
     {
         isChase = false;
         StopAllCoroutines();
         Die();
     }
+
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -153,7 +155,7 @@ public class Enemy : MonoBehaviour
         isDie = true;
         StopAllCoroutines();
         isChase = false;
-        nav.isStopped = true; // �̵��� ���߱�
+        nav.isStopped = true; // 이동 중지
         anim.SetTrigger("doDie");
         Collider col = GetComponent<Collider>();
         col.enabled = false;
@@ -165,7 +167,7 @@ public class Enemy : MonoBehaviour
 
     void Targetting()
     {
-        if (!isDie && isNight)
+        if (!isDie && (isNight || type == Type.Boss))
         {
             float targetRadius = 0;
             float targetRange = 0;
@@ -191,10 +193,8 @@ public class Enemy : MonoBehaviour
 
             if (rayHits.Length > 0 && !isAttack)
             {
-                // Player���� �Ÿ� ���
                 float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-                // ���� �Ÿ� �̳��� ���� ��쿡�� ����
                 if (distanceToPlayer <= targetRange)
                 {
                     anim.SetBool("isRun", false);
@@ -206,20 +206,18 @@ public class Enemy : MonoBehaviour
 
     protected virtual IEnumerator Attack()
     {
-        // ������ ���߰� ���� �ִϸ��̼� ����
         isChase = false;
-        nav.isStopped = true; // �̵��� ���߱�
+        nav.isStopped = true; // 이동 중지
 
         Vector3 lookDirection = (target.position - transform.position).normalized;
-        lookDirection.y = 0; // Y�� ȸ���� �����Ͽ� �������θ� ȸ��
+        lookDirection.y = 0; // Y축 회전을 제한하여 평면만 회전
         transform.rotation = Quaternion.LookRotation(lookDirection);
 
-        // �÷��̾���� �Ÿ� ���
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
         isAttack = true;
 
-        if (type != Type.Boss) // Boss�� �ƴ� �ٸ� Ÿ���� �� ����
+        if (type != Type.Boss)
         {
             int ranAction = Random.Range(0, 5);
             if (type == Type.Mush)
@@ -261,23 +259,20 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // ������ ������ ���� ������ �� �ٽ� ������ ����
         if (type != Type.Boss)
-            yield return new WaitForSeconds(3f); // �Ϲ� ������ ��� ���� ������
+            yield return new WaitForSeconds(3f);
 
-        // �÷��̾���� �Ÿ��� �ָ� ������ �簳
         if (distanceToPlayer > nav.stoppingDistance)
         {
-            anim.SetBool("isRun", true); // �޸��� �ִϸ��̼� Ȱ��ȭ
+            anim.SetBool("isRun", true);
         }
         else
         {
-            anim.SetBool("isRun", false); // ���� ���� ����
+            anim.SetBool("isRun", false);
         }
 
-        // ������ ������ �ٽ� ������ ����
         isAttack = false;
-        nav.isStopped = false; // �ٽ� �̵� �����ϰ� ����
+        nav.isStopped = false;
         isChase = true;
     }
 
@@ -302,11 +297,11 @@ public class Enemy : MonoBehaviour
 
         // ���� �� Fade Out ȿ��
         if (fadeRenderer == null)
-            Debug.LogFormat("Enemy_FadeOut : Fade Renderer�� �������� ����");
+            Debug.LogFormat("Enemy_FadeOut : Fade Renderer가 존재하지 않습니다");
         else
         {
             if (transparentShader == null)
-                Debug.LogFormat("Enemy_FadeOut : �⺻ Transparent Shader�� ����ȭ ó��");
+                Debug.LogFormat("Enemy_FadeOut : 기본 Transparent Shader가 설정되지 않았습니다");
 
             float elapsedTime = 0.0f;
             Color c = fadeRenderer.material.color;
@@ -355,20 +350,20 @@ public class Enemy : MonoBehaviour
     }
     public void Respawn()
     {
-        // ü���� �ʱ�ȭ
+        // 체력을 초기화
         health = maxHealth;
 
-        // ������ ��ġ�� �̵�
+        // 리스폰 위치로 이동
         transform.position = respawnPosition;
 
-        // ������ ����
+        // 투명도 초기화
         if (fadeRenderer != null)
         {
             Color c = fadeRenderer.material.color;
-            c.a = 1.0f; // ������ ����
+            c.a = 1.0f; // 불투명하게 설정
             fadeRenderer.material.color = c;
         }
-        // ��� ���� ����
+        // 상태 초기화
         isDie = false;
         isChase = isNight ? true : false;
         isAttack = false;
