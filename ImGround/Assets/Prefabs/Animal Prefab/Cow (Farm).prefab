@@ -752,6 +752,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 573669830979027726}
   itemPrefab: {fileID: 7040081593506954756, guid: 6d08c488831fb6f43931534c0980cf22, type: 3}
+  interactingTimeRequired: 6
+  cooldownTime: 8
   canvasTransform: {fileID: 698659731025354978}
   itemSize: {x: 1, y: 1, z: 1}
   playerTransform: {fileID: 0}

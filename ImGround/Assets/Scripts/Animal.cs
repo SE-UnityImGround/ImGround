@@ -120,6 +120,8 @@ public class Animal : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
         GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+        FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
+        floatingItem.Initialize(transform.position);
         Destroy(gameObject);
     }
 
