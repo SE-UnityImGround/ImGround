@@ -3131,17 +3131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cec55b3ae554448bcdebd3a0132fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
   effectSound:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-
-  effectSound: []
-
+  - {fileID: 0}
+  - {fileID: 0}
   speed: 10
-  player: {fileID: 0}
+  player: {fileID: 1347098279213239118}
   rigid: {fileID: 3635496703665396742}
   followCamera: {fileID: 0}
   runningEnergyTime: 10
