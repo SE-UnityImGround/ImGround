@@ -2,8 +2,6 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
 
 public class Animal : MonoBehaviour
 {
@@ -14,25 +12,37 @@ public class Animal : MonoBehaviour
     [SerializeField]
     private NavMeshAgent nav;
 
-    public float patrolRadius = 5.0f; // ¼øÂû ¹üÀ§
-    public float patrolWaitTime = 3.0f; // °¢ ¼øÂû ÁöÁ¡¿¡¼­ ´ë±âÇÏ´Â ½Ã°£
+    public float patrolRadius = 5.0f; // ìˆœì°° ë²”ìœ„
+    public float patrolWaitTime = 3.0f; // ê° ìˆœì°° ì§€ì ì—ì„œ ëŒ€ê¸°í•˜ëŠ” ì‹œê°„
     protected float patrolWaitTimer;
 
-    protected bool surprised = false; // ´ß Àü¿ë ÇÃ·¡±×
-    protected bool flying = false; // °øÁß¿¡ ³¯¾Æ´Ù´Ï´Â µ¿¹°(°ïÃæ) Àü¿ë
+    protected bool surprised = false; // ë‹­ ì „ìš© í”Œë˜ê·¸
+    protected bool flying = false; // ê³µì¤‘ì— ë‚ ì•„ë‹¤ë‹ˆëŠ” ë™ë¬¼(ê³¤ì¶©) ì „ìš©
     private bool isDie = false;
+    [SerializeField]
+    private bool isHuntAble = true;
 
     protected NavMeshAgent navAgent;
     private Vector3 patrolTarget;
     public Animator anim;
     public Transform target;
+    private Renderer renderer;
+    private Color originalColor; // ì›ë˜ ìƒ‰ìƒ
 
     [Header("Item Reward")]
     public GameObject item;
 
+    [Header("Experience Drop")]
+    public GameObject expPrefab; // ë“œëí•  ê²½í—˜ì¹˜ í”„ë¦¬íŒ¹
+    [SerializeField]
+    private int expDropCount = 3; // ë“œëí•  ê²½í—˜ì¹˜ ê°¯ìˆ˜
+
     void Awake()
     {
         health = maxHealth;
+        renderer = GetComponentInChildren<Renderer>();
+        // ì›ë˜ ìƒ‰ìƒ ì €ì¥
+        originalColor = renderer.material.color;
         anim = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         SetNewRandomPatrolTarget();
@@ -50,14 +60,13 @@ public class Animal : MonoBehaviour
 
     void Patrol()
     {
-        // ¼øÂû Áß ¸ñÀûÁö¿¡ µµÂøÇß´ÂÁö È®ÀÎ
-        //navAgent.remainingDistance < 0.5f
+        // ìˆœì°° ì¤‘ ëª©ì ì§€ì— ë„ì°©í–ˆëŠ”ì§€ í™•ì¸
         if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
         {
             anim.SetBool("isWalk", false);
             patrolWaitTimer += Time.deltaTime;
 
-            // ´ë±â ½Ã°£ÀÌ ³¡³ª¸é »õ·Î¿î ·£´ı ¸ñÀûÁö ¼³Á¤
+            // ëŒ€ê¸° ì‹œê°„ì´ ëë‚˜ë©´ ìƒˆë¡œìš´ ëœë¤ ëª©ì ì§€ ì„¤ì •
             if (patrolWaitTimer >= patrolWaitTime)
             {
 
@@ -69,65 +78,84 @@ public class Animal : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        if (health <= 0)
-            StartCoroutine(Die());
+        if (isHuntAble)
+        {
+            health -= damage;
+            if (health > 0)
+                StartCoroutine(Damaged());
+            else
+                StartCoroutine(Die());
+        }
     }
 
     public void StartDie()
     {
         StartCoroutine(Die());
     }
+    IEnumerator Damaged()
+    {
+        // ìƒ‰ìƒì„ ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ë³€ê²½
+        renderer.material.color = Color.red;
 
+        // ì§€ì •ëœ ì‹œê°„ ë™ì•ˆ ëŒ€ê¸°
+        yield return new WaitForSeconds(0.2f);
+
+        // ì›ë˜ ìƒ‰ìƒìœ¼ë¡œ ë³µì›
+        renderer.material.color = originalColor;
+    }
     IEnumerator Die()
     {
         float currentZAngle = transform.eulerAngles.z;
         isDie = true;
         nav.enabled = false;
+        anim.SetBool("isWalk", false);
 
-        Renderer renderer = GetComponentInChildren<Renderer>();
         Color originalColor = renderer.material.color;
         Color targetColor = Color.red;
 
         float elapsedTime = 0f;
-        float duration = 2f; // »ö»óÀÌ º¯ÇÏ´Â ½Ã°£ (2ÃÊ µ¿¾È)
+        float duration = 1f; // ìƒ‰ìƒì´ ë³€í•˜ëŠ” ì‹œê°„ (1ì´ˆ ë™ì•ˆ)
 
         while (elapsedTime < duration)
         {
-            // Á¡ÁøÀûÀ¸·Î ºÓÀº»öÀ¸·Î º¯ÇÏ°Ô ¸¸µê
-            if (renderer != null) // ·»´õ·¯°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+            // ì ì§„ì ìœ¼ë¡œ ë¶‰ì€ìƒ‰ìœ¼ë¡œ ë³€í•˜ê²Œ ë§Œë“¦
+            if (renderer != null) // ë Œë”ëŸ¬ê°€ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
             {
                 renderer.material.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
             }
 
-            // È¸Àü °¢µµ Á¡ÁøÀûÀ¸·Î º¯°æ
+            // íšŒì „ ê°ë„ ì ì§„ì ìœ¼ë¡œ ë³€ê²½
             float t = elapsedTime / duration;
-            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t); // Lerp¸¦ »ç¿ëÇØ Á¡ÁøÀûÀ¸·Î È¸Àü
+            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t); // Lerpë¥¼ ì‚¬ìš©í•´ ì ì§„ì ìœ¼ë¡œ íšŒì „
             transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, newZAngle);
 
             elapsedTime += Time.deltaTime;
-            yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
+            yield return null; // ë‹¤ìŒ í”„ë ˆì„ê¹Œì§€ ëŒ€ê¸°
         }
 
-        // È¸ÀüÀ» ÃÖÁ¾ÀûÀ¸·Î 90µµ¿¡ ¸ÂÃã
+        // íšŒì „ì„ ìµœì¢…ì ìœ¼ë¡œ 90ë„ì— ë§ì¶¤
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
 
-        // ÃÖÁ¾ »ö»ó ºÓÀº»öÀ¸·Î °íÁ¤
+        // ìµœì¢… ìƒ‰ìƒ ë¶‰ì€ìƒ‰ìœ¼ë¡œ ê³ ì •
         if (renderer != null)
         {
             renderer.material.color = targetColor;
         }
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
+        if(item != null)
+            Instantiate(item, transform.position, item.transform.rotation);
 
-        yield return new WaitForSeconds(3f);
-        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
-        FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
-        floatingItem.Initialize(transform.position);
-        Destroy(gameObject);
+        for (int i = 0; i < expDropCount; i++)
+        {
+            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
+            Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
 
 
-    // ·£´ıÇÑ À§Ä¡¸¦ ¼øÂû ÁöÁ¡À¸·Î ¼³Á¤
+    // ëœë¤í•œ ìœ„ì¹˜ë¥¼ ìˆœì°° ì§€ì ìœ¼ë¡œ ì„¤ì •
     protected void SetNewRandomPatrolTarget()
     {
 
@@ -153,139 +181,38 @@ public class Animal : MonoBehaviour
 
         if (rayHits.Length > 0)
         {
-            // Player¿ÍÀÇ °Å¸® °è»ê
+            // Playerì™€ì˜ ê±°ë¦¬ ê³„ì‚°
             float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-            // ÀÏÁ¤ °Å¸® ÀÌ³»¿¡ ÀÖÀ» °æ¿ì¿¡¸¸ ÇÃ·¹ÀÌ¾î¸¦ ÇâÇÔ
+            // ì¼ì • ê±°ë¦¬ ì´ë‚´ì— ìˆì„ ê²½ìš°ì—ë§Œ í”Œë ˆì´ì–´ë¥¼ í–¥í•¨
             if (distanceToPlayer <= targetRange)
             {
                 navAgent.isStopped = true;
                 Vector3 lookDirection = (target.position - transform.position).normalized;
-                lookDirection.y = 0; // YÃà È¸ÀüÀ» ¹æÁöÇÏ¿© ¼öÆòÀ¸·Î¸¸ È¸Àü
+                lookDirection.y = 0; // Yì¶• íšŒì „ì„ ë°©ì§€í•˜ì—¬ ìˆ˜í‰ìœ¼ë¡œë§Œ íšŒì „
 
-                // ¸ñÇ¥ È¸Àü °ª °è»ê
+                // ëª©í‘œ íšŒì „ ê°’ ê³„ì‚°
                 Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
-                // ÇöÀç È¸Àü °ª¿¡¼­ ¸ñÇ¥ È¸Àü °ªÀ¸·Î ºÎµå·´°Ô È¸Àü (Slerp »ç¿ë)
+                // í˜„ì¬ íšŒì „ ê°’ì—ì„œ ëª©í‘œ íšŒì „ ê°’ìœ¼ë¡œ ë¶€ë“œëŸ½ê²Œ íšŒì „ (Slerp ì‚¬ìš©)
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
 
                 anim.SetBool("isWalk", false);
             }
             else
             {
-                // ÇÃ·¹ÀÌ¾î°¡ ¹üÀ§¸¦ ¹ş¾î³ª¸é NavMeshAgent ´Ù½Ã È°¼ºÈ­
+                // í”Œë ˆì´ì–´ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ NavMeshAgent ë‹¤ì‹œ í™œì„±í™”
                 navAgent.isStopped = false;
                 anim.SetBool("isWalk", true);
             }
         }
     }
-
-}
-
-
-
-/*using UnityEngine;
-using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
-
-public class Animal : MonoBehaviour
-{
-    public float patrolRadius = 5.0f; // ¼øÂû ¹üÀ§
-    public float patrolWaitTime = 3.0f; // °¢ ¼øÂû ÁöÁ¡¿¡¼­ ´ë±âÇÏ´Â ½Ã°£
-    private float patrolWaitTimer;
-
-    protected bool surprised = false; // ´ß Àü¿ë ÇÃ·¡±×
-    protected bool flying = false; // °øÁß¿¡ ³¯¾Æ´Ù´Ï´Â µ¿¹°(°ïÃæ) Àü¿ë
-
-    protected NavMeshAgent navAgent;
-    public Vector3 patrolTarget;
-    public Animator anim;
-    public Transform target;
-
-    void Awake()
+    public virtual void Respawn()
     {
-        anim = GetComponent<Animator>();
-        navAgent = GetComponent<NavMeshAgent>();
-        SetNewRandomPatrolTarget();
-    }
-
-    protected void Update()
-    {
-        Patrol();
-        if (!surprised && !flying)
-            LookAt();
-    }
-
-    void Patrol()
-    {
-        // ¼øÂû Áß ¸ñÀûÁö¿¡ µµÂøÇß´ÂÁö È®ÀÎ
-        if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
-        {
-            anim.SetBool("isWalk", false);
-            patrolWaitTimer += Time.deltaTime;
-
-            // ´ë±â ½Ã°£ÀÌ ³¡³ª¸é »õ·Î¿î ·£´ı ¸ñÀûÁö ¼³Á¤
-            if (patrolWaitTimer >= patrolWaitTime)
-            {
-
-                SetNewRandomPatrolTarget();
-                patrolWaitTimer = 0.0f;
-            }
-        }
-    }
-
-    // ·£´ıÇÑ À§Ä¡¸¦ ¼øÂû ÁöÁ¡À¸·Î ¼³Á¤
-    protected virtual void SetNewRandomPatrolTarget()
-    {
-
-        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
-        randomDirection += transform.position;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, patrolRadius, 1))
-        {
-            patrolTarget = hit.position;
-            navAgent.SetDestination(patrolTarget);
-        }
+        health = maxHealth;
+        isDie = false;
+        nav.enabled = true;
         anim.SetBool("isWalk", true);
+        renderer.material.color = originalColor;
     }
-
-    void LookAt()
-    {
-        float targetRadius = 2f;
-        float targetRange = 4f;
-
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius,
-                transform.forward, targetRange, LayerMask.GetMask("Player"));
-
-        if (rayHits.Length > 0)
-        {
-            // Player¿ÍÀÇ °Å¸® °è»ê
-            float distanceToPlayer = Vector3.Distance(transform.position, target.position);
-
-            // ÀÏÁ¤ °Å¸® ÀÌ³»¿¡ ÀÖÀ» °æ¿ì¿¡¸¸ ÇÃ·¹ÀÌ¾î¸¦ ÇâÇÔ
-            if (distanceToPlayer <= targetRange)
-            {
-                navAgent.isStopped = true;
-                Vector3 lookDirection = (target.position - transform.position).normalized;
-                lookDirection.y = 0; // YÃà È¸ÀüÀ» ¹æÁöÇÏ¿© ¼öÆòÀ¸·Î¸¸ È¸Àü
-
-                // ¸ñÇ¥ È¸Àü °ª °è»ê
-                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-
-                // ÇöÀç È¸Àü °ª¿¡¼­ ¸ñÇ¥ È¸Àü °ªÀ¸·Î ºÎµå·´°Ô È¸Àü (Slerp »ç¿ë)
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-
-                anim.SetBool("isWalk", false);
-            }
-            else
-            {
-                // ÇÃ·¹ÀÌ¾î°¡ ¹üÀ§¸¦ ¹ş¾î³ª¸é NavMeshAgent ´Ù½Ã È°¼ºÈ­
-                navAgent.isStopped = false;
-                anim.SetBool("isWalk", true);
-            }
-        }
-    }
-
 }
-*/

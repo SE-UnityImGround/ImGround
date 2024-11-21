@@ -403,15 +403,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 62.6
+      value: 14.360001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45282745
+      value: -4.43
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -79.7
+      value: -3.3700004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -500,6 +500,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
+      propertyPath: m_TagString
+      value: Animal
       objectReference: {fileID: 0}
     - target: {fileID: 5386477312666578962, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_Layer
@@ -598,6 +602,7 @@ MonoBehaviour:
   nav: {fileID: 9209958450370105864}
   patrolRadius: 10
   patrolWaitTime: 3
+  isHuntAble: 1
   anim: {fileID: 1112878657047530753}
   target: {fileID: 0}
   item: {fileID: 0}
