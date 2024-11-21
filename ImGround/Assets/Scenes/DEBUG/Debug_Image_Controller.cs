@@ -73,7 +73,6 @@ public class Debug_Image_Controller : MonoBehaviour
                 break;
             default:
                 throw new Exception("처리되지 않은 코드!");
-                break;
         }
     }
 
@@ -86,7 +85,7 @@ public class Debug_Image_Controller : MonoBehaviour
             img = ImageManager.getImage(id);
             description = "id : " + id.ToString();
         }
-        catch (Exception e)
+        catch
         {
             img = null;
             description = "이미지 미등록 오류\nid: " + id.ToString();
@@ -99,18 +98,18 @@ public class Debug_Image_Controller : MonoBehaviour
 
         try
         {
-            description = ItemInfoManager.getItemName(id) + "\nid : " + id.ToString();
+            description = ItemInfoManager.getItemInfo(id).itemName + "\nid : " + id.ToString();
             try
             {
                 img = ItemInfoManager.getItemImage(id);
             }
-            catch (Exception e)
+            catch
             {
                 img = null;
                 description = description + "\n아이템 이미지 미등록 오류\nid: " + id.ToString();
             }
         }
-        catch (Exception e)
+        catch
         {
             img = null;
             description = "아이템 정보 미등록 오류\nid: " + id.ToString();

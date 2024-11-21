@@ -7,7 +7,7 @@ public class PlayerNPCController : MonoBehaviour
     private static readonly float MAX_INTERACTION_DISTANCE = 5.0f;
     private static readonly float MAX_INTERACTION_ANGLE = 70.0f;
 
-    private GameObject selected;
+    public GameObject selectedNPC { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -18,22 +18,29 @@ public class PlayerNPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        selectInteractableNPC();
+    }
+
+    /// <summary>
+    /// 상호작용 가능한 NPC를 탐색합니다.
+    /// 속성 <see cref="selectedNPC"/>에 저장됩니다.
+    /// </summary>
+    private void selectInteractableNPC()
+    {
         GameObject selectedNPC = findInteractableNPC();
-        if (selected != selectedNPC)
+        if (this.selectedNPC != selectedNPC)
         {
-            if (selected != null)
+            if (this.selectedNPC != null)
             {
                 // 이전 선택된 NPC 처리
-                selected.GetComponent<NPCBehavior>().setSelected(false);
-                Debug.Log("취소됨 : " + selected.name);
+                this.selectedNPC.GetComponent<NPCBehavior>().setSelected(false);
             }
             if (selectedNPC != null)
             {
                 // 새로 선택된 NPC 처리
                 selectedNPC.GetComponent<NPCBehavior>().setSelected(true);
-                Debug.Log("새로 선택됨 : " + selectedNPC.name);
             }
-            selected = selectedNPC;
+            this.selectedNPC = selectedNPC;
         }
     }
 

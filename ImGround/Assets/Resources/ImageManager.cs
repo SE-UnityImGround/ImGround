@@ -64,7 +64,7 @@ public class ImageManager
             {
                 findImageInfo(id);
             }
-            catch (Exception e)
+            catch
             {
                 omittedImages += id.ToString() + "\n";
             }
@@ -114,7 +114,15 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ITEM_MILK_PACK, "Images/Item2D/Food/곽우유"),
         new ImageInfo(ImageIdEnum.ITEM_MILK_BUCKET, "Images/Item2D/Food/양동이우유"),
 
+        new ImageInfo(ImageIdEnum.ITEM_APPLE, "Images/Item2D/Food/apple"),
+        new ImageInfo(ImageIdEnum.ITEM_BANANA, "Images/Item2D/Food/banana"),
         new ImageInfo(ImageIdEnum.ITEM_BANANA_MILK, "Images/Item2D/Food/banana milk"),
+        new ImageInfo(ImageIdEnum.ITEM_WATERMELON, "Images/Item2D/Food/watermelon"),
+        new ImageInfo(ImageIdEnum.ITEM_HALF_WATERMELON, "Images/Item2D/Food/half watermelon"),
+        new ImageInfo(ImageIdEnum.ITEM_WATERMELON_JUICE, "Images/Item2D/Food/watermelon juice"),
+        new ImageInfo(ImageIdEnum.ITEM_CARROT_JUICE, "Images/Item2D/Food/carrot juice"),
+        new ImageInfo(ImageIdEnum.ITEM_LEMON, "Images/Item2D/Food/lemon"),
+        new ImageInfo(ImageIdEnum.ITEM_LEMON_JUICE, "Images/Item2D/Food/lemon juice"),
         new ImageInfo(ImageIdEnum.ITEM_CHEESE, "Images/Item2D/Food/치즈"),
         new ImageInfo(ImageIdEnum.ITEM_BEEF_SUSHI, "Images/Item2D/Food/Beef sushi"),
         new ImageInfo(ImageIdEnum.ITEM_EGG_SUSHI, "Images/Item2D/Food/egg sushi"),
@@ -133,7 +141,6 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ITEM_STEAK, "Images/Item2D/Food/steak"),
         new ImageInfo(ImageIdEnum.ITEM_EGG_TOAST, "Images/Item2D/Food/egg toast"),
         new ImageInfo(ImageIdEnum.ITEM_FISH_AND_CHIPS, "Images/Item2D/Food/fish and chips"),
-        new ImageInfo(ImageIdEnum.ITEM_HALF_WATERMELON, "Images/Item2D/Food/half watermelon"),
         new ImageInfo(ImageIdEnum.ITEM_HAMBURGER, "Images/Item2D/Food/hamburger"),
         new ImageInfo(ImageIdEnum.ITEM_MASHED_POTATO, "Images/Item2D/Food/mashed potato"),
         new ImageInfo(ImageIdEnum.ITEM_PIZZA, "Images/Item2D/Food/pizza"),
@@ -175,7 +182,24 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ICON_HAMMER, "Images/Hammer"),
         new ImageInfo(ImageIdEnum.ICON_WOOD, "Images/Wood"),
         new ImageInfo(ImageIdEnum.ICON_ARCHER, "Images/Icons/UI_Icon_Archer"),
-        new ImageInfo(ImageIdEnum.ICON_ATTACK, "Images/Icons/UI_Icon_Attack")
+        new ImageInfo(ImageIdEnum.ICON_ATTACK, "Images/Icons/UI_Icon_Attack"),
+
+        /*=============================
+         *              UI
+         *=============================*/
+
+        new ImageInfo(ImageIdEnum.UI_LIFE_0, "Images/UI/Life_0"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_30, "Images/UI/Life_30"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_50, "Images/UI/Life_50"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_80, "Images/UI/Life_80"),
+        new ImageInfo(ImageIdEnum.UI_LIFE_100, "Images/UI/Life_100"),
+
+        new ImageInfo(ImageIdEnum.UI_TALK_GC, "Images/UI/규찬"),
+        new ImageInfo(ImageIdEnum.UI_TALK_MJ, "Images/UI/민지"),
+        new ImageInfo(ImageIdEnum.UI_TALK_SS, "Images/UI/성수"),
+        new ImageInfo(ImageIdEnum.UI_TALK_YJ, "Images/UI/유진"),
+        new ImageInfo(ImageIdEnum.UI_TALK_EJ, "Images/UI/은주"),
+        new ImageInfo(ImageIdEnum.UI_TALK_JY, "Images/UI/지영")
     };
 
     /*==================================================

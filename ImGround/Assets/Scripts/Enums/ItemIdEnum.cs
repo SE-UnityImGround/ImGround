@@ -11,6 +11,7 @@ public enum ItemIdEnum
      *=============================*/
 
     TEST_NULL_ITEM,
+    PACKAGE,
 
     /*=============================
      *            Foods
@@ -18,7 +19,19 @@ public enum ItemIdEnum
 
     MILK_PACK,
     MILK_BUCKET,
+    APPLE,
+    APPLE_JUICE,
+    BANANA,
     BANANA_MILK,
+    TOMATO,
+    TOMATO_JUICE,
+    WATERMELON,
+    HALF_WATERMELON,
+    WATERMELON_JUICE,
+    CARROT,
+    CARROT_JUICE,
+    LEMON,
+    LEMON_JUICE,
     CHEESE,
     BEEF_SUSHI,
     EGG_SUSHI,
@@ -37,7 +50,6 @@ public enum ItemIdEnum
     STEAK,
     EGG_TOAST,
     FISH_AND_CHIPS,
-    HALF_WATERMELON,
     HAMBURGER,
     MASHED_POTATO,
     PIZZA,
@@ -78,5 +90,22 @@ public enum ItemIdEnum
     WATERMELON_SEED,
     POTATO,
     CUCUMBER,
-    FLOUR
+    FLOUR,
+
+    /*=============================
+     *            Tools
+     *=============================*/
+
+    HOE, // 괭이
+    RAKE, // 갈퀴
+    PICKAXE,
+    SHOVEL,
+    KNIFE,
+    SICKLE, // 낫
+
+    /*=============================
+     *         Unclassified
+     *=============================*/
+
+    BED
 }
