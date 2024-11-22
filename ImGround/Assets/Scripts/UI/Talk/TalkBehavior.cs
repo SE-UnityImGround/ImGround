@@ -11,8 +11,6 @@ public class TalkBehavior : UIBehavior
     [SerializeField]
     private InGameViewBehavior inGameUI;
     [SerializeField]
-    private ShopBehavior shopView;
-    [SerializeField]
     private Image TalkerCircle;
     [SerializeField]
     private Text TalkerName;
@@ -43,7 +41,6 @@ public class TalkBehavior : UIBehavior
     public override void initialize()
     {
         checkValue(inGameUI, nameof(inGameUI));
-        checkValue(shopView, nameof(shopView));
         checkValue(TalkerCircle, nameof(TalkerCircle));
         checkValue(TalkerName, nameof(TalkerName));
         checkValue(TalkText, nameof(TalkText));
@@ -102,7 +99,14 @@ public class TalkBehavior : UIBehavior
         }
         if (eventType == TalkEventEnum.OPEN_SHOP)
         {
-            shopView.startShop(ShopInfoManager.getShopInfo(talkingNPC.type), onShopViewClose);
+            inGameUI.getUIBehavior<ShopBehavior>().setShopView(ShopInfoManager.getShopInfo(talkingNPC.type), onChildViewClose);
+            inGameUI.displayView(InGameViewMode.SHOP);
+            inGameUI.hideView(InGameViewMode.TALK);
+        }
+        if (eventType == TalkEventEnum.OPEN_MANUFACT)
+        {
+            inGameUI.getUIBehavior<ManufactListBehavior>().setManufact(onChildViewClose);
+            inGameUI.displayView(InGameViewMode.MANUFACT);
             inGameUI.hideView(InGameViewMode.TALK);
         }
 
@@ -164,9 +168,9 @@ public class TalkBehavior : UIBehavior
     }
 
     /// <summary>
-    /// 거래 창이 닫히면 처리하는 작업입니다.
+    /// 대화 중 보조 창이 닫히면 처리하는 작업입니다.
     /// </summary>
-    private void onShopViewClose()
+    private void onChildViewClose()
     {
         if (currentTalk != null)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class ManufactListBehavior : UIBehavior
     private GameObject ManufactPrefab;
 
     private List<ManufactBehavior> manufactItems = new List<ManufactBehavior>();
+
+    private Action onClose;
 
     public override void initialize()
     {
@@ -26,16 +29,19 @@ public class ManufactListBehavior : UIBehavior
 
         InventoryManager.onSlotItemChangedHandler += onInventoryUpdated;
 
-        test();
-    }
-
-    void test()
-    {
         Dictionary<ItemIdEnum, int> invenInfo = InventoryManager.getInventoryInfo();
         foreach (ManufactInfo info in ManufactInfoManager.manufactInfos)
         {
             addManufactItem(info, invenInfo);
         }
+    }
+
+    /// <summary>
+    /// 제작 UI를 설정합니다. (표시하진 않음) 제작화면 종료시 실행되어야 할 메소드를 함께 입력받습니다.
+    /// </summary>
+    public void setManufact(Action onCloseCallBack)
+    {
+        this.onClose = onCloseCallBack;
     }
 
     /// <summary>
@@ -102,5 +108,20 @@ public class ManufactListBehavior : UIBehavior
         {
             Debug.Log("제작 시도 : 실패! 아이템 부족해요");
         }
+    }
+
+    /// <summary>
+    /// 창 닫기 과정에서 추가 처리를 위해 오버라이딩 된 함수입니다.
+    /// </summary>
+    /// <param name="isActive"></param>
+    public override void setActive(bool isActive)
+    {
+        if (!isActive)
+        {
+            Action closeFunc = onClose;
+            onClose = null;
+            closeFunc?.Invoke();
+        }
+        base.setActive(isActive);
     }
 }

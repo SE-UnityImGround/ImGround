@@ -52,13 +52,7 @@ public class PlayerUIController : MonoBehaviour
             inGameUI.getUIBehavior<TalkBehavior>().startTalk(npc);
         }
 
-        // 제조 UI 열기 조건
-        if ((inGameUI.mode == InGameViewMode.DEFAULT || inGameUI.mode == InGameViewMode.MANUFACT)
-            && Input.GetKeyDown(KeyCode.M))
-        {
-            inGameUI.toggleView(InGameViewMode.MANUFACT);
-        }
-
+        // ESC 키로 UI 조작
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             inGameUI.doEscapeProcess();

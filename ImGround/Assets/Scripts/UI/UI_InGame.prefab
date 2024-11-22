@@ -3171,7 +3171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameUI: {fileID: 4559323035960113168}
-  shopView: {fileID: 5909366692690374486}
   TalkerCircle: {fileID: 5779506807570820717}
   TalkerName: {fileID: 8167620753208927834}
   TalkText: {fileID: 1070797219495372984}
@@ -4447,8 +4446,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameViewBehavior: {fileID: 4559323035960113168}
-  hideOrDisplay: 0
-  LinkedView: 0
+  hideOrDisplay: 1
+  LinkedView: 5
 --- !u!1 &4612587341197135409
 GameObject:
   m_ObjectHideFlags: 0
@@ -7034,7 +7033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4047fd7f1adfc640972584e56ca5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameUI: {fileID: 4559323035960113168}
   ShopItemListView: {fileID: 7975442939657483803}
   ShopItemPrefab: {fileID: 4397443470808418991, guid: 86473dbcf0aa9bb4ca03f81e7296e88d, type: 3}
   ShopNameView: {fileID: 5881147737249498949}
