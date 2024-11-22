@@ -7,7 +7,7 @@ public class FloatingItem : MonoBehaviour
     public float rotationSpeed = 50f;    // 회전 속도
 
     private Vector3 startPosition;
-
+    private bool isPicked = false;
     // 생성된 위치를 기준으로 초기화하는 메서드
     public void Initialize(Vector3 position)
     {
@@ -16,11 +16,25 @@ public class FloatingItem : MonoBehaviour
 
     void Update()
     {
+        if (isPicked)
+        {
+            return;
+        }
+        CheckPicked();
         // 아이템이 처음 생성된 y위치를 기준으로 위아래로 천천히 떠다니는 애니메이션
         float newY = startPosition.y + 0.5f + Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
         // 천천히 회전하는 애니메이션
         transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+    }
+
+    void CheckPicked()
+    {
+        if (transform.parent != null)
+        {
+            //transform.position = Vector3.zero;
+            isPicked = true;
+        }
     }
 }

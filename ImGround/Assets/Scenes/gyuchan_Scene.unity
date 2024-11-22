@@ -2007,6 +2007,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Polyart_Golem
       objectReference: {fileID: 0}
+    - target: {fileID: 1077356408, guid: c6cfc32748fb5004aa11a1be074b5c58, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1077356410, guid: c6cfc32748fb5004aa11a1be074b5c58, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.09408
@@ -11224,7 +11228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2100579452
 Transform:
   m_ObjectHideFlags: 0
@@ -11834,10 +11838,6 @@ PrefabInstance:
       propertyPath: followCamera
       value: 
       objectReference: {fileID: 546211659}
-    - target: {fileID: 8497136084724239062, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
-      propertyPath: effectSound.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
