@@ -6,7 +6,7 @@ public class Exp : MonoBehaviour
 {
     public Transform target; // 플레이어 Transform을 할당합니다.
     private Player player;
-    public float moveSpeed = 5f; // 경험치 오브젝트의 이동 속도
+    public float moveSpeed = 7f; // 경험치 오브젝트의 이동 속도
     public int playerLayer = 7; // 플레이어 레이어 번호 (Player 레이어가 8번이라고 가정)
 
     void Start()

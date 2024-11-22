@@ -142,21 +142,20 @@ public class Animal : MonoBehaviour
             renderer.material.color = targetColor;
         }
         yield return new WaitForSeconds(2f);
+        // 동물의 아이템 드랍 관련 처리
+        if (item != null)
+        {
+            GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+            FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
+            floatingItem.Initialize(transform.position);
+        }
+        // 동물 사망 후 비활성화 처리
         gameObject.SetActive(false);
-        if(item != null)
-            Instantiate(item, transform.position, item.transform.rotation);
-
-
-        yield return new WaitForSeconds(3f);
-        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
-        FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
-        floatingItem.Initialize(transform.position);
-        Destroy(gameObject);
-
+        
 
         for (int i = 0; i < expDropCount; i++)
         {
-            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
+            Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
             Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
         }
     }

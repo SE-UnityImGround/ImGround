@@ -34,19 +34,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.21592
+      value: 55.829628
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.418089
+      value: 16.58622
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.858885
+      value: 31.67075
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.26503596
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalRotation.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.9642385
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalRotation.z
@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -210.738
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7672a0e56c088bb41bd782d4e3984448, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -375,7 +375,9 @@ MonoBehaviour:
   isHuntAble: 1
   anim: {fileID: 6781750496845713519}
   target: {fileID: 0}
-  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
+  item: {fileID: 0}
+  expPrefab: {fileID: 592310022102497824, guid: d64e1af8e06ba5341b28dd2589471bf4, type: 3}
+  expDropCount: 3
 --- !u!195 &8940799132043013301
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -396,7 +398,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 8
   m_ObstacleAvoidanceType: 4
 --- !u!65 &5733696627970246213
 BoxCollider:

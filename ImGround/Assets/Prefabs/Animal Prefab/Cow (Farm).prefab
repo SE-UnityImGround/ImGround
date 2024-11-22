@@ -403,19 +403,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.24592
+      value: 59.07563
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.5018053
+      value: 16.588171
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.208885
+      value: 10.937557
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.48978552
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalRotation.x
@@ -423,7 +423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.87184304
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalRotation.z
@@ -435,7 +435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -121.347
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b9cb5019dd0441489c07df3b463f293, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -699,7 +699,9 @@ MonoBehaviour:
   isHuntAble: 1
   anim: {fileID: 6171411304916579663}
   target: {fileID: 0}
-  item: {fileID: 2695509377658875491, guid: a4d0d8fc6936bb84c83ec93e983de74f, type: 3}
+  item: {fileID: 0}
+  expPrefab: {fileID: 592310022102497824, guid: d64e1af8e06ba5341b28dd2589471bf4, type: 3}
+  expDropCount: 3
 --- !u!195 &2144626657001434094
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -720,7 +722,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 8
   m_ObstacleAvoidanceType: 4
 --- !u!65 &2902184470627047178
 BoxCollider:
@@ -756,11 +758,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 573669830979027726}
-  itemPrefab: {fileID: 7040081593506954756, guid: 6d08c488831fb6f43931534c0980cf22, type: 3}
+  itemPrefab: {fileID: 0}
   interactingTimeRequired: 6
   cooldownTime: 8
   canvasTransform: {fileID: 698659731025354978}
-  itemSize: {x: 1, y: 1, z: 1}
+  itemSize: {x: 0.2, y: 0.2, z: 0.2}
   playerTransform: {fileID: 0}
   allowedDistance: 2
   animalLayer:
