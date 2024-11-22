@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,12 +16,12 @@ public class Outdoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
             animator.SetBool("IsOpen", true);
             effectSound[0].Play();
@@ -36,10 +36,10 @@ public class Outdoor : MonoBehaviour
         }
     }
 }
-*/
 
 
-using System.Collections;
+
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,4 +82,4 @@ public class Outdoor : MonoBehaviour
             effectSound[1].Play(); // Close sound Àç»ý
         }
     }
-}
+}*/
