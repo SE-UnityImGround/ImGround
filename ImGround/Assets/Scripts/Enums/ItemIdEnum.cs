@@ -12,6 +12,7 @@ public enum ItemIdEnum
 
     TEST_NULL_ITEM,
     PACKAGE,
+    MONEY,
 
     /*=============================
      *            Foods

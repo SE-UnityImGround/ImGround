@@ -16,7 +16,7 @@ public class TalkInfoManager
         ("확인", TalkEventEnum.END, null));
     private static TalkInfo INDUSTRY_1 = new TalkInfo(
         "응? 다들 모르는 건 나한테 물어보라고 했다고? ······. 아, 이 문제는······.",
-        ("확인", TalkEventEnum.OPEN_SHOP, new TalkInfo[] { INDUSTRY_2 }));
+        ("확인", TalkEventEnum.OPEN_MANUFACT, new TalkInfo[] { INDUSTRY_2 }));
 
     // 생선 상점
     private static TalkInfo FISH_3 = new TalkInfo(

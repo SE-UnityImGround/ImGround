@@ -6,8 +6,6 @@ using UnityEngine;
 public class ShopBehavior : UIBehavior
 {
     [SerializeField]
-    private InGameViewBehavior inGameUI;
-    [SerializeField]
     private GameObject ShopItemListView;
     [SerializeField]
     private GameObject ShopItemPrefab;
@@ -30,7 +28,6 @@ public class ShopBehavior : UIBehavior
 
     public override void initialize()
     {
-        checkValue(inGameUI, nameof(inGameUI));
         checkValue(ShopItemListView, nameof(ShopItemListView));
         checkValue(ShopItemPrefab, nameof(ShopItemPrefab));
         checkValue(ShopNameView, nameof(ShopNameView));
@@ -59,11 +56,11 @@ public class ShopBehavior : UIBehavior
     }
 
     /// <summary>
-    /// 새 상점 화면을 엽니다. 상점 종료시 실행되어야 할 메소드를 함께 입력받습니다.
+    /// 새 상점 화면을 구성합니다. (표시하진 않음) 상점 종료시 실행되어야 할 메소드를 함께 입력받습니다.
     /// </summary>
     /// <param name="shopInfo"></param>
     /// <param name="onCloseCallBack"></param>
-    public void startShop(ShopInfo shopInfo, Action onCloseCallBack)
+    public void setShopView(ShopInfo shopInfo, Action onCloseCallBack)
     {
         currentShop = shopInfo;
         onClose = onCloseCallBack;
@@ -88,7 +85,6 @@ public class ShopBehavior : UIBehavior
                 addShopItem(new Item(item.Key), sellPrice);
             }
         }
-        inGameUI.displayView(InGameViewMode.SHOP);
     }
 
     private void clearShopItems()
@@ -162,6 +158,7 @@ public class ShopBehavior : UIBehavior
     /// <param name="money"></param>
     public void onMoneyChanged(int money)
     {
-        displayBuyable(money);
+        if (currentShop != null)
+            displayBuyable(money);
     }
 }

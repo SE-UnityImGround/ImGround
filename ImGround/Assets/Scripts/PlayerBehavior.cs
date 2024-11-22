@@ -252,10 +252,23 @@ public class PlayerBehavior : MonoBehaviour
         // Destroy the picked-up item
         if (pickedItem != null)
         {
+            getItem(pickedItem.GetComponent<ItemPrefabID>()); // 주운 아이템의 인벤토리 처리
             pickedItem.transform.SetParent(null);
             pickedItem.gameObject.SetActive(false);
             //Destroy(pickedItem);
             pickedItem = null; // Reset the reference to the item
+        }
+    }
+
+    private void getItem(ItemPrefabID itemPrefabId)
+    {
+        if (itemPrefabId == null)
+        {
+            Debug.LogError("아이템을 추가할 수 없음 : 아이템 프리팹/오브젝트에 " + nameof(ItemPrefabID) + " 스크립트가 없습니다!");
+        }
+        else
+        {
+            InventoryManager.addItems(itemPrefabId.getItem());
         }
     }
 

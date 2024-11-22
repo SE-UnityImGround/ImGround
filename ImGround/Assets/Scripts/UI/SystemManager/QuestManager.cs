@@ -47,6 +47,11 @@ public class QuestManager
     {
         Quest questInfo = QuestInfoManager.getQuestInfo(questId);
 
+        foreach (ItemBundle item in questInfo.requestItems)
+        {
+            InventoryManager.removeItem(item.item.itemId, item.count);
+        }
+
         InventoryManager.changeMoney(questInfo.rewardMoney);
         foreach (ItemBundle bundle in questInfo.rewardItems)
         {
