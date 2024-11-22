@@ -14,13 +14,6 @@ public class ShopInfoManager
         new Dictionary<ShopIdEnum, ShopInfo>()
         {
             {
-                ShopIdEnum.INDUSTRY,
-                new ShopInfo(
-                    "가공 상점",
-                    true,
-                    new ItemBundle(ItemIdEnum.HORSE_LEATHER, 1, false))
-            },
-            {
                 ShopIdEnum.FISH,
                 new ShopInfo(
                     "생선 가게",
