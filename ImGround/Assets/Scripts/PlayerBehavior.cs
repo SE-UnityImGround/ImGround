@@ -269,7 +269,12 @@ public class PlayerBehavior : MonoBehaviour
         }
         else
         {
-            InventoryManager.addItems(itemPrefabId.getItem());
+            ItemBundle takenItem = itemPrefabId.getItem();
+            InventoryManager.addItems(takenItem);
+            if (takenItem.count > 0)
+            {
+                ItemThrowManager.throwItem(takenItem);
+            }
         }
     }
 

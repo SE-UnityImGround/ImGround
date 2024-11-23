@@ -46,6 +46,14 @@ public class PlayerUIController : MonoBehaviour
         checkValue(inGameUI, nameof(inGameUI), 0);
         checkValue(npcController, nameof(npcController), 1);
         checkValue(playerScript, nameof(playerScript), 2);
+
+        ItemThrowManager.listenItemThrowEvent(onItemThrow);
+    }
+
+    private void onItemThrow(GameObject itemObject)
+    {
+        itemObject.transform.position = transform.position;
+        itemObject.GetComponent<FloatingItem>().Initialize(transform.position + new Vector3(0.0f, 0.5f, 0.0f));
     }
 
     // Update is called once per frame

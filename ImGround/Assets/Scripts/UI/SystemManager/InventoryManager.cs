@@ -10,10 +10,19 @@ public class InventoryManager
     private static int selectedSlotIdx = -1;
     private static int money = 300000;
 
+    /*====================================
+     *         Inventory Events
+     *===================================*/
+
+    private static void dealWithEventError(Exception e)
+    {
+        Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
+        Debug.LogException(e);
+    }
+
     /// <summary>
     /// 인벤토리의 슬롯 선택값이 변경될 경우 발생하는 이벤트입니다.
     /// </summary>
-    /// <param name="selectedIdx"></param>
     public delegate void onSelectionChanged(int selectedIdx);
     public static onSelectionChanged onSelectionChangedHandler;
     private static void invokeOnSelectionChanged(int selectedIdx)
@@ -24,15 +33,13 @@ public class InventoryManager
         }
         catch (Exception e)
         {
-            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
-            Debug.LogException(e);
+            dealWithEventError(e);
         }
     }
 
     /// <summary>
     /// 인벤토리의 특정 슬롯에 아이템 갱신이 발생할 경우 발생하는 이벤트입니다.
     /// </summary>
-    /// <param name="selectedIdx"></param>
     public delegate void onSlotItemChanged(int slotIdx);
     public static onSlotItemChanged onSlotItemChangedHandler;
     private static void invokeOnSlotItemChanged(int slotIdx)
@@ -43,8 +50,7 @@ public class InventoryManager
         }
         catch (Exception e)
         {
-            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
-            Debug.LogException(e);
+            dealWithEventError(e);
         }
     }
 
@@ -60,8 +66,7 @@ public class InventoryManager
         }
         catch (Exception e)
         {
-            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
-            Debug.LogException(e);
+            dealWithEventError(e);
         }
     }
 
@@ -174,36 +179,48 @@ public class InventoryManager
     /// <returns></returns>
     public static bool addItem(Item item)
     {
-        return addItems(new ItemBundle(item, 1, true));
+        ItemBundle addedItem = new ItemBundle(item, 1, true);
+        addItems(addedItem);
+        return (addedItem.count == 0);
     }
 
     /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템 추가에 성공하면 true를 반환합니다.
+    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 만약 실패할 경우
     /// <br/>아이템을 추가한 후 남은 수량이 입력된 <paramref name="items"/> 객체에 반영됩니다.
     /// </summary>
     /// <param name="items">인벤토리에 추가할 아이템</param>
-    /// <returns></returns>
-    public static bool addItems(ItemBundle items)
+    public static void addItems(ItemBundle items)
     {
         // 시스템 처리 구분
         if (items.item.itemId == ItemIdEnum.TEST_NULL_ITEM)
         {
-            return true;
+            items.discardItem(-1);
+            return;
         }
         if (items.item.itemId == ItemIdEnum.PACKAGE)
         {
-            if (items.item is ItemPackage)
-                addPackage((ItemPackage)items.item);
-            // 실패 처리 아직 안됨.
-            return true;
+            if (!(items.item is ItemPackage))
+                return;
+
+            ItemPackage result = addPackage((ItemPackage)items.item);
+            if (result == null)
+            {
+                items.setItemBundle(result, 0, false);
+            }
+            else
+            {
+                items.setItemBundle(result, 1, false);
+            }
+            return;
         }
         if (items.item.itemId == ItemIdEnum.MONEY)
         {
             changeMoney(items.count);
-            return true;
+            items.discardItem(-1);
+            return;
         }
 
-        bool added = false;
+        // 일반 아이템 처리
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             if (inventory[i] == null || inventory[i].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
@@ -214,14 +231,11 @@ public class InventoryManager
             if (inventory[i].addItem(items))
             {
                 invokeOnSlotItemChanged(i);
-                added = true;
             }
 
             if (items.count == 0)
                 break;
         }
-
-        return added;
     }
 
     /// <summary>

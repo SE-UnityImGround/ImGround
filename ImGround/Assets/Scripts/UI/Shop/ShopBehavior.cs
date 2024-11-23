@@ -126,7 +126,10 @@ public class ShopBehavior : UIBehavior
         {
             if (InventoryManager.getMoney() >= price)
             {
-                InventoryManager.addItem(item);
+                if (!InventoryManager.addItem(item))
+                {
+                    ItemThrowManager.throwItem(new ItemBundle(item, 1, false));
+                }
                 InventoryManager.changeMoney(-price);
             }
         }

@@ -101,7 +101,10 @@ public class ManufactListBehavior : UIBehavior
             {
                 InventoryManager.removeItem(inputItem.item.itemId, inputItem.count);
             }
-            InventoryManager.addItems(new ItemBundle(manufactInfo.outputItem));
+            ItemBundle newItem = new ItemBundle(manufactInfo.outputItem);
+            InventoryManager.addItems(newItem);
+            if (newItem.count > 0)
+                ItemThrowManager.throwItem(newItem);
             Debug.Log("제작 시도 : 성공!");
         }
         else
