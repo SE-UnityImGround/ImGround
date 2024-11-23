@@ -50,6 +50,9 @@ public class PlayerNPCController : MonoBehaviour
         GameObject selectedNpc = null;
         foreach (NPCBehavior npc in FindObjectsByType<NPCBehavior>(FindObjectsSortMode.None))
         {
+            if (npc.type == NPCType.NPC_NORMAL)
+                continue;
+
             Vector3 deltaAngle = Quaternion.LookRotation(npc.transform.position - transform.position).eulerAngles
                                 - transform.rotation.eulerAngles;
             float distanceSquare = (npc.transform.position - transform.position).sqrMagnitude;

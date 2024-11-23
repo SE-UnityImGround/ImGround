@@ -297,15 +297,37 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isWalking)
+        if (isWalking && !effectSound[0].isPlaying)
         {
             effectSound[0].Play();
         }
-        else if (isRunning)
+        else if((!isWalking && effectSound[0].isPlaying ) || isTired)
+        {
+            effectSound[0].Stop();
+        }
+        if (isRunning && !effectSound[1].isPlaying)
         {
             effectSound[1].Play();
         }
-
-
+        else if ((!isRunning && effectSound[1].isPlaying) || isTired)
+        {
+            effectSound[1].Stop();
+        }
+        if (isJumping && !effectSound[2].isPlaying)
+        {
+            effectSound[2].Play();
+        }
+        else if ((!isJumping && effectSound[2].isPlaying) && isTired)
+        {
+            effectSound[2].Stop();
+        }
+        if (isTired && !effectSound[3].isPlaying)
+        {
+            effectSound[3].Play();
+        }
+        else if ((!isTired && effectSound[3].isPlaying))
+        {
+            effectSound[3].Stop();
+        }
     }
 }
