@@ -11,5 +11,9 @@ public enum NpcMoveState
     /// <summary>
     /// 이동하지 않는 상태입니다.
     /// </summary>
-    IDLE
+    IDLE,
+    /// <summary>
+    /// 다음 목적지를 탐색하는 상태입니다.
+    /// </summary>
+    FINDING
 }

@@ -220,7 +220,6 @@ RectTransform:
   - {fileID: 7497190352561730001}
   - {fileID: 8636867644676277067}
   - {fileID: 5966342744195134689}
-  - {fileID: 7966041466970671724}
   - {fileID: 8372354840245238148}
   m_Father: {fileID: 4942373183596775413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4030,7 +4029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da2400d23f884de4a80cef6e9f24d598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeControl: {fileID: 0}
 --- !u!1 &4173105448712745376
 GameObject:
   m_ObjectHideFlags: 0
@@ -4254,52 +4252,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &4555235212019869011
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7966041466970671724}
-  - component: {fileID: 2625608607506682366}
-  m_Layer: 0
-  m_Name: VolumeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7966041466970671724
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4555235212019869011}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180.32585, y: 91.93968, z: -1.5260916}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2046352901993135738}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2625608607506682366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4555235212019869011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95542d20b5711942b26c3651715f4c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  volumeSlider: {fileID: 0}
 --- !u!1 &4563392939813428417
 GameObject:
   m_ObjectHideFlags: 0
