@@ -143,11 +143,13 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-
-        anim.SetTrigger("doHit");
-        if (health <= 0)
-            Die();
+        if (isNight || type == Type.Boss)
+        {
+            health -= damage;
+            anim.SetTrigger("doHit");
+            if (health <= 0)
+                Die();
+        }
     }
 
     void Die()
@@ -314,25 +316,34 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        gameObject.SetActive(false);
+        
         if (isNight || type == Type.Boss)
         {
             if (item.Length <= 1)
-                Instantiate(item[0], transform.position, item[0].transform.rotation);
+            {
+                GameObject itemReward = Instantiate(item[0], transform.position, item[0].transform.rotation);
+                FloatingItem ft = itemReward.GetComponent<FloatingItem>();
+                ft.Initialize(transform.position);
+            }
             else
             {
                 foreach (GameObject reward in item)
                 {
                     Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-                    Instantiate(reward, transform.position + randomOffset, reward.transform.rotation);
+                    GameObject bossReward = Instantiate(reward, transform.position + randomOffset, reward.transform.rotation);
+                    FloatingItem ft = bossReward.GetComponent<FloatingItem>();
+                    ft.Initialize(transform.position);
                 }
             }
             for (int i = 0; i < expDropCount; i++)
             {
-                Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
-                Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+                Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                GameObject expReward = Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+                FloatingItem ft = expReward.GetComponent<FloatingItem>();
+                ft.Initialize(transform.position);
             }
         }
+        gameObject.SetActive(false);
     }
 
     IEnumerator DieEffect()

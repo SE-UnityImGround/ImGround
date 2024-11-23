@@ -23,6 +23,7 @@ public class PlayerBehavior : MonoBehaviour
     bool isDie = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
+    public Transform pickPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pointH;  // 낫의 콜라이더 위치
     public Transform[] curtivatePoint; // 괭이와 삽의 콜라이더 (0번 인덱스 : 괭이, 1번 인덱스 : 삽)
     public Transform ItemPoint; // 음식을 먹는 손의 위치
@@ -92,7 +93,7 @@ public class PlayerBehavior : MonoBehaviour
                 {
                     pickedItem = hitCollider.gameObject;
                     isPickingUp = true;
-                    player.pMove.IsTired = true;
+                    //player.pMove.IsTired = true;
                     anim.SetTrigger("doPickUp");
 
                     // 아이템 손으로 줍기 동작
@@ -294,9 +295,22 @@ public class PlayerBehavior : MonoBehaviour
     {
         // 아이템을 손 위치로 이동
         yield return new WaitForSeconds(0.5f);
-        pickedItem.transform.position = handPoint.position;
-        pickedItem.transform.rotation = handPoint.rotation; // 손의 회전과 맞춤
-        pickedItem.transform.parent = handPoint; // 아이템을 손에 붙임
+        // 현재의 월드 스케일 저장
+        Vector3 originalScale = pickedItem.transform.lossyScale;
+
+        // 부모 설정
+        pickedItem.transform.SetParent(handPoint, worldPositionStays: false);
+
+        // 스케일을 기존 월드 스케일로 고정
+        pickedItem.transform.localScale = new Vector3(
+            originalScale.x / handPoint.lossyScale.x,
+            originalScale.y / handPoint.lossyScale.y,
+            originalScale.z / handPoint.lossyScale.z
+        );
+        pickedItem.transform.localPosition = Vector3.zero;
+        pickedItem.transform.localRotation = Quaternion.identity; // 손의 회전과 맞춤  
+
+        Debug.Log(pickedItem.transform.position);
     }
     // 과일 수확 로직
     private void OnTriggerEnter(Collider other)
