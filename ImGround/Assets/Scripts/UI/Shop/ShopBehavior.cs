@@ -42,7 +42,7 @@ public class ShopBehavior : UIBehavior
     /// <param name="slotIdx"></param>
     private void onInventoryChanged(int slotIdx)
     {
-        if (!currentShop.isSellingShop)
+        if (currentShop != null && !currentShop.isSellingShop)
         {
             clearShopItems();
             foreach (KeyValuePair<ItemIdEnum, int> item in InventoryManager.getInventoryInfo())

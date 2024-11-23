@@ -16,6 +16,18 @@ public class InventoryManager
     /// <param name="selectedIdx"></param>
     public delegate void onSelectionChanged(int selectedIdx);
     public static onSelectionChanged onSelectionChangedHandler;
+    private static void invokeOnSelectionChanged(int selectedIdx)
+    {
+        try
+        {
+            onSelectionChangedHandler?.Invoke(selectedIdx);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
+            Debug.LogException(e);
+        }
+    }
 
     /// <summary>
     /// 인벤토리의 특정 슬롯에 아이템 갱신이 발생할 경우 발생하는 이벤트입니다.
@@ -23,11 +35,35 @@ public class InventoryManager
     /// <param name="selectedIdx"></param>
     public delegate void onSlotItemChanged(int slotIdx);
     public static onSlotItemChanged onSlotItemChangedHandler;
+    private static void invokeOnSlotItemChanged(int slotIdx)
+    {
+        try
+        {
+            onSlotItemChangedHandler?.Invoke(slotIdx);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
+            Debug.LogException(e);
+        }
+    }
 
     /// <summary>
     /// 현재 가진 돈이 변화할 때 발생하는 이벤트입니다.
     /// </summary>
     public static Action<int> onMoneyChangedHandler;
+    private static void invokeOnMoneyChanged(int changedMoney)
+    {
+        try
+        {
+            onMoneyChangedHandler?.Invoke(changedMoney);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
+            Debug.LogException(e);
+        }
+    }
 
     /*====================================
      *      Selection Management
@@ -42,7 +78,7 @@ public class InventoryManager
         selectedSlotIdx = idx;
         if (selectedSlotIdx < -1 || selectedSlotIdx > INVENTORY_SIZE)
             selectedSlotIdx = -1;
-        onSelectionChangedHandler?.Invoke(selectedSlotIdx);
+        invokeOnSelectionChanged(selectedSlotIdx);
     }
 
     /// <summary>
@@ -116,7 +152,7 @@ public class InventoryManager
     public static void changeMoney(int money)
     {
         InventoryManager.money += money;
-        onMoneyChangedHandler?.Invoke(InventoryManager.money);
+        invokeOnMoneyChanged(InventoryManager.money);
     }
 
     /// <summary>
@@ -177,7 +213,7 @@ public class InventoryManager
 
             if (inventory[i].addItem(items))
             {
-                onSlotItemChangedHandler?.Invoke(i);
+                invokeOnSlotItemChanged(i);
                 added = true;
             }
 
@@ -261,7 +297,7 @@ public class InventoryManager
                 ItemBundle getItem = inventory[i].getDividedItems(amount);
                 if (inventory[i].count == 0)
                     inventory[i] = null;
-                onSlotItemChangedHandler?.Invoke(i);
+                invokeOnSlotItemChanged(i);
                 amount -= getItem.count;
                 result.addItem(getItem);
             }
@@ -320,7 +356,7 @@ public class InventoryManager
                 inventory[slotIdx] = null;
         }
 
-        onSlotItemChangedHandler?.Invoke(slotIdx);
+        invokeOnSlotItemChanged(slotIdx);
         return result;
     }
 }
