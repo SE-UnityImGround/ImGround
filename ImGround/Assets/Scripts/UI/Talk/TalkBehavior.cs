@@ -95,7 +95,7 @@ public class TalkBehavior : UIBehavior
         }
         if (eventType == TalkEventEnum.NEW_QUEST)
         {
-            QuestManager.addQuest(TalkInfoManager.getQuestId(talkingNPC.type));
+            QuestManager.addQuest(QuestInfoManager.getQuestId(talkingNPC.type));
         }
         if (eventType == TalkEventEnum.OPEN_SHOP)
         {

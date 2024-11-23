@@ -317,38 +317,6 @@ public class TalkInfoManager
         throw new Exception("NPC " + type.ToString() + "에 대한 대화 데이터가 없습니다!");
     }
 
-    public static QuestIdEnum getQuestId(NPCType type)
-    {
-        switch (type)
-        {
-            case NPCType.NPC_1:
-                return QuestIdEnum.Q_1;
-            case NPCType.NPC_2:
-                return QuestIdEnum.Q_2;
-            case NPCType.NPC_3:
-                return QuestIdEnum.Q_3;
-            case NPCType.NPC_4:
-                return QuestIdEnum.Q_4;
-            case NPCType.NPC_5:
-                return QuestIdEnum.Q_5;
-            case NPCType.NPC_6:
-                return QuestIdEnum.Q_6;
-            case NPCType.NPC_7:
-                return QuestIdEnum.Q_7;
-            case NPCType.NPC_8:
-                return QuestIdEnum.Q_8;
-            case NPCType.NPC_9:
-                return QuestIdEnum.Q_9;
-            case NPCType.NPC_10:
-                return QuestIdEnum.Q_10;
-            case NPCType.NPC_11:
-                return QuestIdEnum.Q_11;
-            case NPCType.NPC_12:
-                return QuestIdEnum.Q_12;
-        }
-        throw new Exception("NPC " + type.ToString() + "에 대한 퀘스트 데이터가 없습니다!");
-    }
-
     public static ImageIdEnum getTalkerBackground(NPCType type)
     {
         switch(type)

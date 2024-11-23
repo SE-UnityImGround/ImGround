@@ -17,5 +17,6 @@ public enum QuestIdEnum
     Q_9,
     Q_10,
     Q_11,
-    Q_12
+    Q_12,
+    NULL
 }
