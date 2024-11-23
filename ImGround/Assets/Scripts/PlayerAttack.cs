@@ -195,7 +195,8 @@ public class PlayerAttack : MonoBehaviour
             isAttacking = true;
 
             // 공격 효과음 재생
-            effectSound[0].Play();
+            if (effectSound.Length > 0)
+                effectSound[0].Play();
 
             StartAttack();
             attackDelay = 0f;
@@ -216,7 +217,8 @@ public class PlayerAttack : MonoBehaviour
             isAttacking = true;
 
             // 스핀 공격 효과음 재생
-            effectSound[1].Play();
+            if (effectSound.Length > 0)
+                effectSound[1].Play();
 
             StartAttack();
             attackDelay = 0f;
