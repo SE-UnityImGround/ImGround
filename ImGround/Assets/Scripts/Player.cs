@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     [Header("Player Class")]
     public PlayerMove pMove;
     public PlayerAttack pAttack;
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour
     }
     private void Respawn()
     {
+        effectSound[0].Play();
         // 체력을 초기화
         health = maxHealth;
 
