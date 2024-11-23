@@ -118,40 +118,41 @@ public class Animal : MonoBehaviour
 
         while (elapsedTime < duration)
         {
+            // 점진적으로 붉은색으로 변하게 만듦
             if (renderer != null) // 렌더러가 존재하는지 확인
             {
                 renderer.material.color = Color.Lerp(originalColor, targetColor, elapsedTime / duration);
             }
 
+            // 회전 각도 점진적으로 변경
             float t = elapsedTime / duration;
-            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t);
+            float newZAngle = Mathf.Lerp(currentZAngle, 90f, t); // Lerp를 사용해 점진적으로 회전
             transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, newZAngle);
 
             elapsedTime += Time.deltaTime;
-            yield return null;
+            yield return null; // 다음 프레임까지 대기
         }
 
+        // 회전을 최종적으로 90도에 맞춤
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
 
+        // 최종 색상 붉은색으로 고정
         if (renderer != null)
         {
             renderer.material.color = targetColor;
         }
         yield return new WaitForSeconds(2f);
-
-        if (item != null)
-        {
-            GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
-            FloatingItem floatingItem = reward.GetComponent<FloatingItem>();
-
-            if (floatingItem == null) // FloatingItem이 없으면 추가
-            {
-                floatingItem = reward.AddComponent<FloatingItem>();
-            }
-            floatingItem.Initialize(transform.position); // 위치 초기화
-        }
-
         gameObject.SetActive(false);
+        if(item != null)
+            Instantiate(item, transform.position, item.transform.rotation);
+
+
+        yield return new WaitForSeconds(3f);
+        GameObject reward = Instantiate(item, transform.position, item.transform.rotation);
+        FloatingItem floatingItem = reward.AddComponent<FloatingItem>();
+        floatingItem.Initialize(transform.position);
+        Destroy(gameObject);
+
 
         for (int i = 0; i < expDropCount; i++)
         {
@@ -159,7 +160,6 @@ public class Animal : MonoBehaviour
             Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
         }
     }
-
 
 
 
