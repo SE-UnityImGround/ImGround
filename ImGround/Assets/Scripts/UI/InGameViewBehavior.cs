@@ -88,7 +88,10 @@ public class InGameViewBehavior : MonoBehaviour
     public void hideView(InGameViewMode mode)
     {
         if (this.mode == mode)
+        {
             this.mode = InGameViewMode.DEFAULT;
+            InputManager.onUI = false;
+        }
         switch (mode)
         {
             case InGameViewMode.SETTING:
@@ -130,6 +133,7 @@ public class InGameViewBehavior : MonoBehaviour
         TalkView.setActive(mode == InGameViewMode.TALK);
 
         this.mode = mode;
+        InputManager.onUI = (this.mode != InGameViewMode.DEFAULT);
     }
 
     public void toggleView(InGameViewMode mode)

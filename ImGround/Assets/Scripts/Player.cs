@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
     public int MaxHealth { get { return maxHealth; } }
-
+    public int Exp {  get { return exp; } }
     void Awake()
     {
         // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
@@ -82,22 +82,21 @@ public class Player : MonoBehaviour
         }
         // 플레이어 동작 업데이트
         pBehavior.getInput();
-        pBehavior.Use();
-        pBehavior.Swap();
         pMove.MoveInput();
         pAttack.AttackInput();
 
         if (!pMove.IsTired)
         {
+            pBehavior.Use();
+            pBehavior.Swap();
             pMove.Move();
+            pMove.Jump();
+            pMove.Sleep();
+            pMove.Sit();
+            pAttack.Attack();
+            pAttack.SpinAttack();
         }
-
         pMove.Turn();
-        pMove.Jump();
-        pMove.Sleep();
-        pMove.Sit();
-        pAttack.Attack();
-        pAttack.SpinAttack();
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()

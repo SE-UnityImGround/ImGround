@@ -10,7 +10,8 @@ public class InteractAnimal : MonoBehaviour
     private float gaugeProgress = 0f;
     private bool isInteracting = false;
     private static bool isInteractingTriggered = false; // 하나의 동물과만 상호작용 가능
-    private float interactingTimeRequired = 4f;  // 4초 동안 상호작용
+    [SerializeField] private float interactingTimeRequired = 4f;  // 상호작용 시간 (인스펙터에서 설정 가능)
+    [SerializeField] private float cooldownTime = 3f;            // 쿨다운 시간 (인스펙터에서 설정 가능)
     public Transform canvasTransform;       // 게이지바를 붙일 Canvas의 Transform
     public Vector3 itemSize = new Vector3(3f, 3f, 3f);  // 드롭될 아이템의 크기
     public Transform playerTransform;       // 플레이어의 Transform
@@ -133,7 +134,7 @@ public class InteractAnimal : MonoBehaviour
     IEnumerator InteractionCooldown()
     {
         canInteract = false; // 상호작용 비활성화
-        yield return new WaitForSeconds(3f); // 3초 대기
+        yield return new WaitForSeconds(cooldownTime); // 설정된 쿨다운 시간만큼 대기
         canInteract = true; // 상호작용 활성화
     }
 

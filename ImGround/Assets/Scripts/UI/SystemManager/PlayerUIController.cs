@@ -33,8 +33,8 @@ public class PlayerUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float lifeRatio = playerScript.health / 10.0f; // 최대체력 - 임시값
-        float expRatio = 50.0f / playerScript.requiredExp[playerScript.level]; // 현재 경험치 - 임시값
+        float lifeRatio = playerScript.health / playerScript.MaxHealth; // 최대체력 - 임시값
+        float expRatio = playerScript.Exp / playerScript.requiredExp[playerScript.level]; // 현재 경험치 - 임시값
         TEMP_TIMER += Time.deltaTime;
         if (TEMP_TIMER >= TIMER_DURATION)
         {

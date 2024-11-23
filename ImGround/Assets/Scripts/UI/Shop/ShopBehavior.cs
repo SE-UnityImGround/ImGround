@@ -158,6 +158,7 @@ public class ShopBehavior : UIBehavior
     /// <param name="money"></param>
     public void onMoneyChanged(int money)
     {
-        displayBuyable(money);
+        if (currentShop != null)
+            displayBuyable(money);
     }
 }
