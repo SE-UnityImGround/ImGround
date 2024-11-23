@@ -34,13 +34,14 @@ public class SoundController : MonoBehaviour
         }
         sounds = soundObjects.ToArray();
 
+        string logMessagePrefix = "● [object : " + gameObject.name + "]오디오 등록 결과(type : " + soundType.ToString() + ") : ";
         if (sounds.Length == 0)
         {
-            Debug.LogError("● " + soundType.ToString() + "오디오 등록 결과 : " + gameObject.name + "의 자식 오브젝트 중 " + nameof(AudioSource) + "를 가진 오브젝트가 없습니다!");
+            Debug.LogError(logMessagePrefix + gameObject.name + "의 자식 오브젝트 중 " + nameof(AudioSource) + "를 가진 오브젝트가 없습니다!");
         }
         else
         {
-            string message = "● " + soundType.ToString() + "오디오 등록 결과(" + gameObject.name + ") : \n" + log_founded;
+            string message = logMessagePrefix + "\n" + log_founded;
             if (log_hasNonAudioSource)
                 Debug.LogWarning(message);
             else

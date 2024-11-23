@@ -26,6 +26,9 @@ public class NpcMover
 
     private NpcMoveState currentState = NpcMoveState.IDLE;
 
+    private static float ERROR_TIME_THRESHOLD = 10.0f; // 이동 위치를 찾지 못하고 있을 때, 에러라고 판별할 최소 시간
+    private float stdErrorTime = 0.0f; // 에러상황 시작 시각
+
     /// <summary>
     /// NPC가 움직이기 시작할 때 발생하는 이벤트입니다.
     /// </summary>
@@ -99,13 +102,39 @@ public class NpcMover
         return false;
     }
 
-    private void returnToMoveState()
+    /// <summary>
+    /// 다음 랜덤 목적지까지의 경로를 계산하려고 시도하며, 실패하면 false를 반환합니다.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="origin"></param>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool makeNextPath(NavMeshPath path, out NavMeshPath pathResult, Vector3 origin, float radius)
+    {
+        Vector3 value = Vector3.zero;
+        if (findRandomPos(origin, radius, out value, currentTarget, 1.0f))
+        {
+            currentTarget = value;
+            if (agent.CalculatePath(currentTarget, path)
+                && path.status == NavMeshPathStatus.PathComplete)
+            {
+                // 다음 이동 목적지 찾기 성공
+                pathResult = path;
+                return true;
+            }
+        }
+        // 다음 이동 목적지 찾기 실패
+        pathResult = path;
+        return false;
+    }
+
+    private void setToMoveState()
     {
         currentState = NpcMoveState.MOVE;
         onMoveStateChangedEventHandler?.Invoke(currentState);
     }
 
-    private void returnToIdleState()
+    private void setToIdleState()
     {
         agent.ResetPath();
 
@@ -114,6 +143,12 @@ public class NpcMover
 
         currentState = NpcMoveState.IDLE;
         onMoveStateChangedEventHandler?.Invoke(currentState);
+    }
+
+    private void setToFindingState()
+    {
+        currentState = NpcMoveState.FINDING;
+        stdErrorTime = Time.time;
     }
 
     /* ===========================
@@ -132,29 +167,28 @@ public class NpcMover
             // 대기 시간 종료
             if (Time.time - stdTime >= timerDuration)
             {
-                for (int tryCnt = 0; ; tryCnt++)
-                {
-                    Vector3 value = Vector3.zero;
-                    if (findRandomPos(origin, radius, out value, currentTarget, 1.0f))
-                    {
-                        currentTarget = value;
-                        if (agent.CalculatePath(currentTarget, path) 
-                            && path.status == NavMeshPathStatus.PathComplete)
-                        {
-                            agent.SetPath(path);
-                            break;
-                        }
-                    }
-                    if (tryCnt == 10)
-                    {
-                        Debug.LogError("NPC " + npcObject.name + " : 이동 경로를 찾지 못했습니다!\n원인 : 무작위 이동 영역과 NavMesh가 겹치는 영역이 너무 좁을 수 있습니다! 또는, \nNPC가 이동할 수 없는 영역(ex : 위/아래층)까지 포함되어 있을 수 있습니다!\n또는, NavMeshSurface가 " + NAV_AREA_NPC_LAYER + " 레이어가 아니거나 랜덤 영역이 NavMesh와 겹치지 않음.");
-                        stdTime = Time.time;
-                        timerDuration = ERROR_RETRY_DURATION;
-                        return;
-                    }
-                }
+                setToFindingState();
+                return;
+            }
+        }
 
-                returnToMoveState();
+        if (currentState == NpcMoveState.FINDING)
+        {
+            // 목적지 찾기 성공
+            if (makeNextPath(path, out path, origin, radius))
+            {
+                agent.SetPath(path);
+                setToMoveState();
+                return;
+            }
+
+            // 목적지 찾기 실패 + 에러 허용 시간 초과
+            if (Time.time - stdErrorTime > ERROR_TIME_THRESHOLD)
+            {
+                Debug.LogError("NPC " + npcObject.name + " : 이동 경로를 찾지 못했습니다!\n원인 : 무작위 이동 영역과 NavMesh가 겹치는 영역이 너무 좁을 수 있습니다! 또는, \nNPC가 이동할 수 없는 영역(ex : 위/아래층)까지 포함되어 있을 수 있습니다!\n또는, NavMeshSurface가 " + NAV_AREA_NPC_LAYER + " 레이어가 아니거나 랜덤 영역이 NavMesh와 겹치지 않음.");
+                stdTime = Time.time;
+                timerDuration = ERROR_RETRY_DURATION;
+                setToFindingState();
                 return;
             }
         }
@@ -164,7 +198,7 @@ public class NpcMover
             // 도착 상태
             if ((agent.pathEndPosition - npcObject.transform.position).sqrMagnitude < IN_POSITION_RADIUS_SQUARE)
             {
-                returnToIdleState();
+                setToIdleState();
                 return;
             }
 
@@ -185,7 +219,7 @@ public class NpcMover
     /// </summary>
     public void talkWithPlayer(Vector3 playerPos)
     {
-        returnToIdleState();
+        setToIdleState();
         npcObject.transform.rotation = Quaternion.Slerp(
             npcObject.transform.rotation,
             Quaternion.LookRotation(playerPos - npcObject.transform.position),

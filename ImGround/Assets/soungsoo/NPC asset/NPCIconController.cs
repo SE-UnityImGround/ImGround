@@ -17,6 +17,8 @@ public class NPCIconController
     private NPCIconBehavior selectedIcon = null;
     private bool isSelected;
 
+    private int currentIcon = -1;
+
     /// <summary>
     /// NPC 아이콘의 위치를 설정합니다.
     /// <br/>
@@ -58,16 +60,20 @@ public class NPCIconController
     /// </summary>
     public void setIconType(int iconType)
     {
-        NPCIconBehavior selection = selectIcon(iconType);
-        if (selectedIcon != selection)
+        if (currentIcon != iconType)
         {
-            if (selectedIcon != null)
+            NPCIconBehavior selection = selectIcon(iconType);
+            if (selectedIcon != selection)
             {
-                selectedIcon.hide();
+                if (selectedIcon != null)
+                {
+                    selectedIcon.hide();
+                }
+                selection.show();
+                selection.setSelected(isSelected);
+                selectedIcon = selection;
             }
-            selection.show();
-            selection.setSelected(isSelected);
-            selectedIcon = selection;
+            currentIcon = iconType;
         }
     }
 
