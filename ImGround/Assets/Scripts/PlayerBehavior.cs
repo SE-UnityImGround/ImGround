@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     Animator anim;
     private Player player;
     public GameObject[] tools;
@@ -81,6 +82,7 @@ public class PlayerBehavior : MonoBehaviour
             isEating = true;
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
+            effectSound[4].Play();
         }
         else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {
@@ -98,6 +100,7 @@ public class PlayerBehavior : MonoBehaviour
 
                     // 아이템 손으로 줍기 동작
                     StartCoroutine(Picking());
+                    effectSound[5].Play();
 
                     // 물리 효과 제거 (아이템이 손에서 날뛰는 문제 해결)
                     if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -123,8 +126,10 @@ public class PlayerBehavior : MonoBehaviour
             isPlant = true;
             plantDelay = 0f;
             StartCoroutine(ResetPlant());
+            StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
+
         }
-        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        /*else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 경작하기 + 채광하기
             anim.SetTrigger("doDigDown");
             isDigging = true;
@@ -133,8 +138,28 @@ public class PlayerBehavior : MonoBehaviour
             {
                 curtivatePoint[0].gameObject.SetActive(true);
             }
-            StartCoroutine(ResetDig());
+            StartCoroutine(ResetDig());*/
+
+        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        {
+            anim.SetTrigger("doDigDown");
+            isDigging = true;
+            digDelay = 0f;
+
+            if (toolIndex == 1) // 경작
+            {
+                curtivatePoint[0].gameObject.SetActive(true);
+                effectSound[7].Play();
+                StartCoroutine(ResetDig());
+            }
+            else if (toolIndex == 3) // 채광
+            {
+                curtivatePoint[0].gameObject.SetActive(true);
+                effectSound[8].Play();
+                StartCoroutine(ResetDig());
+            }
         }
+
         else if (toolIndex == 2 && dDown && isPickReady && !isHarvest && !player.pAttack.IsAttacking)
         {// 과일 수확
             player.rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
@@ -230,6 +255,7 @@ public class PlayerBehavior : MonoBehaviour
         isDigging = false;
         curtivatePoint[0].gameObject.SetActive(false);
     }
+
 
     IEnumerator ResetDigUp()
     {
@@ -330,27 +356,68 @@ public class PlayerBehavior : MonoBehaviour
                 {
                     fruitRb.useGravity = true;
                     fruitCollider.isTrigger = false;
+                    effectSound[0].Play(); // 0번 효과음 재생
+                    StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1초 후 1번 효과음 재생
                 }
+
             }
             else if (other.tag == "BossAttack")
             {
                 anim.SetTrigger("doHit");
                 player.health -= 6;
+                effectSound[1].Play();
             }
             else if (other.tag == "BossRock")
             {
                 anim.SetTrigger("doHit");
                 player.health -= 10;
+                effectSound[1].Play();
             }
             else if(other.tag == "EnemyAttack")
             {
                 anim.SetTrigger("doHit");
                 player.health -= 2;
+                effectSound[1].Play();
             }
             if (player.health <= 0)
             {
+                effectSound[2].Play();
                 Die();
             }
         }
     }
+    private IEnumerator PlaySoundWithDelay(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
+        audioSource.Play(); // 지정된 효과음 재생
+    }
+    private IEnumerator StopSoundWithDelay(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
+        audioSource.Stop(); // 지정된 효과음 재생
+    }
+    private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
+    {
+        // 1초 후 재생
+        yield return new WaitForSeconds(playDelay);
+
+        audioSource.volume = 0.7f; // 초기 볼륨을 0.7로 설정
+        audioSource.Play();
+
+        // (playDuration - fadeOutDuration) 동안 재생
+        yield return new WaitForSeconds(playDuration - fadeOutDuration);
+
+        // 페이드아웃 처리
+        float startVolume = audioSource.volume;
+        for (float t = 0; t < fadeOutDuration; t += Time.deltaTime)
+        {
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeOutDuration);
+            yield return null;
+        }
+
+        // 완전히 페이드아웃 후 정지
+        audioSource.volume = 0f;
+        audioSource.Stop();
+    }
+
 }

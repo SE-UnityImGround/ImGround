@@ -35,7 +35,7 @@ public class QuestListBehavior : UIBehavior
 
     private void onQuestRewardStart(QuestBehavior questUI)
     {
-        QuestManager.doneQuest(questUI.questID);
+        QuestManager.rewardQuest(questUI.questID);
         removeQuest(questUI);
     }
 

@@ -4,47 +4,54 @@ using UnityEngine;
 
 public class QuestManager
 {
-    private static List<QuestIdEnum> foundQuest = new List<QuestIdEnum>();
+    // Quest, isDone
+    private static Dictionary<QuestIdEnum, bool> questState = new Dictionary<QuestIdEnum, bool>();
 
     public delegate void onQuestAdded(QuestIdEnum questId);
     public static onQuestAdded onQuestAddedHandler;
 
     /// <summary>
-    /// 퀘스트가 아직 완료되지 않았다면 추가합니다.
+    /// 퀘스트가 아직 등록되지 않았다면 추가합니다.
     /// </summary>
     /// <param name="questId"></param>
     public static void addQuest(QuestIdEnum questId)
     {
-        if (!isFound(questId))
+        if (!questState.ContainsKey(questId))
         {
-            foundQuest.Add(questId);
+            questState.Add(questId, false);
             onQuestAddedHandler?.Invoke(questId);
         }
     }
 
     /// <summary>
-    /// 현재 특정 퀘스트가 이미 수행되었는지 여부를 반환합니다.
+    /// 특정 퀘스트가 완료되었는지를 확인합니다.
     /// </summary>
-    /// <param name="questid"></param>
+    /// <param name="questId"></param>
     /// <returns></returns>
-    public static bool isFound(QuestIdEnum questid)
+    public static bool isDone(QuestIdEnum questId)
     {
-        foreach (QuestIdEnum done in foundQuest)
+        if (questState.ContainsKey(questId))
         {
-            if (done == questid)
-            {
-                return true;
-            }
+            return questState[questId];
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     /// <summary>
     /// 퀘스트 완료 처리를 진행합니다.
     /// </summary>
     /// <param name="questId"></param>
-    public static void doneQuest(QuestIdEnum questId)
+    public static void rewardQuest(QuestIdEnum questId)
     {
+        if (!questState.ContainsKey(questId))
+        {
+            Debug.LogError("아직 시작되지 않은 퀘스트를 완료처리하려고 시도함.");
+            return;
+        }
+
         Quest questInfo = QuestInfoManager.getQuestInfo(questId);
 
         foreach (ItemBundle item in questInfo.requestItems)
@@ -62,5 +69,7 @@ public class QuestManager
                 ItemThrowManager.throwItem(insert);
             }
         }
+
+        questState[questId] = true;
     }
 }
