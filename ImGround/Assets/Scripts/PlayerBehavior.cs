@@ -121,7 +121,8 @@ public class PlayerBehavior : MonoBehaviour
                 }
             }
         }
-        else if (toolIndex == 0 && eDown && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && eDown && canFarming && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && 
+                 !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {// ¾¾¾Ñ ½É±â
             anim.SetTrigger("doPlant");
             isPlant = true;
