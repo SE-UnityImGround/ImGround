@@ -165,6 +165,15 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doPick");
             isPicking = true;
             pickDelay = 0f;
+            if (isPicking && !effectSound[11].isPlaying)
+            {
+                effectSound[11].Play();
+            }
+            else if ((!isPicking && effectSound[11].isPlaying))
+            {
+                effectSound[11].Stop();
+            }
+            
             StartCoroutine(ResetPick());
         }
         else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
@@ -173,6 +182,15 @@ public class PlayerBehavior : MonoBehaviour
             isDigging = true;
             digDelay = 0f;
             curtivatePoint[1].gameObject.SetActive(true);
+            
+            if (isDigging && !effectSound[9].isPlaying)
+            {
+                effectSound[9].Play();
+            }
+            else if ((!isDigging && effectSound[9].isPlaying))
+            {
+                effectSound[9].Stop();
+            }
             StartCoroutine(ResetDigUp());
         }
         else if(toolIndex == 5 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
@@ -181,6 +199,15 @@ public class PlayerBehavior : MonoBehaviour
             isHarvest = true;
             pointH.gameObject.SetActive(true);
             harvestDelay = 0f;
+            
+            if (isHarvest && !effectSound[10].isPlaying)
+            {
+                effectSound[10].Play();
+            }
+            else if ((!isHarvest && effectSound[10].isPlaying))
+            {
+                effectSound[10].Stop();
+            }
             StartCoroutine(ResetHarvest());
         }
     }
