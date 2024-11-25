@@ -6,9 +6,10 @@ public class Boss : Enemy
 {
     [Header("Boss Prefabs")]
     public GameObject stonePrefab; // 돌 프리팹
+    public GameObject throwStonePrefab; // 던지는 공격에 사용할 돌 프리펩
     float throwForce = 1000f; // 돌을 던지는 힘
-    int numberOfStones = 10; // 스톤 샤워 공격에 사용될 돌의 수
-    float radius = 7f; // 스톤 샤워 돌 생성 반경
+    int numberOfStones = 12; // 스톤 샤워 공격에 사용될 돌의 수
+    float radius = 10f; // 스톤 샤워 돌 생성 반경
     public GameObject stonePosition; // 골렘이 꺼내는 돌
     
 
@@ -34,20 +35,16 @@ public class Boss : Enemy
 
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-        if (distanceToPlayer <= 6f)
+        if (distanceToPlayer <= 9f)
         {
-            int ranAction = Random.Range(0, 5);
-            if (ranAction <= 3)
-            {
-                anim.SetTrigger("doPunchA");
-                punchPosition.SetActive(true);
-                StartCoroutine(ResetPunch());
-            }
-            else
-            {
-                CreateStoneShower();
-                anim.SetTrigger("doStone");
-            }
+            anim.SetTrigger("doPunchA");
+            punchPosition.SetActive(true);
+            StartCoroutine(ResetPunch());
+        }
+        else if (distanceToPlayer <= 15f)
+        {
+            CreateStoneShower();
+            anim.SetTrigger("doStone");
         }
         else
         {
@@ -77,17 +74,14 @@ public class Boss : Enemy
         for (int i = 0; i < numberOfStones; i++)
         {
             Vector3 stonePosition = Random.onUnitSphere * radius + transform.position;
-            stonePosition.y = transform.position.y + 12; // 높이 조절
+            stonePosition.y = transform.position.y + 15; // 높이 조절
             GameObject stone = Instantiate(stonePrefab, stonePosition, Quaternion.identity);
             Rigidbody rb = stone.GetComponent<Rigidbody>();
             if (rb)
             {
                 rb.useGravity = true; // 중력 사용
             }
-            if (rb.position.y <= 0)
-            {
-                Destroy(rb);
-            }
+            Destroy(stone, 4f);
         }
     }
 
@@ -96,7 +90,7 @@ public class Boss : Enemy
         if (stonePrefab && target)
         {
             stonePosition.SetActive(false);
-            GameObject stone = Instantiate(stonePrefab, transform.position + Vector3.up, Quaternion.identity);
+            GameObject stone = Instantiate(throwStonePrefab, transform.position + Vector3.up * 2, Quaternion.identity);
             Rigidbody rb = stone.GetComponent<Rigidbody>();
             if (rb)
             {

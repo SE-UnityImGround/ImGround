@@ -185,8 +185,8 @@ public class Enemy : MonoBehaviour
                     targetRange = 1.5f;
                     break;
                 case Type.Boss:
-                    targetRadius = 10f;
-                    targetRange = 12f;
+                    targetRadius = 20f;
+                    targetRange = 22f;
                     break;
             }
 

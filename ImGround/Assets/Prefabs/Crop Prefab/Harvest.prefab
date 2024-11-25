@@ -83,6 +83,10 @@ PrefabInstance:
       value: Mud
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 011af6e28de45484d92ef8293ea25855, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 011af6e28de45484d92ef8293ea25855, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -207,6 +211,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4844936287790046805}
     m_Modifications:
+    - target: {fileID: 261601212659569712, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 789958979072105030, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -250,6 +258,26 @@ PrefabInstance:
     - target: {fileID: 789958979072460390, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
       propertyPath: m_Name
       value: Soil
+      objectReference: {fileID: 0}
+    - target: {fileID: 789958979072460390, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 851510995460287203, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2475223972157104567, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855737643818087226, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105623125694907916, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
