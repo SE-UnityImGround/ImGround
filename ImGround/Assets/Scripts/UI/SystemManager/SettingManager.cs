@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SettingManager
 {
-    private static Dictionary<SoundType, List<SoundController>> soundPool = new Dictionary<SoundType, List<SoundController>>();
+    // 소리 타입, (소리, on/off, 현재 볼륨)
+    private static Dictionary<SoundType, (List<SoundController> sounds, bool isOn, float volume)> soundPool = new Dictionary<SoundType, (List<SoundController>, bool, float)>();
 
     /// <summary>
     /// 조절할 소리 리소스를 등록합니다.
@@ -15,10 +16,10 @@ public class SettingManager
     {
         if (!soundPool.ContainsKey(type))
         {
-            soundPool.Add(type, new List<SoundController>());
+            soundPool.Add(type, (new List<SoundController>(), true, 1.0f));
         }
 
-        soundPool[type].Add(controller);
+        soundPool[type].sounds.Add(controller);
     }
 
     /// <summary>
@@ -34,10 +35,11 @@ public class SettingManager
             return;
         }
 
-        foreach (SoundController sound in soundPool[type])
-        {
-            sound.setVolume(isOn);
-        }
+        (List<SoundController> sounds, bool isOn, float volume) soundData = soundPool[type];
+        soundData.isOn = isOn;
+        soundPool[type] = soundData;
+
+        setTotalSoundVolume(type);
     }
 
     /// <summary>
@@ -53,9 +55,23 @@ public class SettingManager
             return;
         }
 
-        foreach (SoundController sound in soundPool[type])
+        (List<SoundController> sounds, bool isOn, float volume) soundData = soundPool[type];
+        soundData.volume = volume;
+        soundPool[type] = soundData;
+
+        setTotalSoundVolume(type);
+    }
+
+    private static void setTotalSoundVolume(SoundType type)
+    {
+        (List<SoundController> sounds, bool isOn, float volume) soundData = soundPool[type];
+
+        foreach (SoundController sound in soundData.sounds)
         {
-            sound.setVolume(volume);
+            if (soundData.isOn)
+                sound.setVolume(soundData.volume);
+            else
+                sound.setVolume(soundData.isOn);
         }
     }
 }
