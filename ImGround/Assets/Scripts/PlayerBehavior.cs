@@ -35,6 +35,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsDigging { get {  return isDigging; } }
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
+    public bool IsPlant {  get { return isPlant; } }
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
@@ -358,7 +359,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPlant()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         isPlant = false;
     }
     IEnumerator Picking()

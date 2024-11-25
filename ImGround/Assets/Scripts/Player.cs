@@ -77,19 +77,18 @@ public class Player : MonoBehaviour
             return;
         }
 
-
+        // 플레이어 동작 업데이트
+        pBehavior.getInput();
+        pMove.MoveInput();
+        pAttack.AttackInput();
+        pMove.Sit();
         if (!pMove.IsTired && !pBehavior.IsPicking)
         {
-            // 플레이어 동작 업데이트
-            pBehavior.getInput();
-            pMove.MoveInput();
-            pAttack.AttackInput();
             pBehavior.Use();
             pBehavior.Swap();
             pMove.Move();
             pMove.Jump();
             pMove.Sleep();
-            pMove.Sit();
             pAttack.Attack();
             pAttack.SpinAttack();
         }
