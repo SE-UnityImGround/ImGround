@@ -90,12 +90,11 @@ public class TalkBehavior : UIBehavior
         // 대답의 이벤트 처리
         if (eventType == TalkEventEnum.END)
         {
-            talkingNPC.setTalkingState(false);
             nextTalks = null;
         }
         if (eventType == TalkEventEnum.NEW_QUEST)
         {
-            QuestManager.addQuest(TalkInfoManager.getQuestId(talkingNPC.type));
+            QuestManager.addQuest(QuestInfoManager.getQuestId(talkingNPC.type));
         }
         if (eventType == TalkEventEnum.OPEN_SHOP)
         {
@@ -113,6 +112,7 @@ public class TalkBehavior : UIBehavior
         // 다음 대화 처리
         if (nextTalks == null)
         {
+            talkingNPC.setTalkingState(false);
             talkingNPC = null;
             currentTalk = null;
             inGameUI.hideView(InGameViewMode.TALK);
