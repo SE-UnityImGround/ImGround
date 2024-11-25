@@ -108,13 +108,27 @@ public class NPCBehavior : MonoBehaviour
         QuestIdEnum questid = QuestInfoManager.getQuestId(type);
         if (questid != QuestIdEnum.NULL)
         {
-            if (!QuestManager.isDone(questid))
+            if (QuestManager.isDone(questid))
             {
-                npcIcon.setIconType(NpcIconsSO.QUEST);
+                if (!QuestManager.hasAccepted(questid))
+                {
+                    npcIcon.setIconType(NpcIconsSO.REWARD);
+                }
+                else
+                {
+                    npcIcon.setIconType(NpcIconsSO.DEFAULT);
+                }
             }
             else
             {
-                npcIcon.setIconType(NpcIconsSO.REWARD);
+                if (!QuestManager.canReward(questid))
+                {
+                    npcIcon.setIconType(NpcIconsSO.QUEST);
+                }
+                else
+                {
+                    npcIcon.setIconType(NpcIconsSO.REWARD);
+                }
             }
         }
         else
