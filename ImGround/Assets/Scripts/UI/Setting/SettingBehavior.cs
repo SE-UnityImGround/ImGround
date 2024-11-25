@@ -18,5 +18,6 @@ public class SettingBehavior : MonoBehaviour
     public void onSliderChanged(Slider slider)
     {
         SettingManager.setSoundVolume(SoundType.BACKGROUND, slider.value);
+        SettingManager.setSoundVolume(SoundType.EFFECT, slider.value);
     }
 }
