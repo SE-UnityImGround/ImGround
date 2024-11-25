@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
+    public AudioSource[] effectSound;
     [Header("Boss Prefabs")]
     public GameObject stonePrefab; // 돌 프리팹
     float throwForce = 1000f; // 돌을 던지는 힘
@@ -95,6 +96,14 @@ public class Boss : Enemy
     {
         if (stonePrefab && target)
         {
+            if (effectSound.Length > 0 && effectSound[0] != null)
+            {
+                effectSound[0].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
             stonePosition.SetActive(false);
             GameObject stone = Instantiate(stonePrefab, transform.position + Vector3.up, Quaternion.identity);
             Rigidbody rb = stone.GetComponent<Rigidbody>();
