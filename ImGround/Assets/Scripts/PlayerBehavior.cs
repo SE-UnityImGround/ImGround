@@ -124,8 +124,9 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doPlant");
             isPlant = true;
             plantDelay = 0f;
+            effectSound[6].Play();
             StartCoroutine(ResetPlant());
-            StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
+            //StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
 
         }
         /*else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
@@ -417,7 +418,7 @@ public class PlayerBehavior : MonoBehaviour
         yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
         audioSource.Stop(); // 지정된 효과음 재생
     }
-    private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
+    /*private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
     {
         // 1초 후 재생
         yield return new WaitForSeconds(playDelay);
@@ -439,6 +440,6 @@ public class PlayerBehavior : MonoBehaviour
         // 완전히 페이드아웃 후 정지
         audioSource.volume = 0f;
         audioSource.Stop();
-    }
+    }*/
 
 }
