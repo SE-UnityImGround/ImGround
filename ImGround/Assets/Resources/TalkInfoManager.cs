@@ -192,7 +192,7 @@ public class TalkInfoManager
         ("확인", TalkEventEnum.NEW_QUEST, null));
     private static TalkInfo QUEST7_2 = new TalkInfo(
         "너무 더워서 수박이랑 수박주스 좀 먹어야겠어! 어때? 같이 먹을래?",
-        ("응··· 설마 내가 다 준비해?", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3a }),
+        ("응··· 설마 내가 다?", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3a }),
         ("귀찮아 네가 가져와", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3b }));
     private static TalkInfo QUEST7_1 = new TalkInfo(
         "흐아, 이번 여름은 유독 긴 것 같아······.",
@@ -222,7 +222,7 @@ public class TalkInfoManager
     private static TalkInfo QUEST9_2 = new TalkInfo(
         "닭가슴살 샐러드? 오, 좋은데? 그거 어디서 파는지 알아? ······. 미안한데, 나 지금 당장 운동하러 가야 하거든? 그동안 좀 사다 줄 수 있어?",
         ("이번만이야", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3a }),
-        ("미안 나도 시간이 없어서", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3b }));
+        ("미안 나도 시간이 없어", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3b }));
     private static TalkInfo QUEST9_1 = new TalkInfo(
         "아, 근손실은 안 돼!! 그렇지만 오늘은 닭가슴살만 먹고 싶지 않아···. 뭔가 새로운 게 없을까?",
         ("닭가슴살 샐러드?", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_2 }),
@@ -238,10 +238,10 @@ public class TalkInfoManager
     private static TalkInfo QUEST10_2 = new TalkInfo(
         "좀 무섭긴 한데, 탐나는 것 같기도 하고? 음···, 나도 생선 같은 걸 들고 다니면 어떨까?",
         ("한번 해 봐", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3a }),
-        ("그건 그 사람만 소화 가능해", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3b }));
+        ("아마 넌 소화하기 힘들걸?", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3b }));
     private static TalkInfo QUEST10_1 = new TalkInfo(
         "아니 글쎄, 마을에 청새치를 들고 다니는 사람이 있대. 너도 알아?",
-        ("어어, 너무 잘 알지. 하하.", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_2 }),
+        ("응, 너무 잘 알지. 하하.", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_2 }),
         ("무시하기", TalkEventEnum.END, null));
 
     // 퀘스트 11
