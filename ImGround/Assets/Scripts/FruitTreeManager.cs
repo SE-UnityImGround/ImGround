@@ -27,7 +27,7 @@ public class FruitTreeManager : MonoBehaviour
             if (fruit != null && !fruit.activeSelf && !respawnInProgress[fruit])
             {
                 Fruit fr = fruit.GetComponent<Fruit>();
-                float respawnTime = 3f;
+                float respawnTime = 10f;
                 respawnInProgress[fruit] = true; // 리스폰이 진행 중임을 표시
                 StartCoroutine(RespawnFruit(fruit, respawnTime));
                 fr.Respawn();
