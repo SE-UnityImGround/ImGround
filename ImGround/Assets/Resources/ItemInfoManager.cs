@@ -126,6 +126,7 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.POTATO, ImageIdEnum.ITEM_POTATO, "감자", DEFAULT_COUNT, 1000),
         new ItemInfo(ItemIdEnum.CUCUMBER, ImageIdEnum.ITEM_CUCUMBER, "오이", DEFAULT_COUNT, 2000),
         new ItemInfo(ItemIdEnum.FLOUR, ImageIdEnum.ITEM_FLOUR, "밀가루", DEFAULT_COUNT, 500),
+        new ItemInfo(ItemIdEnum.REFINED_RICE, ImageIdEnum.NULL, "정제된 쌀", DEFAULT_COUNT, 1000),
 
         new ItemInfo(ItemIdEnum.HOE, ImageIdEnum.NULL, "괭이", DEFAULT_COUNT, 10000),
         new ItemInfo(ItemIdEnum.RAKE, ImageIdEnum.NULL, "갈퀴", DEFAULT_COUNT, 16000),

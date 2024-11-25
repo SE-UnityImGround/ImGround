@@ -92,6 +92,7 @@ public enum ItemIdEnum
     POTATO,
     CUCUMBER,
     FLOUR,
+    REFINED_RICE,
 
     /*=============================
      *            Tools
