@@ -95,7 +95,6 @@ public class PlayerBehavior : MonoBehaviour
                 {
                     pickedItem = hitCollider.gameObject;
                     isPickingUp = true;
-                    //player.pMove.IsTired = true;
                     anim.SetTrigger("doPickUp");
 
                     // 아이템 손으로 줍기 동작
@@ -200,6 +199,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         anim.SetTrigger("doDie");
         isDie = true;
+        player.pMove.IsWalking = false;
+        player.pMove.IsRunning = false;
     }
     public void Swap()
     {
@@ -335,8 +336,6 @@ public class PlayerBehavior : MonoBehaviour
         );
         pickedItem.transform.localPosition = Vector3.zero;
         pickedItem.transform.localRotation = Quaternion.identity; // 손의 회전과 맞춤  
-
-        Debug.Log(pickedItem.transform.position);
     }
     // 과일 수확 로직
     private void OnTriggerEnter(Collider other)
@@ -376,8 +375,8 @@ public class PlayerBehavior : MonoBehaviour
             }
             if (player.health <= 0)
             {
-                effectSound[2].Play();
                 Die();
+                effectSound[2].Play();
             }
         }
     }
