@@ -92,6 +92,7 @@ public enum ItemIdEnum
     POTATO,
     CUCUMBER,
     FLOUR,
+    RICE_PLANT,
     REFINED_RICE,
 
     /*=============================
@@ -104,6 +105,7 @@ public enum ItemIdEnum
     SHOVEL,
     KNIFE,
     SICKLE, // 낫
+    STRIPED_MARLIN, // 청새치
 
     /*=============================
      *         Unclassified

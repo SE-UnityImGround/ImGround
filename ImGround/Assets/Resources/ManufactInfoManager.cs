@@ -95,6 +95,11 @@ public class ManufactInfoManager
             {
                 new ManufactInfo(
                     new ItemBundle[] {
+                        new ItemBundle(ItemIdEnum.RICE_PLANT, 1, false)},
+                    new ItemBundle(ItemIdEnum.RICE_SEED, 1, false)),
+
+                new ManufactInfo(
+                    new ItemBundle[] {
                         new ItemBundle(ItemIdEnum.RICE_SEED, 1, false)},
                     new ItemBundle(ItemIdEnum.REFINED_RICE, 1, false)),
 
