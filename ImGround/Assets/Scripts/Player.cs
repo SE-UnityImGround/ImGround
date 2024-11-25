@@ -77,17 +77,13 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (LevelUpCheck() && level < requiredExp.Length)
-        {
-            LevelUp();
-        }
-        // 플레이어 동작 업데이트
-        pBehavior.getInput();
-        pMove.MoveInput();
-        pAttack.AttackInput();
 
-        if (!pMove.IsTired || !pBehavior.IsPicking)
+        if (!pMove.IsTired && !pBehavior.IsPicking)
         {
+            // 플레이어 동작 업데이트
+            pBehavior.getInput();
+            pMove.MoveInput();
+            pAttack.AttackInput();
             pBehavior.Use();
             pBehavior.Swap();
             pMove.Move();
@@ -98,6 +94,12 @@ public class Player : MonoBehaviour
             pAttack.SpinAttack();
         }
         pMove.Turn();
+        if (LevelUpCheck())
+        {
+            exp = 0;
+            LevelUp();
+        }
+        
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()
@@ -122,7 +124,9 @@ public class Player : MonoBehaviour
     }
     private bool LevelUpCheck()
     {
-        if (exp >= requiredExp[level])
+        if (level >= requiredExp.Length)
+            return false;
+        else if (exp >= requiredExp[level])
         {
             level++;
             return true;
