@@ -7,6 +7,7 @@ using static UnityEngine.ParticleSystem;
 
 public class Enemy : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     public enum Type { Mush, Cact, Boss };
     public Type type;
     public Transform target;
@@ -132,6 +133,7 @@ public class Enemy : MonoBehaviour
         if (type != Type.Boss)
             anim.SetBool("isIdle", false);
         anim.SetBool("isRun", true);
+
     }
 
     void ChaseStop()
@@ -154,6 +156,15 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        if (effectSound.Length > 0 && effectSound[0] != null)
+        {
+            effectSound[0].Play();
+        }
+        else
+        {
+            Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+        }
+
         isDie = true;
         StopAllCoroutines();
         isChase = false;
