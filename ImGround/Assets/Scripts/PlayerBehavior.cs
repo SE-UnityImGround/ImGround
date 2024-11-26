@@ -22,6 +22,7 @@ public class PlayerBehavior : MonoBehaviour
     bool isHarvest = false;
     bool isPlant = false;
     bool isDie = false;
+    bool canFarming = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pickPoint; // 아이템을 줍기 위한 손의 위치
@@ -34,6 +35,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsDigging { get {  return isDigging; } }
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
+    public bool IsPlant {  get { return isPlant; } }
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
@@ -70,7 +72,7 @@ public class PlayerBehavior : MonoBehaviour
         harvestDelay += Time.deltaTime;
         plantDelay += Time.deltaTime;
 
-        isDigReady = 1.8f < digDelay;
+        isDigReady = 1.5f < digDelay;
         isPickReady = 1.2f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
         isPlantReady = 2f < plantDelay;
@@ -91,11 +93,11 @@ public class PlayerBehavior : MonoBehaviour
 
             foreach (Collider hitCollider in hitColliders)
             {
-                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("item")) // 특정 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                // 특정 태그가 있는지 확인(있다면 pickedItem에 해당 프리펩 저장)
+                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("Ore") || hitCollider.CompareTag("item"))
                 {
                     pickedItem = hitCollider.gameObject;
                     isPickingUp = true;
-                    //player.pMove.IsTired = true;
                     anim.SetTrigger("doPickUp");
 
                     // 아이템 손으로 줍기 동작
@@ -120,13 +122,15 @@ public class PlayerBehavior : MonoBehaviour
                 }
             }
         }
-        else if (toolIndex == 0 && eDown && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && eDown && canFarming && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && 
+                 !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {// 씨앗 심기
             anim.SetTrigger("doPlant");
             isPlant = true;
             plantDelay = 0f;
+            effectSound[6].Play();
             StartCoroutine(ResetPlant());
-            StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
+            //StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
 
         }
         /*else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
@@ -140,23 +144,32 @@ public class PlayerBehavior : MonoBehaviour
             }
             StartCoroutine(ResetDig());*/
 
-        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {
-            anim.SetTrigger("doDigDown");
-            isDigging = true;
-            digDelay = 0f;
-
-            if (toolIndex == 1) // 경작
+            if (toolIndex == 1 && canFarming) // 경작
             {
+                anim.SetTrigger("doDigDown");
+                isDigging = true;
+                digDelay = 0f;
                 curtivatePoint[0].gameObject.SetActive(true);
                 effectSound[7].Play();
                 StartCoroutine(ResetDig());
             }
             else if (toolIndex == 3) // 채광
             {
-                curtivatePoint[0].gameObject.SetActive(true);
-                effectSound[8].Play();
-                StartCoroutine(ResetDig());
+                // 원형 범위로 아이템 감지 (OverlapSphere 사용)
+                Collider[] checkOre = Physics.OverlapSphere(transform.position, 1.7f); // 플레이어 주변 1미터 범위
+                foreach (Collider hitOre in checkOre)
+                {
+                    if (hitOre.CompareTag("Ore")) // 특정 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                    {
+                        anim.SetTrigger("doDigDown");
+                        isDigging = true;
+                        digDelay = 0f;
+                        effectSound[8].Play();
+                        StartCoroutine(ResetDig());
+                    }
+                }
             }
         }
 
@@ -166,22 +179,49 @@ public class PlayerBehavior : MonoBehaviour
             anim.SetTrigger("doPick");
             isPicking = true;
             pickDelay = 0f;
+            if (isPicking && !effectSound[11].isPlaying)
+            {
+                effectSound[11].Play();
+            }
+            else if ((!isPicking && effectSound[11].isPlaying))
+            {
+                effectSound[11].Stop();
+            }
+            
             StartCoroutine(ResetPick());
         }
-        else if (toolIndex == 4 && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 4 && canFarming && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 땅파기
             anim.SetTrigger("doDigUp");
             isDigging = true;
             digDelay = 0f;
             curtivatePoint[1].gameObject.SetActive(true);
+            
+            if (isDigging && !effectSound[9].isPlaying)
+            {
+                effectSound[9].Play();
+            }
+            else if ((!isDigging && effectSound[9].isPlaying))
+            {
+                effectSound[9].Stop();
+            }
             StartCoroutine(ResetDigUp());
         }
-        else if(toolIndex == 5 && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if(toolIndex == 5 && canFarming && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 작물 수확하기
             anim.SetTrigger("doHarvest");
             isHarvest = true;
             pointH.gameObject.SetActive(true);
             harvestDelay = 0f;
+            
+            if (isHarvest && !effectSound[10].isPlaying)
+            {
+                effectSound[10].Play();
+            }
+            else if ((!isHarvest && effectSound[10].isPlaying))
+            {
+                effectSound[10].Stop();
+            }
             StartCoroutine(ResetHarvest());
         }
     }
@@ -200,6 +240,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         anim.SetTrigger("doDie");
         isDie = true;
+        player.pMove.IsWalking = false;
+        player.pMove.IsRunning = false;
     }
     public void Swap()
     {
@@ -251,7 +293,10 @@ public class PlayerBehavior : MonoBehaviour
     }
     IEnumerator ResetDig()
     {
-        yield return new WaitForSeconds(1.6f);
+        if(toolIndex == 3)
+            yield return new WaitForSeconds(1f);
+        else
+            yield return new WaitForSeconds(1.6f);
         isDigging = false;
         curtivatePoint[0].gameObject.SetActive(false);
     }
@@ -319,7 +364,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPlant()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         isPlant = false;
     }
     IEnumerator Picking()
@@ -340,9 +385,8 @@ public class PlayerBehavior : MonoBehaviour
         );
         pickedItem.transform.localPosition = Vector3.zero;
         pickedItem.transform.localRotation = Quaternion.identity; // 손의 회전과 맞춤  
-
-        Debug.Log(pickedItem.transform.position);
     }
+    
     // 과일 수확 로직
     private void OnTriggerEnter(Collider other)
     {
@@ -381,9 +425,26 @@ public class PlayerBehavior : MonoBehaviour
             }
             if (player.health <= 0)
             {
-                effectSound[2].Play();
                 Die();
+                effectSound[2].Play();
             }
+        }
+    }
+    void OnCollisionStay(Collision collision)
+    {
+        // 바닥의 레이어가 Harvest인지 확인
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
+        {
+            canFarming = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        // 바닥의 레이어가 Harvest인지 확인
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
+        {
+            canFarming = false;
         }
     }
     private IEnumerator PlaySoundWithDelay(AudioSource audioSource, float delay)
@@ -396,7 +457,7 @@ public class PlayerBehavior : MonoBehaviour
         yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
         audioSource.Stop(); // 지정된 효과음 재생
     }
-    private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
+    /*private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
     {
         // 1초 후 재생
         yield return new WaitForSeconds(playDelay);
@@ -418,6 +479,6 @@ public class PlayerBehavior : MonoBehaviour
         // 완전히 페이드아웃 후 정지
         audioSource.volume = 0f;
         audioSource.Stop();
-    }
+    }*/
 
 }

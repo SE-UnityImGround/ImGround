@@ -61,12 +61,43 @@ public class TalkBehavior : UIBehavior
             talkingNPC.setTalkingState(false);
         }
 
-        if (talker != null)
+        if (talker != null && talker.type != NPCType.NPC_NORMAL)
         {
             talkingNPC = talker;
             talkingNPC.setTalkingState(true);
             talkerBackground = ImageManager.getImage(TalkInfoManager.getTalkerBackground(talkingNPC.type));
-            currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+
+            QuestIdEnum qid = QuestInfoManager.getQuestId(talker.type);
+            if (qid == QuestIdEnum.NULL)
+                currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+            else
+            {
+                if (!QuestManager.isDone(qid))
+                {
+                    if (QuestManager.canReward(qid))
+                    {
+                        currentTalk = TalkInfoManager.getQuestDoneTalkInfo(talkingNPC.type);
+                        QuestManager.setAccepted(qid);
+                        QuestManager.rewardQuest(qid);
+                    }
+                    else
+                    {
+                        currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+                    }
+                }
+                else
+                {
+                    if (QuestManager.hasAccepted(qid))
+                        currentTalk = TalkInfoManager.getSmallTalkInfo();
+                    else
+                    {
+                        currentTalk = TalkInfoManager.getQuestDoneTalkInfo(talkingNPC.type);
+                        QuestManager.setAccepted(qid);
+                    }
+                }
+            }
+            updateTalkView();
+            inGameUI.displayView(InGameViewMode.TALK);
         }
         else
         {
@@ -74,8 +105,6 @@ public class TalkBehavior : UIBehavior
             talkerBackground = null;
             currentTalk = null;
         }
-        updateTalkView();
-        inGameUI.displayView(InGameViewMode.TALK);
     }
 
     /// <summary>

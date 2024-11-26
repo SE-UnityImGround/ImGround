@@ -61,21 +61,21 @@ public class ItemInfoManager
     private ItemInfo[] informations =
     {
         new ItemInfo(ItemIdEnum.TEST_NULL_ITEM, ImageIdEnum.ITEM_NULL, "TestNullItem", DEFAULT_COUNT, 0),
-        new ItemInfo(ItemIdEnum.PACKAGE, ImageIdEnum.NULL, "짐 꾸러미", DEFAULT_COUNT, 0),
-        new ItemInfo(ItemIdEnum.MONEY, ImageIdEnum.NULL, "돈", DEFAULT_COUNT, 0),
+        new ItemInfo(ItemIdEnum.PACKAGE, ImageIdEnum.ITEM_PACKAGE, "짐 꾸러미", DEFAULT_COUNT, 0),
+        new ItemInfo(ItemIdEnum.MONEY, ImageIdEnum.ICON_COIN, "돈", DEFAULT_COUNT, 0),
 
         new ItemInfo(ItemIdEnum.MILK_PACK, ImageIdEnum.ITEM_MILK_PACK, "우유 팩", DEFAULT_COUNT, 1500),
         new ItemInfo(ItemIdEnum.MILK_BUCKET, ImageIdEnum.ITEM_MILK_BUCKET, "우유 양동이", DEFAULT_COUNT, 1000),
         new ItemInfo(ItemIdEnum.APPLE, ImageIdEnum.ITEM_APPLE, "사과", DEFAULT_COUNT, 1000),
-        new ItemInfo(ItemIdEnum.APPLE_JUICE, ImageIdEnum.NULL, "사과 쥬스", DEFAULT_COUNT, 5000),
+        new ItemInfo(ItemIdEnum.APPLE_JUICE, ImageIdEnum.ITEM_APPLE_JUICE, "사과 쥬스", DEFAULT_COUNT, 5000),
         new ItemInfo(ItemIdEnum.BANANA, ImageIdEnum.ITEM_BANANA, "바나나", DEFAULT_COUNT, 2500),
         new ItemInfo(ItemIdEnum.BANANA_MILK, ImageIdEnum.ITEM_BANANA_MILK, "바나나 우유", DEFAULT_COUNT, 2000),
-        new ItemInfo(ItemIdEnum.TOMATO, ImageIdEnum.NULL, "토마토", DEFAULT_COUNT, 1000),
-        new ItemInfo(ItemIdEnum.TOMATO_JUICE, ImageIdEnum.NULL, "토마토 쥬스", DEFAULT_COUNT, 5000),
+        new ItemInfo(ItemIdEnum.TOMATO, ImageIdEnum.ITEM_TOMATO, "토마토", DEFAULT_COUNT, 1000),
+        new ItemInfo(ItemIdEnum.TOMATO_JUICE, ImageIdEnum.ITEM_TOMATO_JUICE, "토마토 쥬스", DEFAULT_COUNT, 5000),
         new ItemInfo(ItemIdEnum.WATERMELON, ImageIdEnum.ITEM_WATERMELON, "수박", DEFAULT_COUNT, 10000),
         new ItemInfo(ItemIdEnum.HALF_WATERMELON, ImageIdEnum.ITEM_HALF_WATERMELON, "수박 반 통", DEFAULT_COUNT, 5000),
         new ItemInfo(ItemIdEnum.WATERMELON_JUICE, ImageIdEnum.ITEM_WATERMELON_JUICE, "수박 쥬스", DEFAULT_COUNT, 5000),
-        new ItemInfo(ItemIdEnum.CARROT, ImageIdEnum.NULL, "당근", DEFAULT_COUNT, 1500),
+        new ItemInfo(ItemIdEnum.CARROT, ImageIdEnum.ITEM_CARROT, "당근", DEFAULT_COUNT, 1500),
         new ItemInfo(ItemIdEnum.CARROT_JUICE, ImageIdEnum.ITEM_CARROT_JUICE, "당근 쥬스", DEFAULT_COUNT, 5000),
         new ItemInfo(ItemIdEnum.LEMON, ImageIdEnum.ITEM_LEMON, "레몬", DEFAULT_COUNT, 1500),
         new ItemInfo(ItemIdEnum.LEMON_JUICE, ImageIdEnum.ITEM_LEMON_JUICE, "레몬 에이드", DEFAULT_COUNT, 5000),
@@ -126,15 +126,18 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.POTATO, ImageIdEnum.ITEM_POTATO, "감자", DEFAULT_COUNT, 1000),
         new ItemInfo(ItemIdEnum.CUCUMBER, ImageIdEnum.ITEM_CUCUMBER, "오이", DEFAULT_COUNT, 2000),
         new ItemInfo(ItemIdEnum.FLOUR, ImageIdEnum.ITEM_FLOUR, "밀가루", DEFAULT_COUNT, 500),
+        new ItemInfo(ItemIdEnum.RICE_PLANT, ImageIdEnum.ITEM_RICE_PLANT, "벼", DEFAULT_COUNT, 100),
+        new ItemInfo(ItemIdEnum.REFINED_RICE, ImageIdEnum.ITEM_REFINED_RICE, "정제된 쌀", DEFAULT_COUNT, 1000),
 
-        new ItemInfo(ItemIdEnum.HOE, ImageIdEnum.NULL, "괭이", DEFAULT_COUNT, 10000),
-        new ItemInfo(ItemIdEnum.RAKE, ImageIdEnum.NULL, "갈퀴", DEFAULT_COUNT, 16000),
-        new ItemInfo(ItemIdEnum.PICKAXE, ImageIdEnum.NULL, "곡괭이", DEFAULT_COUNT, 18000),
-        new ItemInfo(ItemIdEnum.SHOVEL, ImageIdEnum.NULL, "삽", DEFAULT_COUNT, 14000),
-        new ItemInfo(ItemIdEnum.KNIFE, ImageIdEnum.NULL, "칼", DEFAULT_COUNT, 20000),
-        new ItemInfo(ItemIdEnum.SICKLE, ImageIdEnum.NULL, "낫", DEFAULT_COUNT, 12000),
+        new ItemInfo(ItemIdEnum.HOE, ImageIdEnum.ITEM_HOE, "괭이", DEFAULT_COUNT, 10000),
+        new ItemInfo(ItemIdEnum.RAKE, ImageIdEnum.ITEM_RAKE, "갈퀴", DEFAULT_COUNT, 16000),
+        new ItemInfo(ItemIdEnum.PICKAXE, ImageIdEnum.ITEM_PICKAXE, "곡괭이", DEFAULT_COUNT, 18000),
+        new ItemInfo(ItemIdEnum.SHOVEL, ImageIdEnum.ITEM_SHOVEL, "삽", DEFAULT_COUNT, 14000),
+        new ItemInfo(ItemIdEnum.KNIFE, ImageIdEnum.ITEM_KNIFE, "칼", DEFAULT_COUNT, 20000),
+        new ItemInfo(ItemIdEnum.SICKLE, ImageIdEnum.ITEM_SICKLE, "낫", DEFAULT_COUNT, 12000),
+        new ItemInfo(ItemIdEnum.STRIPED_MARLIN, ImageIdEnum.ITEM_STRIPED_MARLIN, "청새치", DEFAULT_COUNT, 50000),
 
-        new ItemInfo(ItemIdEnum.BED, ImageIdEnum.NULL, "침대", DEFAULT_COUNT, 50000)
+        new ItemInfo(ItemIdEnum.BED, ImageIdEnum.ITEM_BED, "침대", DEFAULT_COUNT, 50000)
     };
 
     /*==================================================

@@ -15,6 +15,7 @@ public class SoundController : MonoBehaviour
         string log_founded = "";
         bool log_hasNonAudioSource = false;
 
+        // find audio
         List<(AudioSource, float)> soundObjects = new List<(AudioSource, float)>();
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -22,7 +23,8 @@ public class SoundController : MonoBehaviour
             AudioSource audio = child.GetComponent<AudioSource>();
             if (audio != null)
             {
-                soundObjects.Add((audio, audio.volume));
+                // 임시 땜빵 : 이 시점에서 최대 볼륨을 알 수 없는 음원에 대해서는 임의값 0.5를 최대 볼륨으로 지정
+                soundObjects.Add((audio, (audio.volume < 0.05 ? 0.5f : audio.volume)));
 
                 log_founded += gameObject.name + "/" + child.name + "\n";
             }
@@ -34,6 +36,7 @@ public class SoundController : MonoBehaviour
         }
         sounds = soundObjects.ToArray();
 
+        // log result
         string logMessagePrefix = "● [object : " + gameObject.name + "]오디오 등록 결과(type : " + soundType.ToString() + ") : ";
         if (sounds.Length == 0)
         {

@@ -16,6 +16,9 @@ public class SoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        bgm[5].Play();
+
         if (!isNight)
         {
             StartCoroutine(FadeInWithLimit(bgm[0], fadeDuration, maxVolume1)); // 1번 효과음
