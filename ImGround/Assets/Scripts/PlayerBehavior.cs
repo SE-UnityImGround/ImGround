@@ -259,6 +259,9 @@ public class PlayerBehavior : MonoBehaviour
     // »ç¸Á µ¿ÀÛ
     public void Die()
     {
+        ItemBundle[] inventoryItems = InventoryManager.popAllItems();
+        if (inventoryItems.Length > 0)
+            ItemThrowManager.throwItem(new ItemBundle(new ItemPackage(inventoryItems), 1, false));
         anim.SetTrigger("doDie");
         isDie = true;
         player.pMove.IsWalking = false;

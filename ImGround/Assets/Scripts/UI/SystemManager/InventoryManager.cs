@@ -200,12 +200,15 @@ public class InventoryManager
         if (items.item.itemId == ItemIdEnum.PACKAGE)
         {
             if (!(items.item is ItemPackage))
+            {
+                items.discardItem(-1);
                 return;
+            }
 
             ItemPackage result = addPackage((ItemPackage)items.item);
             if (result == null)
             {
-                items.setItemBundle(result, 0, false);
+                items.discardItem(-1);
             }
             else
             {
@@ -353,7 +356,7 @@ public class InventoryManager
     /// <returns></returns>
     public static ItemBundle takeItem(int slotIdx, int count)
     {
-        if (inventory[slotIdx] == null)
+        if (inventory[slotIdx] == null || inventory[slotIdx].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
             return null;
 
         ItemBundle result;
