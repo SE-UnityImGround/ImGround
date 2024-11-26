@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         pMove.MoveInput();
         pAttack.AttackInput();
         pMove.Sit();
-        if (!pMove.IsTired && !pBehavior.IsPicking)
+        if (!pMove.IsTired && !pBehavior.IsPickingUp)
         {
             pBehavior.Use();
             pBehavior.Swap();
