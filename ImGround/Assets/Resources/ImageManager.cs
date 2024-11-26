@@ -110,16 +110,21 @@ public class ImageManager
          *=============================*/
         
         new ImageInfo(ImageIdEnum.ITEM_NULL, null),
+        new ImageInfo(ImageIdEnum.ITEM_PACKAGE, "Images/Item2D/package"),
 
         new ImageInfo(ImageIdEnum.ITEM_MILK_PACK, "Images/Item2D/Food/°û¿ìÀ¯"),
         new ImageInfo(ImageIdEnum.ITEM_MILK_BUCKET, "Images/Item2D/Food/¾çµ¿ÀÌ¿ìÀ¯"),
 
         new ImageInfo(ImageIdEnum.ITEM_APPLE, "Images/Item2D/Food/apple"),
+        new ImageInfo(ImageIdEnum.ITEM_APPLE_JUICE, "Images/Item2D/Food/Apple Juice"),
         new ImageInfo(ImageIdEnum.ITEM_BANANA, "Images/Item2D/Food/banana"),
         new ImageInfo(ImageIdEnum.ITEM_BANANA_MILK, "Images/Item2D/Food/banana milk"),
-        new ImageInfo(ImageIdEnum.ITEM_WATERMELON, "Images/Item2D/Food/watermelon"),
+        new ImageInfo(ImageIdEnum.ITEM_TOMATO, "Images/Item2D/Food/tomato"),
+        new ImageInfo(ImageIdEnum.ITEM_TOMATO_JUICE, "Images/Item2D/Food/Tomato Juice"),
+        new ImageInfo(ImageIdEnum.ITEM_WATERMELON, "Images/Item2D/Food/ÇÑÅë ¼ö¹Ú"),
         new ImageInfo(ImageIdEnum.ITEM_HALF_WATERMELON, "Images/Item2D/Food/half watermelon"),
         new ImageInfo(ImageIdEnum.ITEM_WATERMELON_JUICE, "Images/Item2D/Food/watermelon juice"),
+        new ImageInfo(ImageIdEnum.ITEM_CARROT, "Images/Item2D/Food/´ç±Ù"),
         new ImageInfo(ImageIdEnum.ITEM_CARROT_JUICE, "Images/Item2D/Food/carrot juice"),
         new ImageInfo(ImageIdEnum.ITEM_LEMON, "Images/Item2D/Food/lemon"),
         new ImageInfo(ImageIdEnum.ITEM_LEMON_JUICE, "Images/Item2D/Food/lemon juice"),
@@ -170,6 +175,18 @@ public class ImageManager
         new ImageInfo(ImageIdEnum.ITEM_POTATO, "Images/Item2D/Food/°¨ÀÚ"),
         new ImageInfo(ImageIdEnum.ITEM_CUCUMBER, "Images/Item2D/Food/¿ÀÀÌ"),
         new ImageInfo(ImageIdEnum.ITEM_FLOUR, "Images/Item2D/Food/flour"),
+        new ImageInfo(ImageIdEnum.ITEM_RICE_PLANT, "Images/Item2D/seed/º­"),
+        new ImageInfo(ImageIdEnum.ITEM_REFINED_RICE, "Images/Item2D/Food/½Ò"),
+
+        new ImageInfo(ImageIdEnum.ITEM_HOE, "Images/Item2D/tools/±ªÀÌ"),
+        new ImageInfo(ImageIdEnum.ITEM_RAKE, "Images/Item2D/tools/°¥Äû"),
+        new ImageInfo(ImageIdEnum.ITEM_PICKAXE, "Images/Item2D/tools/°î±ªÀÌ"),
+        new ImageInfo(ImageIdEnum.ITEM_SHOVEL, "Images/Item2D/tools/»ð"),
+        new ImageInfo(ImageIdEnum.ITEM_KNIFE, "Images/Item2D/tools/°Ë"),
+        new ImageInfo(ImageIdEnum.ITEM_SICKLE, "Images/Item2D/tools/³´"),
+        new ImageInfo(ImageIdEnum.ITEM_STRIPED_MARLIN, "Images/Item2D/tools/Ã»»õÄ¡"),
+
+        new ImageInfo(ImageIdEnum.ITEM_BED, "Images/Item2D/bed"),
 
         /*=============================
          *            ICON

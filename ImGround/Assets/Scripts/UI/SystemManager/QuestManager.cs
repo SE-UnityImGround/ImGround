@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class QuestManager
 {
-    // Quest, isDone
-    private static Dictionary<QuestIdEnum, bool> questState = new Dictionary<QuestIdEnum, bool>();
+    // Quest, isDone, canReward, hasAccepted(완료 후 NPC 상호작용 했는지)
+    private static Dictionary<QuestIdEnum, (bool isDone, bool canReward, bool hasAccepted)> questState = new Dictionary<QuestIdEnum, (bool, bool, bool)>();
 
-    public delegate void onQuestAdded(QuestIdEnum questId);
-    public static onQuestAdded onQuestAddedHandler;
+    public delegate void onQuestEvent(QuestIdEnum questId);
+    public static onQuestEvent onQuestAddedHandler;
+
+    public static onQuestEvent onQuestDoneHandler;
+
+    private static bool hasAssignedInventoryEvent = false;
 
     /// <summary>
     /// 퀘스트가 아직 등록되지 않았다면 추가합니다.
@@ -18,8 +22,41 @@ public class QuestManager
     {
         if (!questState.ContainsKey(questId))
         {
-            questState.Add(questId, false);
+            questState.Add(questId, (false, false, false));
             onQuestAddedHandler?.Invoke(questId);
+        }
+
+        if (!hasAssignedInventoryEvent) 
+        {
+            InventoryManager.onSlotItemChangedHandler += updateQuestProgress;
+            hasAssignedInventoryEvent = true;
+        }
+    }
+
+    /// <summary>
+    /// 퀘스트에 영향을 미치는 요소 (인벤토리 아이템 항목) 에 따라 퀘스트 진행상태를 업데이트합니다.
+    /// </summary>
+    public static void updateQuestProgress(int slotIdx)
+    {
+        Dictionary<ItemIdEnum, int> inventoryInfo = InventoryManager.getInventoryInfo();
+
+        QuestIdEnum[] qids = new QuestIdEnum[questState.Keys.Count];
+        questState.Keys.CopyTo(qids, 0);
+        foreach (QuestIdEnum qid in qids)
+        {
+            ItemBundle[] requestItems = QuestInfoManager.getQuestInfo(qid).requestItems;
+            (bool isDone, bool canReward, bool hasAccepted) questStateInfo = questState[qid];
+            questStateInfo.canReward = true;
+            for (int i = 0; i < requestItems.Length; i++)
+            {
+                ItemIdEnum item = requestItems[i].item.itemId;
+                if (!inventoryInfo.ContainsKey(item) || inventoryInfo[item] < requestItems[i].count)
+                {
+                    questStateInfo.canReward = false;
+                    break;
+                }
+            }
+            questState[qid] = questStateInfo;
         }
     }
 
@@ -32,12 +69,50 @@ public class QuestManager
     {
         if (questState.ContainsKey(questId))
         {
-            return questState[questId];
+            return questState[questId].isDone;
         }
         else
         {
             return false;
         }
+    }
+
+    /// <summary>
+    /// 퀘스트 완료 후 대화를 마쳤음을 표시합니다.
+    /// </summary>
+    /// <param name="questId"></param>
+    public static void setAccepted(QuestIdEnum questId)
+    {
+        (bool isDone, bool canReward, bool hasAccepted) questStateInfo = questState[questId];
+        questStateInfo.hasAccepted = true;
+        questState[questId] = questStateInfo;
+    }
+
+    /// <summary>
+    /// 퀘스트 완료 후 대화를 마쳤는지 여부를 반환합니다.
+    /// <br/> 없는 퀘스트라면 false를 반환합니다.
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <returns></returns>
+    public static bool hasAccepted(QuestIdEnum questId)
+    {
+        if (!questState.ContainsKey(questId))
+            return false;
+        return questState[questId].hasAccepted;
+    }
+
+    /// <summary>
+    /// 특정 퀘스트의 보상받기 가능 상태를 반환합니다.
+    /// <br/> 없는 퀘스트라면 false를 반환합니다.
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <param name="canReward"></param>
+    /// <returns></returns>
+    public static bool canReward(QuestIdEnum questId)
+    {
+        if (!questState.ContainsKey(questId))
+            return false;
+        return questState[questId].isDone || questState[questId].canReward;
     }
 
     /// <summary>
@@ -70,6 +145,9 @@ public class QuestManager
             }
         }
 
-        questState[questId] = true;
+        (bool isDone, bool canReward, bool hasAccepted) questStateInfo = questState[questId];
+        questStateInfo.isDone = true;
+        questState[questId] = questStateInfo;
+        onQuestDoneHandler?.Invoke(questId);
     }
 }

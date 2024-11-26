@@ -11,7 +11,9 @@ public class ManufactListBehavior : UIBehavior
     private GameObject ManufactPrefab;
 
     private List<ManufactBehavior> manufactItems = new List<ManufactBehavior>();
-
+    [SerializeField]
+    private TabItemBehavior[] tabButtons;
+    
     private Action onClose;
 
     public override void initialize()
@@ -28,12 +30,6 @@ public class ManufactListBehavior : UIBehavior
         }
 
         InventoryManager.onSlotItemChangedHandler += onInventoryUpdated;
-
-        Dictionary<ItemIdEnum, int> invenInfo = InventoryManager.getInventoryInfo();
-        foreach (ManufactInfo info in ManufactInfoManager.manufactInfos)
-        {
-            addManufactItem(info, invenInfo);
-        }
     }
 
     /// <summary>
@@ -42,6 +38,30 @@ public class ManufactListBehavior : UIBehavior
     public void setManufact(Action onCloseCallBack)
     {
         this.onClose = onCloseCallBack;
+        setViewByCategory(ManufactCategory.SIMPLE_FOOD);
+    }
+
+    /// <summary>
+    /// 제작 창의 카테고리를 설정합니다.
+    /// </summary>
+    /// <param name="category"></param>
+    private void setViewByCategory(ManufactCategory category)
+    {
+        foreach (TabItemBehavior tab in tabButtons)
+        {
+            tab.updateSelection(category);
+        }
+
+        foreach (ManufactBehavior man in manufactItems)
+        {
+            Destroy(man.gameObject);
+        }
+        manufactItems.Clear();
+        Dictionary<ItemIdEnum, int> invenInfo = InventoryManager.getInventoryInfo();
+        foreach (ManufactInfo info in ManufactInfoManager.getManufactInfo(category))
+        {
+            addManufactItem(info, invenInfo);
+        }
     }
 
     /// <summary>
@@ -74,6 +94,15 @@ public class ManufactListBehavior : UIBehavior
         man.updateInfo(inventoryInfo);
         man.doMakeClickHandler += startMake;
         manufactItems.Add(man);
+    }
+
+    /// <summary>
+    /// 탭 버튼이 클릭되면 처리할 이벤트입니다.
+    /// </summary>
+    /// <param name="category"></param>
+    public void onTabButtonClick(ManufactCategory category)
+    {
+        setViewByCategory(category);
     }
 
     /// <summary>
