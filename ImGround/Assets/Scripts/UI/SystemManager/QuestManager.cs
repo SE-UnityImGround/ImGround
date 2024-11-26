@@ -141,7 +141,7 @@ public class QuestManager
             InventoryManager.addItems(insert);
             if (insert.count > 0)
             {
-                Debug.LogError("퀘스트 아이템을 더 이상 추가하지 못할 때의 처리 로직이 아직 없어요...");
+                ItemThrowManager.throwItem(insert);
             }
         }
 

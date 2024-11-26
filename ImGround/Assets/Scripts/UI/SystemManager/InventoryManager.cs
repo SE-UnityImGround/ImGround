@@ -10,24 +10,67 @@ public class InventoryManager
     private static int selectedSlotIdx = -1;
     private static int money = 300000;
 
+    /*====================================
+     *         Inventory Events
+     *===================================*/
+
+    private static void dealWithEventError(Exception e)
+    {
+        Debug.LogError("인벤토리 로직 처리 중 에러 : 다음 로그 참고\n");
+        Debug.LogException(e);
+    }
+
     /// <summary>
     /// 인벤토리의 슬롯 선택값이 변경될 경우 발생하는 이벤트입니다.
     /// </summary>
-    /// <param name="selectedIdx"></param>
     public delegate void onSelectionChanged(int selectedIdx);
     public static onSelectionChanged onSelectionChangedHandler;
+    private static void invokeOnSelectionChanged(int selectedIdx)
+    {
+        try
+        {
+            onSelectionChangedHandler?.Invoke(selectedIdx);
+        }
+        catch (Exception e)
+        {
+            dealWithEventError(e);
+        }
+    }
 
     /// <summary>
     /// 인벤토리의 특정 슬롯에 아이템 갱신이 발생할 경우 발생하는 이벤트입니다.
     /// </summary>
-    /// <param name="selectedIdx"></param>
     public delegate void onSlotItemChanged(int slotIdx);
     public static onSlotItemChanged onSlotItemChangedHandler;
+    private static void invokeOnSlotItemChanged(int slotIdx)
+    {
+        try
+        {
+            onSlotItemChangedHandler?.Invoke(slotIdx);
+        }
+        catch (Exception e)
+        {
+            dealWithEventError(e);
+        }
+        if (getItemAmount(slotIdx) == 0 && selectedSlotIdx == slotIdx)
+            selectSlot(-1);
+    }
 
     /// <summary>
     /// 현재 가진 돈이 변화할 때 발생하는 이벤트입니다.
     /// </summary>
     public static Action<int> onMoneyChangedHandler;
+    private static void invokeOnMoneyChanged(int changedMoney)
+    {
+        try
+        {
+            onMoneyChangedHandler?.Invoke(changedMoney);
+        }
+        catch (Exception e)
+        {
+            dealWithEventError(e);
+        }
+    }
 
     /*====================================
      *      Selection Management
@@ -42,7 +85,7 @@ public class InventoryManager
         selectedSlotIdx = idx;
         if (selectedSlotIdx < -1 || selectedSlotIdx > INVENTORY_SIZE)
             selectedSlotIdx = -1;
-        onSelectionChangedHandler?.Invoke(selectedSlotIdx);
+        invokeOnSelectionChanged(selectedSlotIdx);
     }
 
     /// <summary>
@@ -116,7 +159,7 @@ public class InventoryManager
     public static void changeMoney(int money)
     {
         InventoryManager.money += money;
-        onMoneyChangedHandler?.Invoke(InventoryManager.money);
+        invokeOnMoneyChanged(InventoryManager.money);
     }
 
     /// <summary>
@@ -138,36 +181,51 @@ public class InventoryManager
     /// <returns></returns>
     public static bool addItem(Item item)
     {
-        return addItems(new ItemBundle(item, 1, true));
+        ItemBundle addedItem = new ItemBundle(item, 1, true);
+        addItems(addedItem);
+        return (addedItem.count == 0);
     }
 
     /// <summary>
-    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 한 개 이상의 아이템 추가에 성공하면 true를 반환합니다.
+    /// 아이템을 인벤토리 빈 공간에 추가하려고 시도하며, 만약 실패할 경우
     /// <br/>아이템을 추가한 후 남은 수량이 입력된 <paramref name="items"/> 객체에 반영됩니다.
     /// </summary>
     /// <param name="items">인벤토리에 추가할 아이템</param>
-    /// <returns></returns>
-    public static bool addItems(ItemBundle items)
+    public static void addItems(ItemBundle items)
     {
         // 시스템 처리 구분
         if (items.item.itemId == ItemIdEnum.TEST_NULL_ITEM)
         {
-            return true;
+            items.discardItem(-1);
+            return;
         }
         if (items.item.itemId == ItemIdEnum.PACKAGE)
         {
-            if (items.item is ItemPackage)
-                addPackage((ItemPackage)items.item);
-            // 실패 처리 아직 안됨.
-            return true;
+            if (!(items.item is ItemPackage))
+            {
+                items.discardItem(-1);
+                return;
+            }
+
+            ItemPackage result = addPackage((ItemPackage)items.item);
+            if (result == null)
+            {
+                items.discardItem(-1);
+            }
+            else
+            {
+                items.setItemBundle(result, 1, false);
+            }
+            return;
         }
         if (items.item.itemId == ItemIdEnum.MONEY)
         {
             changeMoney(items.count);
-            return true;
+            items.discardItem(-1);
+            return;
         }
 
-        bool added = false;
+        // 일반 아이템 처리
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             if (inventory[i] == null || inventory[i].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
@@ -177,15 +235,12 @@ public class InventoryManager
 
             if (inventory[i].addItem(items))
             {
-                onSlotItemChangedHandler?.Invoke(i);
-                added = true;
+                invokeOnSlotItemChanged(i);
             }
 
             if (items.count == 0)
                 break;
         }
-
-        return added;
     }
 
     /// <summary>
@@ -220,8 +275,7 @@ public class InventoryManager
     /// <returns></returns>
     public static ItemIdEnum getItemId(int slotIdx)
     {
-        if ((slotIdx < 0 && slotIdx > INVENTORY_SIZE)
-            || inventory[slotIdx] == null)
+        if (slotIdx < 0 || slotIdx > INVENTORY_SIZE || inventory[slotIdx] == null)
             return ItemIdEnum.TEST_NULL_ITEM;
         else
             return inventory[slotIdx].item.itemId;
@@ -261,7 +315,7 @@ public class InventoryManager
                 ItemBundle getItem = inventory[i].getDividedItems(amount);
                 if (inventory[i].count == 0)
                     inventory[i] = null;
-                onSlotItemChangedHandler?.Invoke(i);
+                invokeOnSlotItemChanged(i);
                 amount -= getItem.count;
                 result.addItem(getItem);
             }
@@ -303,7 +357,7 @@ public class InventoryManager
     /// <returns></returns>
     public static ItemBundle takeItem(int slotIdx, int count)
     {
-        if (inventory[slotIdx] == null)
+        if (inventory[slotIdx] == null || inventory[slotIdx].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
             return null;
 
         ItemBundle result;
@@ -320,7 +374,7 @@ public class InventoryManager
                 inventory[slotIdx] = null;
         }
 
-        onSlotItemChangedHandler?.Invoke(slotIdx);
+        invokeOnSlotItemChanged(slotIdx);
         return result;
     }
 }
