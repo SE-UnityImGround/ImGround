@@ -42,7 +42,7 @@ public class ShopBehavior : UIBehavior
     /// <param name="slotIdx"></param>
     private void onInventoryChanged(int slotIdx)
     {
-        if (!currentShop.isSellingShop)
+        if (currentShop != null && !currentShop.isSellingShop)
         {
             clearShopItems();
             foreach (KeyValuePair<ItemIdEnum, int> item in InventoryManager.getInventoryInfo())
@@ -126,7 +126,10 @@ public class ShopBehavior : UIBehavior
         {
             if (InventoryManager.getMoney() >= price)
             {
-                InventoryManager.addItem(item);
+                if (!InventoryManager.addItem(item))
+                {
+                    ItemThrowManager.throwItem(new ItemBundle(item, 1, false));
+                }
                 InventoryManager.changeMoney(-price);
             }
         }

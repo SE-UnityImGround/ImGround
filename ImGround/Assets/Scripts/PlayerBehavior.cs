@@ -8,6 +8,8 @@ public class PlayerBehavior : MonoBehaviour
     Animator anim;
     private Player player;
     public GameObject[] tools;
+    private GameObject grabbedItem = null;
+    private int grabbingSlotIdx = -1;
 
     public bool dDown;
     bool fDown;
@@ -22,6 +24,7 @@ public class PlayerBehavior : MonoBehaviour
     bool isHarvest = false;
     bool isPlant = false;
     bool isDie = false;
+    bool isGrabbing = false;
     bool canFarming = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
@@ -48,6 +51,8 @@ public class PlayerBehavior : MonoBehaviour
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
         sDown = new bool[8];
+
+        InventoryManager.onSelectionChangedHandler += onItemSelectionChanged;
     }
     public void getInput()
     {
@@ -79,14 +84,22 @@ public class PlayerBehavior : MonoBehaviour
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
-            if (ItemPoint.childCount == 0)
+            if (ItemPoint.childCount == 0
+                || IsEating // 먹는 도중 또 먹는 로직을 실행하는 현상 방지
+                || !isGrabbing // 아무 아이템도 잡고 있지 않다면 처리하지 않음
+                || !ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).isFood) // 음식을 들고 있는게 아니면 처리하지 않음
                 return;
+
+            // 체력 회복 처리
+            float healAmount = ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).healAmount;
+            player.health = Mathf.Min(player.health + (int)(healAmount * player.MaxHealth), player.MaxHealth);
+
             isEating = true;
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
             effectSound[4].Play();
         }
-        else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking && !isGrabbing)
         {
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
@@ -225,6 +238,33 @@ public class PlayerBehavior : MonoBehaviour
             StartCoroutine(ResetHarvest());
         }
     }
+
+    /// <summary>
+    /// 인벤토리로부터 아이템 선택 값이 변경되었을때 처리되는 이벤트 처리기
+    /// </summary>
+    /// <param name="slotIdx"></param>
+    private void onItemSelectionChanged(int slotIdx)
+    {
+        // 이전 들고있던 아이템 숨기기
+        if (grabbedItem != null)
+            Destroy(grabbedItem.gameObject);
+
+        ItemIdEnum item = InventoryManager.getItemId(slotIdx);
+        if (item == ItemIdEnum.TEST_NULL_ITEM)
+        {
+            // 아무것도 선택하지 않음 상태라면
+            grabbedItem = null;
+            isGrabbing = false;
+            grabbingSlotIdx = -1;
+            return;
+        }
+
+        // 무언가를 선택했다면 손에 쥐어줘
+        grabbedItem = ItemPrefabSO.getItemPrefab(new ItemBundle(item, 1, false)).gameObject;
+        grabbedItem.SetActive(false);
+        isGrabbing = true;
+        grabbingSlotIdx = slotIdx;
+    }
    
     // 아이템 줍기 범위 확인용(추후 삭제 예정)
     private void OnDrawGizmosSelected()
@@ -238,6 +278,9 @@ public class PlayerBehavior : MonoBehaviour
     // 사망 동작
     public void Die()
     {
+        ItemBundle[] inventoryItems = InventoryManager.popAllItems();
+        if (inventoryItems.Length > 0)
+            ItemThrowManager.throwItem(new ItemBundle(new ItemPackage(inventoryItems), 1, false));
         anim.SetTrigger("doDie");
         isDie = true;
         player.pMove.IsWalking = false;
@@ -251,44 +294,72 @@ public class PlayerBehavior : MonoBehaviour
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 0;
+                isGrabbing = false;
             }
             if (sDown[2]) // 괭이
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 1;
+                isGrabbing = false;
             }
             if (sDown[3]) // 삼지창(과일 수확용)
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 2;
+                isGrabbing = false;
             }
             if (sDown[4]) // 곡괭이
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 3;
+                isGrabbing = false;
             }
             if (sDown[5]) // 삽
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 4;
+                isGrabbing = false;
             }
             if (sDown[6]) // 낫
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 5;
+                isGrabbing = false;
             }
             if (sDown[7]) // 검
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 6;
+                isGrabbing = false;
             }
             if (sDown[0]) // 이스터에그
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 7;
+                isGrabbing = false;
             }
 
-            tools[toolIndex].gameObject.SetActive(true);
+            // 들고 있는 아이템 처리
+            if (isGrabbing)
+            {
+                toolIndex = 0;
+
+                tools[currentIndex].gameObject.SetActive(false);
+                grabbedItem.transform.SetParent(ItemPoint, true);
+                grabbedItem.transform.localPosition = Vector3.zero;
+                grabbedItem.SetActive(true);
+            }
+            else
+            {
+                if (grabbedItem != null)
+                    Destroy(grabbedItem.gameObject);
+                grabbedItem = null;
+            }
+
+            if (!isGrabbing)
+            {
+                tools[toolIndex].gameObject.SetActive(true);
+            }
         }
     }
     IEnumerator ResetDig()
@@ -340,7 +411,12 @@ public class PlayerBehavior : MonoBehaviour
         }
         else
         {
-            InventoryManager.addItems(itemPrefabId.getItem());
+            ItemBundle takenItem = itemPrefabId.getItem();
+            InventoryManager.addItems(takenItem);
+            if (takenItem.count > 0)
+            {
+                ItemThrowManager.throwItem(takenItem);
+            }
         }
     }
 
@@ -348,6 +424,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         isEating = false;
+        InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
 
     IEnumerator ResetHarvest()
