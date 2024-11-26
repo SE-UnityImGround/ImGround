@@ -93,7 +93,7 @@ public class PlayerMove : MonoBehaviour
         // 플레이어가 행동 중인지 확인
         bool isPerformingAction = player.pBehavior.dDown || player.pBehavior.IsDigging || isSleeping ||
                                   isSitting || player.pBehavior.IsEating || player.pBehavior.IsPickingUp ||
-                                  player.pBehavior.IsHarvest || player.pBehavior.IsPicking;
+                                  player.pBehavior.IsHarvest || player.pBehavior.IsPlant || player.pBehavior.IsPicking;
 
         // 행동 중이면 이동 불가
         if (followCamera != null && !isPerformingAction)

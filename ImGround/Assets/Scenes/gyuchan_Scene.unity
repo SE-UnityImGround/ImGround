@@ -11163,7 +11163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2100579452
 Transform:
   m_ObjectHideFlags: 0
@@ -11552,6 +11552,14 @@ PrefabInstance:
     - target: {fileID: 2223504738464719708, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
       propertyPath: expDropCount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661073289355741341, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
+      propertyPath: m_AgentTypeID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661073289355741341, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
+      propertyPath: m_WalkableMask
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7647886324890924800, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
       propertyPath: m_Name

@@ -18,16 +18,21 @@ public enum ImageIdEnum
 
     // system
     ITEM_NULL,
+    ITEM_PACKAGE,
 
     // foods
     ITEM_MILK_PACK,
     ITEM_MILK_BUCKET,
     ITEM_APPLE,
+    ITEM_APPLE_JUICE,
     ITEM_BANANA,
     ITEM_BANANA_MILK,
+    ITEM_TOMATO,
+    ITEM_TOMATO_JUICE,
     ITEM_WATERMELON,
     ITEM_HALF_WATERMELON,
     ITEM_WATERMELON_JUICE,
+    ITEM_CARROT,
     ITEM_CARROT_JUICE,
     ITEM_LEMON,
     ITEM_LEMON_JUICE,
@@ -81,6 +86,20 @@ public enum ImageIdEnum
     ITEM_POTATO,
     ITEM_CUCUMBER,
     ITEM_FLOUR,
+    ITEM_RICE_PLANT,
+    ITEM_REFINED_RICE,
+
+    // tools
+    ITEM_HOE, // 괭이
+    ITEM_RAKE, // 갈퀴
+    ITEM_PICKAXE,
+    ITEM_SHOVEL,
+    ITEM_KNIFE,
+    ITEM_SICKLE, // 낫
+    ITEM_STRIPED_MARLIN, // 청새치
+
+    // ETC
+    ITEM_BED,
 
     /*=============================
      *            ICON

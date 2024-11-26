@@ -13,6 +13,7 @@ public class QuestListBehavior : UIBehavior
     public override void initialize()
     {
         QuestManager.onQuestAddedHandler += addQuest;
+        QuestManager.onQuestDoneHandler += removeQuest;
         InventoryManager.onSlotItemChangedHandler += onInventoryUpdate;
     }
 
@@ -24,19 +25,21 @@ public class QuestListBehavior : UIBehavior
         currentQuests.Add(quest);
     }
 
-    private void removeQuest(QuestBehavior q)
+    private void removeQuest(QuestIdEnum qid)
     {
-        if (currentQuests.Contains(q))
+        for (int i = currentQuests.Count - 1; i >= 0; i--)
         {
-            currentQuests.Remove(q);
-            Destroy(q.gameObject);
+            if (currentQuests[i].questID == qid)
+            {
+                Destroy(currentQuests[i].gameObject);
+                currentQuests.RemoveAt(i);
+            }
         }
     }
 
     private void onQuestRewardStart(QuestBehavior questUI)
     {
         QuestManager.rewardQuest(questUI.questID);
-        removeQuest(questUI);
     }
 
     private void onInventoryUpdate(int slotIdx)
