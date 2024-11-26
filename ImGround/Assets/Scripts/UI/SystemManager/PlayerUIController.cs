@@ -53,7 +53,7 @@ public class PlayerUIController : MonoBehaviour
     private void onItemThrow(GameObject itemObject)
     {
         itemObject.transform.position = transform.position;
-        itemObject.GetComponent<FloatingItem>().Initialize(transform.position + new Vector3(0.0f, 0.5f, 0.0f));
+        itemObject.GetComponent<FloatingItem>().Initialize(transform.position);
     }
 
     // Update is called once per frame
