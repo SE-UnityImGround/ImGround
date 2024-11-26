@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -67171,33 +67171,9 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1004687425}
-    - target: {fileID: 6661073289355741341, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_AgentTypeID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661073289355741341, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_AutoBraking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661073289355741341, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_WalkableMask
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7647886324890924800, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
       propertyPath: m_Name
       value: Polyart_Golem
-      objectReference: {fileID: 0}
-    - target: {fileID: 8928900659363289675, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8928900659363289675, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8928900659363289675, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8928900659363289675, guid: a90ee5075356fd54bb1ff6e8ab544f82, type: 3}
       propertyPath: m_LocalPosition.x
