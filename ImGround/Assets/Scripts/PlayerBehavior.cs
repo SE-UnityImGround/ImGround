@@ -73,7 +73,7 @@ public class PlayerBehavior : MonoBehaviour
         plantDelay += Time.deltaTime;
 
         isDigReady = 1.5f < digDelay;
-        isPickReady = 1.2f < pickDelay;
+        isPickReady = 0.8f < pickDelay;
         isHarvestReady = 0.4f < harvestDelay;
         isPlantReady = 2f < plantDelay;
 
@@ -144,7 +144,7 @@ public class PlayerBehavior : MonoBehaviour
             }
             StartCoroutine(ResetDig());*/
 
-        else if (dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {
             if (toolIndex == 1 && canFarming) // °æÀÛ
             {
@@ -311,7 +311,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPick()
     {
-        yield return new WaitForSeconds(1.2f); 
+        yield return new WaitForSeconds(1f); 
         isPicking = false;
     }
 
