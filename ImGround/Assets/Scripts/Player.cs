@@ -156,7 +156,9 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Exp"))
         {
+            effectSound[1].Play();
             exp++;
+            
         }
     }
 }
