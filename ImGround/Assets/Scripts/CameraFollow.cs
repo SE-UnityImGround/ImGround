@@ -269,7 +269,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public Vector3 focusOffset = new Vector3(0, 2, 0); // 카메라가 주목할 타겟의 원점 오프셋
-    public float cameraDistance = 5; // 카메라의 거리
+    public float cameraDistance = 3; // 카메라의 거리
     [SerializeField]
     private float accel = 120.0f; // 회전 가속량
 
@@ -277,8 +277,8 @@ public class CameraFollow : MonoBehaviour
     private const float MIN_X_ROTATION = 0.0f;
     private const float MAX_X_ROTATION = 80.0f;
 
-    private const float MIN_CAMERA_DISTANCE = 1.0f; // 카메라 거리 최소값
-    private const float MAX_CAMERA_DISTANCE = 5.0f; // 카메라 거리 최대값
+    private const float MIN_CAMERA_DISTANCE = 0.5f; // 카메라 거리 최소값
+    private const float MAX_CAMERA_DISTANCE = 6.0f; // 카메라 거리 최대값
 
     private const float DECAY_MULTIPLY = 25.0f; // 회전속도 보간 가속량
     private float xVelocity; // x회전축 회전속도(위아래)
