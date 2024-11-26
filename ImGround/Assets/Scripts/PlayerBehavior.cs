@@ -245,7 +245,7 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void Swap()
     {
-        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest) {
+        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest && !isPlant) {
             int currentIndex = toolIndex;
             if (sDown[1]) // аж╦т
             {

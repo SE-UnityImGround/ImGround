@@ -93,7 +93,7 @@ public class PlayerMove : MonoBehaviour
         // 플레이어가 행동 중인지 확인
         bool isPerformingAction = player.pBehavior.IsDigging || isSleeping ||
                                   isSitting || player.pBehavior.IsEating || player.pBehavior.IsPickingUp ||
-                                  player.pBehavior.IsHarvest || player.pBehavior.IsPlant || player.pBehavior.IsPicking || player.pBehavior.dDown;
+                                  player.pBehavior.IsHarvest || player.pBehavior.IsPlant;
 
         // 행동 중이면 이동 불가
         if (followCamera != null && !isPerformingAction)
@@ -151,7 +151,8 @@ public class PlayerMove : MonoBehaviour
         jumpDelay += Time.deltaTime;
         isJumpReady = 1.1f < jumpDelay;
 
-        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating &&
+            !player.pBehavior.IsPickingUp && !player.pBehavior.IsPlant)
         {
             isJumping = true;
             rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
