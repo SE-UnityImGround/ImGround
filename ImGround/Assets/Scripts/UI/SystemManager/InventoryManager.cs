@@ -52,6 +52,8 @@ public class InventoryManager
         {
             dealWithEventError(e);
         }
+        if (getItemAmount(slotIdx) == 0 && selectedSlotIdx == slotIdx)
+            selectSlot(-1);
     }
 
     /// <summary>
@@ -273,8 +275,7 @@ public class InventoryManager
     /// <returns></returns>
     public static ItemIdEnum getItemId(int slotIdx)
     {
-        if ((slotIdx < 0 && slotIdx > INVENTORY_SIZE)
-            || inventory[slotIdx] == null)
+        if (slotIdx < 0 || slotIdx > INVENTORY_SIZE || inventory[slotIdx] == null)
             return ItemIdEnum.TEST_NULL_ITEM;
         else
             return inventory[slotIdx].item.itemId;

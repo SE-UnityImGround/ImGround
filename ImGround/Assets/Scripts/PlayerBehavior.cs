@@ -9,6 +9,7 @@ public class PlayerBehavior : MonoBehaviour
     private Player player;
     public GameObject[] tools;
     private GameObject grabbedItem = null;
+    private int grabbingSlotIdx = -1;
 
     public bool dDown;
     bool fDown;
@@ -83,8 +84,16 @@ public class PlayerBehavior : MonoBehaviour
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
-            if (ItemPoint.childCount == 0)
+            if (ItemPoint.childCount == 0
+                || IsEating // 먹는 도중 또 먹는 로직을 실행하는 현상 방지
+                || !isGrabbing // 아무 아이템도 잡고 있지 않다면 처리하지 않음
+                || !ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).isFood) // 음식을 들고 있는게 아니면 처리하지 않음
                 return;
+
+            // 체력 회복 처리
+            float healAmount = ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).healAmount;
+            player.health = Mathf.Min(player.health + (int)(healAmount * player.MaxHealth), player.MaxHealth);
+
             isEating = true;
             anim.SetTrigger("doEat");
             StartCoroutine(ResetEat());
@@ -230,21 +239,31 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 인벤토리로부터 아이템 선택 값이 변경되었을때 처리되는 이벤트 처리기
+    /// </summary>
+    /// <param name="slotIdx"></param>
     private void onItemSelectionChanged(int slotIdx)
     {
-        ItemIdEnum item = InventoryManager.getItemId(slotIdx);
-        if (item == ItemIdEnum.TEST_NULL_ITEM)
-            return;
-
+        // 이전 들고있던 아이템 숨기기
         if (grabbedItem != null)
             Destroy(grabbedItem.gameObject);
+
+        ItemIdEnum item = InventoryManager.getItemId(slotIdx);
+        if (item == ItemIdEnum.TEST_NULL_ITEM)
+        {
+            // 아무것도 선택하지 않음 상태라면
+            grabbedItem = null;
+            isGrabbing = false;
+            grabbingSlotIdx = -1;
+            return;
+        }
+
+        // 무언가를 선택했다면 손에 쥐어줘
         grabbedItem = ItemPrefabSO.getItemPrefab(new ItemBundle(item, 1, false)).gameObject;
         grabbedItem.SetActive(false);
         isGrabbing = true;
-    }
-
-    private void showOrHideGrabItem()
-    {
+        grabbingSlotIdx = slotIdx;
     }
    
     // 아이템 줍기 범위 확인용(추후 삭제 예정)
@@ -323,8 +342,10 @@ public class PlayerBehavior : MonoBehaviour
             // 들고 있는 아이템 처리
             if (isGrabbing)
             {
+                toolIndex = 0;
+
                 tools[currentIndex].gameObject.SetActive(false);
-                grabbedItem.transform.SetParent(handPoint, true);
+                grabbedItem.transform.SetParent(ItemPoint, true);
                 grabbedItem.transform.localPosition = Vector3.zero;
                 grabbedItem.SetActive(true);
             }
@@ -403,6 +424,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         isEating = false;
+        InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
 
     IEnumerator ResetHarvest()
