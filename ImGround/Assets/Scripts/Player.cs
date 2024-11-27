@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         pMove.MoveInput();
         pAttack.AttackInput();
         pMove.Sit();
-        if (!pMove.IsTired && !pBehavior.IsPicking)
+        if (!pMove.IsTired && !pBehavior.IsPickingUp)
         {
             pBehavior.Use();
             pBehavior.Swap();
@@ -111,7 +111,14 @@ public class Player : MonoBehaviour
     }
     private void Respawn()
     {
-        effectSound[0].Play();
+        if (effectSound.Length > 0 && effectSound[0] != null)
+        {
+            effectSound[0].Play();
+        }
+        else
+        {
+            Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+        }
         // 체력을 초기화
         health = maxHealth;
 
@@ -142,6 +149,15 @@ public class Player : MonoBehaviour
 
             effectInstance = Instantiate(effect, adjustedPos, Quaternion.identity);
             particleSystem = effectInstance.GetComponent<ParticleSystem>();
+
+            if (effectSound.Length > 0 && effectSound[2] != null)
+            {
+                effectSound[2].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 2번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
         }
         particleSystem?.Play();
 
@@ -155,7 +171,15 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Exp"))
         {
-            effectSound[1].Play();
+           
+            if (effectSound.Length > 0 && effectSound[1] != null)
+            {
+                effectSound[1].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
             exp++;
             
         }

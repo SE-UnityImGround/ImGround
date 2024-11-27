@@ -78,6 +78,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ccdef11007d59f4b9c9a106505078fe, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2917196573343278360}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ccdef11007d59f4b9c9a106505078fe, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4252739053591393876}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ccdef11007d59f4b9c9a106505078fe, type: 3}
       insertIndex: -1
@@ -88,6 +91,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ccdef11007d59f4b9c9a106505078fe, type: 3}
   m_PrefabInstance: {fileID: 3277812099831644654}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2917196573343278360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2430898631893351615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50beb603c3909474881dfb184299c728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item_2d_image: {fileID: 0}
+  itemType: 62
+  amount: 1
 --- !u!65 &4252739053591393876
 BoxCollider:
   m_ObjectHideFlags: 0
