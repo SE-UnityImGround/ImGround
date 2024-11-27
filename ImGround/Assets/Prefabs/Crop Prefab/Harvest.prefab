@@ -267,6 +267,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 789958979072460390, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: m_TagString
+      value: Plant
+      objectReference: {fileID: 0}
     - target: {fileID: 851510995460287203, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -275,6 +279,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3eb9423427fc9d54986d28f593693b5d, type: 2}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5be75e999e5ca3a41a5ddd002e0d0835, type: 2}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: bceae4df67945a84abceb7837c59200f, type: 2}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c99ad8366bbf494090ca748e85dd345, type: 2}
+    - target: {fileID: 4207498190519904501, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
+      propertyPath: cropData.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: fdc7d9e3635b988439dfe647d6782fd8, type: 2}
     - target: {fileID: 8855737643818087226, guid: c085609c1e504ff4d8a698c6c79cd3dd, type: 3}
       propertyPath: m_Layer
       value: 0

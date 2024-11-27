@@ -36,7 +36,7 @@ public class PlayerMove : MonoBehaviour
     public Camera followCamera;
 
     [SerializeField]
-    private float runningEnergyTime = 10f;
+    private float runningEnergyTime = 15f;
     private float runningTime = 0f;
 
     [SerializeField]
