@@ -9,8 +9,6 @@ public class Animal : MonoBehaviour
     [SerializeField]
     private int maxHealth = 5;
     public int health;
-    [SerializeField]
-    private NavMeshAgent nav;
 
     public float patrolRadius = 5.0f; // 순찰 범위
     public float patrolWaitTime = 3.0f; // 각 순찰 지점에서 대기하는 시간
@@ -107,7 +105,7 @@ public class Animal : MonoBehaviour
     {
         float currentZAngle = transform.eulerAngles.z;
         isDie = true;
-        nav.enabled = false;
+        navAgent.enabled = false;
         anim.SetBool("isWalk", false);
 
         Color originalColor = renderer.material.color;
@@ -219,7 +217,7 @@ public class Animal : MonoBehaviour
     {
         health = maxHealth;
         isDie = false;
-        nav.enabled = true;
+        navAgent.enabled = true;
         anim.SetBool("isWalk", true);
         renderer.material.color = originalColor;
     }
