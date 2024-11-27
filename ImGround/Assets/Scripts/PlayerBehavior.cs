@@ -54,7 +54,7 @@ public class PlayerBehavior : MonoBehaviour
 
         InventoryManager.onSelectionChangedHandler += onItemSelectionChanged;
     }
-    public void getInput()
+    public void GetInput()
     {
         dDown = Input.GetButton("Fire2"); // 도구 동작 키
         fDown = Input.GetKeyDown(KeyCode.F); // 줍기 키
@@ -102,7 +102,7 @@ public class PlayerBehavior : MonoBehaviour
         else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking && !isGrabbing)
         {
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // 플레이어 주변 1미터 범위
 
             foreach (Collider hitCollider in hitColliders)
             {
@@ -124,7 +124,7 @@ public class PlayerBehavior : MonoBehaviour
                     }
 
                     // 과일의 Collider 비활성화 (플레이어와의 충돌로 플레이어가 날아가는 문제 방지)
-                    if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider))
+                    if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider) && !pickedItem.CompareTag("crop"))
                     {
                         itemCollider.enabled = false; // 충돌 비활성화
                     }
@@ -171,10 +171,10 @@ public class PlayerBehavior : MonoBehaviour
             else if (toolIndex == 3) // 채광
             {
                 // 원형 범위로 아이템 감지 (OverlapSphere 사용)
-                Collider[] checkOre = Physics.OverlapSphere(transform.position, 1.7f); // 플레이어 주변 1미터 범위
+                Collider[] checkOre = Physics.OverlapSphere(transform.position, 2f); // 플레이어 주변 2미터 범위
                 foreach (Collider hitOre in checkOre)
                 {
-                    if (hitOre.CompareTag("Ore")) // 특정 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                    if (hitOre.CompareTag("Ore")) // 'Ore' 태그가 있는지 확인 (있다면 채광 가능)
                     {
                         anim.SetTrigger("doDigDown");
                         isDigging = true;

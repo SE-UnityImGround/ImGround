@@ -18,7 +18,7 @@ public class Crops : MonoBehaviour
     private ParticleSystem particleSystem;
     private bool isGrowing = false;
     private Coroutine[] growCoroutines; // 각 작물의 성장 코루틴을 추적하는 배열
-
+    public GameObject CropInstance {  set { cropInstance = value; } }
     private void Start()
     {
         if (cropData.isBig)
@@ -176,6 +176,7 @@ public class Crops : MonoBehaviour
         // 4. 경작지 상태에서만 농사 재시작
         if (isCultivated)
         {
+            cropInstance = null;
             if (cropData.isBig)
             {
                 StartBigCrop();
