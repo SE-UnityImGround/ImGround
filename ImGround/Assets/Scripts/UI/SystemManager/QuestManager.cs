@@ -22,21 +22,18 @@ public class QuestManager
     {
         if (!questState.ContainsKey(questId))
         {
-            questState.Add(questId, (false, false, false));
+            questState.Add(questId, (false, updateQuestProgress(questId, InventoryManager.getInventoryInfo()), false));
             onQuestAddedHandler?.Invoke(questId);
         }
 
         if (!hasAssignedInventoryEvent) 
         {
-            InventoryManager.onSlotItemChangedHandler += updateQuestProgress;
+            InventoryManager.onSlotItemChangedHandler += onInventoryChanged;
             hasAssignedInventoryEvent = true;
         }
     }
 
-    /// <summary>
-    /// 퀘스트에 영향을 미치는 요소 (인벤토리 아이템 항목) 에 따라 퀘스트 진행상태를 업데이트합니다.
-    /// </summary>
-    public static void updateQuestProgress(int slotIdx)
+    public static void onInventoryChanged(int slotIdx)
     {
         Dictionary<ItemIdEnum, int> inventoryInfo = InventoryManager.getInventoryInfo();
 
@@ -44,20 +41,29 @@ public class QuestManager
         questState.Keys.CopyTo(qids, 0);
         foreach (QuestIdEnum qid in qids)
         {
-            ItemBundle[] requestItems = QuestInfoManager.getQuestInfo(qid).requestItems;
             (bool isDone, bool canReward, bool hasAccepted) questStateInfo = questState[qid];
-            questStateInfo.canReward = true;
-            for (int i = 0; i < requestItems.Length; i++)
-            {
-                ItemIdEnum item = requestItems[i].item.itemId;
-                if (!inventoryInfo.ContainsKey(item) || inventoryInfo[item] < requestItems[i].count)
-                {
-                    questStateInfo.canReward = false;
-                    break;
-                }
-            }
+            questStateInfo.canReward = updateQuestProgress(qid, inventoryInfo);
             questState[qid] = questStateInfo;
         }
+    }
+
+    /// <summary>
+    /// 퀘스트에 영향을 미치는 요소 (인벤토리 아이템 항목) 에 따라 퀘스트 진행상태를 업데이트합니다.
+    /// </summary>
+    private static bool updateQuestProgress(QuestIdEnum qid, Dictionary<ItemIdEnum, int> inventoryInfo)
+    {
+        ItemBundle[] requestItems = QuestInfoManager.getQuestInfo(qid).requestItems;
+        bool canReward = true;
+        for (int i = 0; i < requestItems.Length; i++)
+        {
+            ItemIdEnum item = requestItems[i].item.itemId;
+            if (!inventoryInfo.ContainsKey(item) || inventoryInfo[item] < requestItems[i].count)
+            {
+                canReward = false;
+                break;
+            }
+        }
+        return canReward;
     }
 
     /// <summary>
@@ -141,6 +147,7 @@ public class QuestManager
             InventoryManager.addItems(insert);
             if (insert.count > 0)
             {
+                WarningManager.startWarning();
                 ItemThrowManager.throwItem(insert);
             }
         }

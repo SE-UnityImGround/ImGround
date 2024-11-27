@@ -193,7 +193,7 @@ public class InventoryManager
     /// <param name="items">인벤토리에 추가할 아이템</param>
     public static void addItems(ItemBundle items)
     {
-        // 시스템 처리 구분
+        // 시스템 아이템 처리 구분
         if (items.item.itemId == ItemIdEnum.TEST_NULL_ITEM)
         {
             items.discardItem(-1);
@@ -228,7 +228,26 @@ public class InventoryManager
         // 일반 아이템 처리
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            if (inventory[i] == null || inventory[i].item.itemId == ItemIdEnum.TEST_NULL_ITEM)
+            // 1. 기존에 동일한 아이템이 있다면 해당 슬롯에 먼저 채우기
+            if (items.count == 0)
+                break;
+
+            if (inventory[i] != null
+                && inventory[i].item.itemId == items.item.itemId
+                && inventory[i].addItem(items))
+            {
+                invokeOnSlotItemChanged(i);
+            }
+        }
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            // 2. 남은 아이템 처리
+            if (items.count == 0)
+                break;
+
+            if (inventory[i] == null
+                || inventory[i].item.itemId == ItemIdEnum.TEST_NULL_ITEM
+                || inventory[i].count == 0)
             {
                 inventory[i] = new ItemBundle(items.item, 0, true);
             }
@@ -237,9 +256,6 @@ public class InventoryManager
             {
                 invokeOnSlotItemChanged(i);
             }
-
-            if (items.count == 0)
-                break;
         }
     }
 
@@ -250,7 +266,7 @@ public class InventoryManager
     /// </summary>
     /// <param name="pack"></param>
     /// <returns></returns>
-    public static ItemPackage addPackage(ItemPackage pack)
+    private static ItemPackage addPackage(ItemPackage pack)
     {
         List<ItemBundle> remains = new List<ItemBundle>();
         foreach (ItemBundle bundle in pack.items)
