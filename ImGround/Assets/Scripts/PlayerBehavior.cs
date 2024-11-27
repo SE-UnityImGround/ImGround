@@ -416,6 +416,7 @@ public class PlayerBehavior : MonoBehaviour
             if (takenItem.count > 0)
             {
                 ItemThrowManager.throwItem(takenItem);
+                WarningManager.startWarning();
             }
         }
     }

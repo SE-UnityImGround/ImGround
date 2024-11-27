@@ -250,7 +250,7 @@ public class InventoryManager
     /// </summary>
     /// <param name="pack"></param>
     /// <returns></returns>
-    public static ItemPackage addPackage(ItemPackage pack)
+    private static ItemPackage addPackage(ItemPackage pack)
     {
         List<ItemBundle> remains = new List<ItemBundle>();
         foreach (ItemBundle bundle in pack.items)

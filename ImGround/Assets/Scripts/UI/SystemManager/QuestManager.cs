@@ -141,6 +141,7 @@ public class QuestManager
             InventoryManager.addItems(insert);
             if (insert.count > 0)
             {
+                WarningManager.startWarning();
                 ItemThrowManager.throwItem(insert);
             }
         }
