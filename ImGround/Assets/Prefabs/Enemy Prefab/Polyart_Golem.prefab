@@ -213,7 +213,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 150, y: 150, z: 150}
+  m_Size: {x: 170, y: 300, z: 150}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2010523017153603753
 GameObject:
@@ -772,6 +772,7 @@ GameObject:
   - component: {fileID: 8768717897406879334}
   - component: {fileID: 6661073289355741341}
   - component: {fileID: 2223504738464719708}
+  - component: {fileID: 5804662865999167080}
   m_Layer: 6
   m_Name: Polyart_Golem
   m_TagString: Enemy
@@ -899,6 +900,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f95c1cc202edc1469b256c1a899a683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectSound:
+  - {fileID: 0}
+  - {fileID: 0}
   type: 2
   target: {fileID: 0}
   nav: {fileID: 6661073289355741341}
@@ -913,10 +917,30 @@ MonoBehaviour:
   - {fileID: 3792804309681382392, guid: 0df97e4b6de42a14dae7feb72303476e, type: 3}
   expPrefab: {fileID: 592310022102497824, guid: d64e1af8e06ba5341b28dd2589471bf4, type: 3}
   expDropCount: 10
+  player: {fileID: 0}
   transparentShader: {fileID: 4800000, guid: 1e70959998db70a44b821d952050354e, type: 3}
+  BosseffectSound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   stonePrefab: {fileID: 5298590762127773683, guid: 1e092c58738cfca478abfa9565ac19c1, type: 3}
   throwStonePrefab: {fileID: 5298590762127773683, guid: cad9f745870d9f448bf225d2a253d382, type: 3}
   stonePosition: {fileID: 5738725474483147332}
+--- !u!114 &5804662865999167080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7647886324890924800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d2bfd68c99c284bbd2bb718f9f03f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectSound:
+  - {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8240260275304576223
 GameObject:
   m_ObjectHideFlags: 0

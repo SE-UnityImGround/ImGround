@@ -35,6 +35,7 @@ public class MainUI : MonoBehaviour
 
     public void onButtonClick(BtnType button)
     {
+        UISoundManager.playUiSound(UISoundObject.MAIN_UI_CLICK);
         switch (button.currentType)
         {
             case BTNType.New:
