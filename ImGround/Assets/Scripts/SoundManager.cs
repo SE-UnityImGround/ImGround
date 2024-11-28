@@ -429,8 +429,8 @@ public class SoundManager : MonoBehaviour
     public static Vector3 maxBounds = new Vector3(183, 20, 148);
 
     public float fadeDuration = 1.0f; // 페이드 인/아웃 지속 시간
-    private float maxVolume1 = 0.5f; // 1번 효과음의 최대 볼륨
-    private float maxVolume2 = 0.5f; // 2번 효과음의 최대 볼륨 (필요시 조정)
+    private float maxVolume1 = 0.4f; // 1번 효과음의 최대 볼륨
+    private float maxVolume2 = 0.4f; // 2번 효과음의 최대 볼륨 (필요시 조정)
 
     // Update is called once per frame
     void Update()
