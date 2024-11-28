@@ -58,17 +58,17 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void GetInput()
     {
-        dDown = Input.GetButton("Fire2"); // 도구 동작 키
-        fDown = Input.GetKeyDown(KeyCode.F); // 줍기 키
-        eDown = Input.GetKeyDown(KeyCode.E);
-        sDown[1] = Input.GetKeyDown(KeyCode.Alpha1); // 1번 키
-        sDown[2] = Input.GetKeyDown(KeyCode.Alpha2); // 2번 키
-        sDown[3] = Input.GetKeyDown(KeyCode.Alpha3); // 3번 키
-        sDown[4] = Input.GetKeyDown(KeyCode.Alpha4); // 4번 키
-        sDown[5] = Input.GetKeyDown(KeyCode.Alpha5); // 5번 키
-        sDown[6] = Input.GetKeyDown(KeyCode.Alpha6); // 6번 키
-        sDown[7] = Input.GetKeyDown(KeyCode.Alpha7); // 7번 키
-        sDown[0] = Input.GetKeyDown(KeyCode.Alpha0); // 0번 키
+        dDown = InputManager.GetButton("Fire2"); // 도구 동작 키
+        fDown = InputManager.GetKeyDown(KeyCode.F); // 줍기 키
+        eDown = InputManager.GetKeyDown(KeyCode.E);
+        sDown[1] = InputManager.GetKeyDown(KeyCode.Alpha1); // 1번 키
+        sDown[2] = InputManager.GetKeyDown(KeyCode.Alpha2); // 2번 키
+        sDown[3] = InputManager.GetKeyDown(KeyCode.Alpha3); // 3번 키
+        sDown[4] = InputManager.GetKeyDown(KeyCode.Alpha4); // 4번 키
+        sDown[5] = InputManager.GetKeyDown(KeyCode.Alpha5); // 5번 키
+        sDown[6] = InputManager.GetKeyDown(KeyCode.Alpha6); // 6번 키
+        sDown[7] = InputManager.GetKeyDown(KeyCode.Alpha7); // 7번 키
+        sDown[0] = InputManager.GetKeyDown(KeyCode.Alpha0); // 0번 키
     }
 
     // 도구 사용 및 행동 로직
