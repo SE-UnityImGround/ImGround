@@ -267,6 +267,18 @@ public class PlayerMove : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, chairPos.position, 5f * Time.deltaTime);
             yield return null;
         }
+        if (particleInstance == null)
+        {
+            particleInstance = Instantiate(particle, transform.position, Quaternion.Euler(-90, 0, 0));
+            particleSystem = particleInstance.GetComponent<ParticleSystem>();
+            var main = particleSystem.main;
+            main.startSize = 0.2f; // 파티클의 기본 크기를 0.2배로 설정
+        }
+        while (player.health < player.MaxHealth)
+        {
+            player.health += 1;
+            yield return new WaitForSeconds(1.2f);
+        }
     }
     IEnumerator ResetSleep()
     {
