@@ -328,11 +328,11 @@ public class CameraFollow : MonoBehaviour
     {
         if (target != null)
         {
-            yVelocity += Input.GetAxisRaw("Mouse X"); // 마우스 X 성분은 좌우 회전을 담당
-            xVelocity -= Input.GetAxisRaw("Mouse Y"); // 마우스 Y 성분에 음수 곱하여 방향 반전 (위로 올리면 시점이 위로, 아래로 내리면 시점이 아래로)
+            yVelocity += InputManager.GetAxisRaw("Mouse X"); // 마우스 X 성분은 좌우 회전을 담당
+            xVelocity -= InputManager.GetAxisRaw("Mouse Y"); // 마우스 Y 성분에 음수 곱하여 방향 반전 (위로 올리면 시점이 위로, 아래로 내리면 시점이 아래로)
 
             // 마우스 스크롤로 카메라 거리 조정
-            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+            float scrollInput = InputManager.GetAxis("Mouse ScrollWheel");
             cameraDistance -= scrollInput; // 스크롤하면 카메라 거리 조정
             cameraDistance = Mathf.Clamp(cameraDistance, MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE); // 최소/최대 거리 제한
 

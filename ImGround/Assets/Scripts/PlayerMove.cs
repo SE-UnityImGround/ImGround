@@ -82,10 +82,10 @@ public class PlayerMove : MonoBehaviour
 
     public void MoveInput()
     {
-        hAxis = Input.GetAxisRaw("Horizontal");
-        vAxis = Input.GetAxisRaw("Vertical");
-        rDown = Input.GetButton("Run");
-        jDown = Input.GetKeyDown(KeyCode.Space);
+        hAxis = InputManager.GetAxisRaw("Horizontal");
+        vAxis = InputManager.GetAxisRaw("Vertical");
+        rDown = InputManager.GetButton("Run");
+        jDown = InputManager.GetKeyDown(KeyCode.Space);
     }
 
     public void Move()
