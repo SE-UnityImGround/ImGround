@@ -122,22 +122,27 @@ public class ShopBehavior : UIBehavior
     /// <param name="price"></param>
     private void onTradeItem(Item item, int price)
     {
-        if (currentShop.isSellingShop)
-        {
-            if (InventoryManager.getMoney() >= price)
-            {
-                if (!InventoryManager.addItem(item))
-                {
-                    ItemThrowManager.throwItem(new ItemBundle(item, 1, false));
-                }
-                InventoryManager.changeMoney(-price);
-            }
-        }
-        else
+        // 내 물건을 팔 때
+        if (!currentShop.isSellingShop)
         {
             InventoryManager.removeItem(item.itemId, 1);
             InventoryManager.changeMoney(price);
+            return;
         }
+
+        // 살건데 돈이 없네
+        if (InventoryManager.getMoney() < price)
+            return;
+
+        // 가방에 공간이 있네
+        if (InventoryManager.addItem(item))
+        {
+            InventoryManager.changeMoney(-price);
+            return;
+        }
+
+        // 가방이 꽉 찼네
+        WarningManager.startWarning();
     }
 
     /// <summary>

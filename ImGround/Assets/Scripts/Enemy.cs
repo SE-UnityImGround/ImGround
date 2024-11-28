@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     public GameObject headPosition;
 
     private int health;
+    public int Health { get { return health; } }
     public int maxHealth;
     protected bool isDie;
     protected bool isChase;

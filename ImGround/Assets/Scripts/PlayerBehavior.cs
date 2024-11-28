@@ -7,6 +7,7 @@ public class PlayerBehavior : MonoBehaviour
     public AudioSource[] effectSound;
     Animator anim;
     private Player player;
+    private Crops crop;
     public GameObject[] tools;
     private GameObject grabbedItem = null;
     private int grabbingSlotIdx = -1;
@@ -26,6 +27,7 @@ public class PlayerBehavior : MonoBehaviour
     bool isDie = false;
     bool isGrabbing = false;
     bool canFarming = false;
+    bool canPlant = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pickPoint; // 아이템을 줍기 위한 손의 위치
@@ -52,9 +54,9 @@ public class PlayerBehavior : MonoBehaviour
         player = GetComponent<Player>();
         sDown = new bool[8];
 
-        InventoryManager.onSelectionChangedHandler += onItemSelectionChanged;
+        InventoryManager.onSelectionChangedHandler += OnItemSelectionChanged;
     }
-    public void getInput()
+    public void GetInput()
     {
         dDown = Input.GetButton("Fire2"); // 도구 동작 키
         fDown = Input.GetKeyDown(KeyCode.F); // 줍기 키
@@ -101,61 +103,60 @@ public class PlayerBehavior : MonoBehaviour
         }
         else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking && !isGrabbing)
         {
+            Collider nearestCollider = null;
+            float nearestDistance = Mathf.Infinity;         
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // 플레이어 주변 1미터 범위
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // 플레이어 주변 1미터 범위
 
             foreach (Collider hitCollider in hitColliders)
             {
                 // 특정 태그가 있는지 확인(있다면 pickedItem에 해당 프리펩 저장)
                 if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("Ore") || hitCollider.CompareTag("item"))
                 {
-                    pickedItem = hitCollider.gameObject;
-                    isPickingUp = true;
-                    anim.SetTrigger("doPickUp");
+                    // 각 콜라이더와의 거리 계산
+                    float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
 
-                    // 아이템 손으로 줍기 동작
-                    StartCoroutine(Picking());
-                    effectSound[5].Play();
-
-                    // 물리 효과 제거 (아이템이 손에서 날뛰는 문제 해결)
-                    if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                    if (distance < nearestDistance)
                     {
-                        rb.isKinematic = true; // 물리 시뮬레이션 중지하여 고정
+                        nearestDistance = distance;
+                        nearestCollider = hitCollider;
                     }
-
-                    // 과일의 Collider 비활성화 (플레이어와의 충돌로 플레이어가 날아가는 문제 방지)
-                    if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider))
-                    {
-                        itemCollider.enabled = false; // 충돌 비활성화
-                    }
-
-                    // 아이템 줍기 동작 종료
-                    StartCoroutine(ResetPickUp());
-                    break; // 한 번 아이템을 잡으면 루프 중지(범위 내 아이템이 여러개 동시에 줍는 것 방지)
                 }
             }
+            // 플레이어와 가장 가까이 있는 물체를 줍기
+            pickedItem = nearestCollider.gameObject;
+            isPickingUp = true;
+            anim.SetTrigger("doPickUp");
+
+            // 아이템 손으로 줍기 동작
+            StartCoroutine(Picking());
+            effectSound[5].Play();
+
+            // 물리 효과 제거 (아이템이 손에서 날뛰는 문제 해결)
+            if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            {
+                rb.isKinematic = true; // 물리 시뮬레이션 중지하여 고정
+            }
+
+            // 과일의 Collider 비활성화 (플레이어와의 충돌로 플레이어가 날아가는 문제 방지)
+            if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider) && !pickedItem.CompareTag("crop"))
+            {
+                itemCollider.enabled = false; // 충돌 비활성화
+            }
+
+            // 아이템 줍기 동작 종료
+            StartCoroutine(ResetPickUp());
         }
-        else if (toolIndex == 0 && eDown && canFarming && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && 
-                 !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        else if (toolIndex == 0 && ItemPoint.childCount > 0 && eDown && canFarming && canPlant && isPlantReady && !isPickingUp && !isHarvest &&
+                !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {// 씨앗 심기
+            StartCoroutine(Planting());
             anim.SetTrigger("doPlant");
             isPlant = true;
             plantDelay = 0f;
             effectSound[6].Play();
             StartCoroutine(ResetPlant());
-            //StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
-
         }
-        /*else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
-        {// 경작하기 + 채광하기
-            anim.SetTrigger("doDigDown");
-            isDigging = true;
-            digDelay = 0f;
-            if(toolIndex == 1)
-            {
-                curtivatePoint[0].gameObject.SetActive(true);
-            }
-            StartCoroutine(ResetDig());*/
 
         else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {
@@ -171,10 +172,10 @@ public class PlayerBehavior : MonoBehaviour
             else if (toolIndex == 3) // 채광
             {
                 // 원형 범위로 아이템 감지 (OverlapSphere 사용)
-                Collider[] checkOre = Physics.OverlapSphere(transform.position, 1.7f); // 플레이어 주변 1미터 범위
+                Collider[] checkOre = Physics.OverlapSphere(transform.position, 2f); // 플레이어 주변 2미터 범위
                 foreach (Collider hitOre in checkOre)
                 {
-                    if (hitOre.CompareTag("Ore")) // 특정 태그가 있는지 확인 (있다면 pickedItem에 해당 프리펩 저장)
+                    if (hitOre.CompareTag("Ore")) // 'Ore' 태그가 있는지 확인 (있다면 채광 가능)
                     {
                         anim.SetTrigger("doDigDown");
                         isDigging = true;
@@ -243,7 +244,7 @@ public class PlayerBehavior : MonoBehaviour
     /// 인벤토리로부터 아이템 선택 값이 변경되었을때 처리되는 이벤트 처리기
     /// </summary>
     /// <param name="slotIdx"></param>
-    private void onItemSelectionChanged(int slotIdx)
+    private void OnItemSelectionChanged(int slotIdx)
     {
         // 이전 들고있던 아이템 숨기기
         if (grabbedItem != null)
@@ -395,15 +396,14 @@ public class PlayerBehavior : MonoBehaviour
         // Destroy the picked-up item
         if (pickedItem != null)
         {
-            getItem(pickedItem.GetComponent<ItemPrefabID>()); // 주운 아이템의 인벤토리 처리
+            GetItem(pickedItem.GetComponent<ItemPrefabID>()); // 주운 아이템의 인벤토리 처리
             pickedItem.transform.SetParent(null);
             pickedItem.gameObject.SetActive(false);
-            //Destroy(pickedItem);
             pickedItem = null; // Reset the reference to the item
         }
     }
 
-    private void getItem(ItemPrefabID itemPrefabId)
+    private void GetItem(ItemPrefabID itemPrefabId)
     {
         if (itemPrefabId == null)
         {
@@ -416,6 +416,7 @@ public class PlayerBehavior : MonoBehaviour
             if (takenItem.count > 0)
             {
                 ItemThrowManager.throwItem(takenItem);
+                WarningManager.startWarning();
             }
         }
     }
@@ -438,6 +439,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         isPlant = false;
+        InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
     IEnumerator Picking()
     {
@@ -458,8 +460,62 @@ public class PlayerBehavior : MonoBehaviour
         pickedItem.transform.localPosition = Vector3.zero;
         pickedItem.transform.localRotation = Quaternion.identity; // 손의 회전과 맞춤  
     }
-    
-    // 과일 수확 로직
+
+    IEnumerator Planting()
+    {
+        yield return new WaitForSeconds(1f);
+        ItemPrefabID seed = ItemPoint.GetComponentInChildren<ItemPrefabID>();
+        bool isSeed = seed.itemType == ItemIdEnum.CARROT_SEED || seed.itemType == ItemIdEnum.RICE_SEED || seed.itemType == ItemIdEnum.TOMATO_SEED ||
+                      seed.itemType == ItemIdEnum.LEMMON_SEED || seed.itemType == ItemIdEnum.WATERMELON_SEED;
+        // 원형 범위로 아이템 감지 (OverlapSphere 사용)
+        Collider nearestCollider = null;
+        float nearestDistance = Mathf.Infinity;
+        Collider[] checkGround = Physics.OverlapSphere(transform.position, 1f); // 플레이어 주변 1미터 범위
+        foreach (Collider collider in checkGround)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Harvest")) // 'Harvest' 태그가 있는지 확인
+            {
+                // 각 콜라이더와의 거리 계산
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestCollider = collider;
+                }
+            }
+        }
+        crop = nearestCollider.GetComponent<Crops>();
+        if (crop == null)
+        {
+            yield break;
+        }
+        yield return new WaitForSeconds(6f);
+        // 현재 들고 있는 아이템이 씨앗인지 확인
+        if (isSeed)
+        {
+            switch(seed.itemType)
+            {
+                case ItemIdEnum.CARROT_SEED:
+                    crop.CropIndex = 0;
+                    break;
+                case ItemIdEnum.RICE_SEED:
+                    crop.CropIndex = 1;
+                    break;
+                case ItemIdEnum.TOMATO_SEED:
+                    crop.CropIndex = 2;
+                    break;
+                case ItemIdEnum.LEMMON_SEED:
+                    crop.CropIndex = 3;
+                    break;
+                case ItemIdEnum.WATERMELON_SEED:
+                    crop.CropIndex = 4;
+                    break;
+            }
+
+        }
+    }
+    // 과일 수확 로직 + 피격 로직
     private void OnTriggerEnter(Collider other)
     {
         if (!isDie)
@@ -475,7 +531,6 @@ public class PlayerBehavior : MonoBehaviour
                     effectSound[0].Play(); // 0번 효과음 재생
                     StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1초 후 1번 효과음 재생
                 }
-
             }
             else if (other.tag == "BossAttack")
             {
@@ -504,19 +559,29 @@ public class PlayerBehavior : MonoBehaviour
     }
     void OnCollisionStay(Collision collision)
     {
-        // 바닥의 레이어가 Harvest인지 확인
+        // 현재 플레이어가 밟고 있는 바닥이 농작지인지 확인
         if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
         {
             canFarming = true;
+        }
+        // 현재 플레이어가 밟고 있는 바닥이 경작된 땅인지 확인
+        if (collision.gameObject.CompareTag("Plant"))
+        {
+            canPlant = true;
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        // 바닥의 레이어가 Harvest인지 확인
+        // 현재 플레이어가 밟고 있는 바닥이 농작지인지 확인
         if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
         {
             canFarming = false;
+        }
+        // 현재 플레이어가 밟고 있는 바닥이 경작된 땅인지 확인
+        if (collision.gameObject.CompareTag("Plant"))
+        {
+            canPlant = false;
         }
     }
     private IEnumerator PlaySoundWithDelay(AudioSource audioSource, float delay)
@@ -529,28 +594,4 @@ public class PlayerBehavior : MonoBehaviour
         yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
         audioSource.Stop(); // 지정된 효과음 재생
     }
-    /*private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
-    {
-        // 1초 후 재생
-        yield return new WaitForSeconds(playDelay);
-
-        audioSource.volume = 0.7f; // 초기 볼륨을 0.7로 설정
-        audioSource.Play();
-
-        // (playDuration - fadeOutDuration) 동안 재생
-        yield return new WaitForSeconds(playDuration - fadeOutDuration);
-
-        // 페이드아웃 처리
-        float startVolume = audioSource.volume;
-        for (float t = 0; t < fadeOutDuration; t += Time.deltaTime)
-        {
-            audioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeOutDuration);
-            yield return null;
-        }
-
-        // 완전히 페이드아웃 후 정지
-        audioSource.volume = 0f;
-        audioSource.Stop();
-    }*/
-
 }

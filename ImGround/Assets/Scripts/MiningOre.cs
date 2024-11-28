@@ -20,6 +20,7 @@ public class MiningOre : MonoBehaviour
     private Quaternion originalRotation;    // 광석의 초기 회전 저장
 
     private bool isRespawning = false;      // 광석이 리스폰 중인지 확인
+    private Player player;                  // Player 참조
 
     void Awake()
     {
@@ -32,7 +33,25 @@ public class MiningOre : MonoBehaviour
     {
         if (isRespawning) return; // 리스폰 중에는 작동하지 않음
 
-        if (InputManager.GetMouseButton(1)) // 마우스 오른쪽 버튼
+        if (player.pBehavior.ToolIndex != 3)
+        {
+            Debug.Log($"ToolIndex is not 3. Current ToolIndex: {player.pBehavior.ToolIndex}");
+            StopMining();
+            return;
+        }
+
+        // 플레이어가 없거나 ToolIndex가 3이 아니면 마이닝 중단
+        if (player == null || player.pBehavior == null || player.pBehavior.ToolIndex != 3)
+        {
+            if (isMining) // 마이닝이 진행 중일 때만 중단 처리
+            {
+                StopMining();
+            }
+            return;
+        }
+
+        // 마우스 오른쪽 버튼 누름
+        if (InputManager.GetMouseButton(1))
         {
             Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, allowedDistance, oreLayer);
 
@@ -151,6 +170,24 @@ public class MiningOre : MonoBehaviour
 
         // 리스폰 상태 종료
         isRespawning = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = other.GetComponent<Player>();
+            playerTransform = player.transform; // 플레이어의 Transform 저장
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = null;
+            playerTransform = null; // 플레이어의 Transform 해제
+        }
     }
 
     void OnDrawGizmosSelected()
