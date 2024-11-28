@@ -133,7 +133,7 @@ public class QuestInfoManager
             new Quest(
                 QuestIdEnum.Q_7,
                 new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.WATERMELON, 5, false), 
+                    new ItemBundle(ItemIdEnum.HALF_WATERMELON, 5, false), 
                     new ItemBundle(ItemIdEnum.WATERMELON_JUICE, 2, false)},
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
