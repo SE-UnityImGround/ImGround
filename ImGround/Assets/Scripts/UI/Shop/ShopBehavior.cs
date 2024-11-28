@@ -79,9 +79,11 @@ public class ShopBehavior : UIBehavior
         {
             foreach (KeyValuePair<ItemIdEnum, int> item in InventoryManager.getInventoryInfo())
             {
-                int sellPrice = ItemInfoManager.getItemInfo(item.Key).buyingPrice - 500;
-                if (sellPrice <= 0)
-                    sellPrice = 500;
+                int sellPrice = ItemInfoManager.getItemInfo(item.Key).buyingPrice;
+                if (sellPrice > 500)
+                    sellPrice -= 500; // 판매가격은 구매가격의 -500
+                else
+                    sellPrice /= 2; // 500원 이하 -> 절반값으로 조정
                 addShopItem(new Item(item.Key), sellPrice);
             }
         }
