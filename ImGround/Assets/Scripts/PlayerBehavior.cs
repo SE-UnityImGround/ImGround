@@ -111,7 +111,7 @@ public class PlayerBehavior : MonoBehaviour
             foreach (Collider hitCollider in hitColliders)
             {
                 // 특정 태그가 있는지 확인(있다면 pickedItem에 해당 프리펩 저장)
-                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("Ore") || hitCollider.CompareTag("item"))
+                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("item"))
                 {
                     // 각 콜라이더와의 거리 계산
                     float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
