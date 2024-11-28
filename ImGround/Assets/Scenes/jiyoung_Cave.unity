@@ -762,6 +762,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 83390123}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -2123,6 +2125,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1355324318}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -3284,6 +3288,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 253607178}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -3439,6 +3445,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1991556143}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -6917,7 +6925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.4
+      value: 68.08
       objectReference: {fileID: 0}
     - target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6925,7 +6933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 46.9
+      value: 2.06
       objectReference: {fileID: 0}
     - target: {fileID: 7770421585148322102, guid: f6e62b85b8944eb45be50ddc375a9a42, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7203,6 +7211,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 795638576}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -7362,6 +7372,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1545004842}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -8287,6 +8299,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 239161611}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -13127,6 +13141,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
       insertIndex: -1
       addedObject: {fileID: 241197651}
+    - targetCorrespondingSourceObject: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 241197655}
   m_SourcePrefab: {fileID: 100100000, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
 --- !u!4 &241197649 stripped
 Transform:
@@ -13173,12 +13190,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 23385528}
-  itemPrefab: {fileID: 1049752675367253841, guid: 774952a2e2d59db4197cf3216ecfadd8, type: 3}
+  itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 440730873}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &241197655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241197650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50beb603c3909474881dfb184299c728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item_2d_image: {fileID: 0}
+  itemType: 51
+  amount: 1
 --- !u!1001 &244225380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14744,6 +14778,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1106643848}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -15409,6 +15445,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 93106225}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -17209,6 +17247,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1967855478}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -18051,6 +18091,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 1947024219}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -19027,6 +19069,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 934665709}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -19926,6 +19970,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 2065438832}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -22386,6 +22432,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 2026079446}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -25460,6 +25508,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 509991738}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -26222,6 +26272,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 1780383258}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -27375,6 +27427,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 151659892}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -28466,6 +28520,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 255245934}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -30734,6 +30790,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1066707459}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -31011,6 +31069,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1491374895}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -31192,6 +31252,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 673336901}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -32280,6 +32342,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1528756241}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -33489,6 +33553,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1795451262}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -34552,9 +34618,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 714948626}
-  itemPrefab: {fileID: 1049752675367253841, guid: 774952a2e2d59db4197cf3216ecfadd8, type: 3}
+  itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1529362115}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -34688,6 +34756,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1159576507}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -35154,6 +35224,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1327808652}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -36020,6 +36092,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 747396790}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -38350,6 +38424,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1401235346}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -38616,6 +38692,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 924158214}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -40300,6 +40378,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 691196354}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -47356,6 +47436,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 691224583}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -47586,6 +47668,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 818808559}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -52523,6 +52607,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 808731538}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -53816,6 +53902,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1072739897}
+    - targetCorrespondingSourceObject: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1072739901}
   m_SourcePrefab: {fileID: 100100000, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
 --- !u!4 &1072739895 stripped
 Transform:
@@ -53840,9 +53929,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 1245268922}
-  itemPrefab: {fileID: 9058185902551437537, guid: 32c4533f541aced45bf805f47ffa8d2d, type: 3}
+  itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 1597129630}
-  itemSize: {x: 1, y: 1, z: 1}
+  itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -53868,6 +53959,21 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4493585093827132993, guid: b3b777de99beea247954d8b0e3b91302, type: 3}
+--- !u!114 &1072739901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072739896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50beb603c3909474881dfb184299c728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item_2d_image: {fileID: 0}
+  itemType: 45
+  amount: 1
 --- !u!1 &1076405840
 GameObject:
   m_ObjectHideFlags: 0
@@ -55333,6 +55439,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 432914222}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -55589,6 +55697,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 396487516}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -55927,6 +56037,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 1243852232}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -58220,6 +58332,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 401654052}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -60027,6 +60141,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 130634941}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -60817,6 +60933,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1546617927}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -61274,6 +61392,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 182140032}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -63651,6 +63771,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 706493269}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -64206,6 +64328,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 917640757}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -65381,6 +65505,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1558286792}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -65943,6 +66069,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1432863402}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -66556,6 +66684,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 942752700}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -67674,6 +67804,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1171582088}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -68006,6 +68138,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1518958923}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -68602,6 +68736,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 193201325}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -70208,6 +70344,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 2084656627}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -75754,6 +75892,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1421221626}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -76071,6 +76211,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 276372400}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -79872,6 +80014,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 595309151}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -80721,6 +80865,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 236057974}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -81082,6 +81228,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 656529722}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -82641,6 +82789,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 718678934}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -83801,6 +83951,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1997483931}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -87023,6 +87175,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 57736163}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -87796,6 +87950,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 456459558}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -88755,6 +88911,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 96902388}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -91610,6 +91768,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1948804923074013471, guid: e7e7d18b0edcc994ab3989d9ec7481ac, type: 3}
   canvasTransform: {fileID: 714295666}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -92455,6 +92615,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1797162299}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -92994,6 +93156,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1937752526}
+    - targetCorrespondingSourceObject: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1937752530}
   m_SourcePrefab: {fileID: 100100000, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
 --- !u!4 &1937752524 stripped
 Transform:
@@ -93043,9 +93208,26 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 459670517}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &1937752530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937752525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50beb603c3909474881dfb184299c728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item_2d_image: {fileID: 0}
+  itemType: 51
+  amount: 1
 --- !u!1001 &1941842963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93183,6 +93365,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 2098565299}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -93548,6 +93732,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 544205151}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -95132,6 +95318,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 1982226098}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -96491,6 +96679,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 376161244}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -97180,6 +97370,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 979891102}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -101274,6 +101466,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 7778323751052445194, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   canvasTransform: {fileID: 776360870}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -102081,6 +102275,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1173522666420968482, guid: 2003ceecb5aa6554aa2a1281d4e635f6, type: 3}
   canvasTransform: {fileID: 1754637460}
   itemSize: {x: 0.1, y: 0.1, z: 0.1}
+  playerTransform: {fileID: 1004687425}
+  allowedDistance: 2
   oreLayer:
     serializedVersion: 2
     m_Bits: 256
