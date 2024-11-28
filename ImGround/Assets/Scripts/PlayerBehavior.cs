@@ -172,7 +172,7 @@ public class PlayerBehavior : MonoBehaviour
             else if (toolIndex == 3) // 채광
             {
                 // 원형 범위로 아이템 감지 (OverlapSphere 사용)
-                Collider[] checkOre = Physics.OverlapSphere(transform.position, 2f); // 플레이어 주변 2미터 범위
+                Collider[] checkOre = Physics.OverlapSphere(transform.position, 1.7f); // 플레이어 주변 2미터 범위
                 foreach (Collider hitOre in checkOre)
                 {
                     if (hitOre.CompareTag("Ore")) // 'Ore' 태그가 있는지 확인 (있다면 채광 가능)
