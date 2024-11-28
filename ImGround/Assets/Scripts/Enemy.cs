@@ -42,6 +42,10 @@ public class Enemy : MonoBehaviour
 
     private DayAndNight dayAndNightScript;
 
+    public GameObject player; // 플레이어 오브젝트
+    public static Vector3 minBounds = new Vector3(-78, -10, -120); // x, y, z 최소값
+    public static Vector3 maxBounds = new Vector3(183, 20, 148);
+
     // ======= Fade Parameters =======
     private Renderer fadeRenderer; // 페이드 아웃 효과를 위한 Renderer
 
@@ -81,6 +85,13 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
+        bool isWithinBounds = IsPlayerWithinBounds();
+
+        if (type == Type.Boss & isWithinBounds)
+        {
+            health = maxHealth;
+        }
+
         if (isDie)
         {
             return;
@@ -157,13 +168,37 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        if (effectSound.Length > 0 && effectSound[0] != null)
+        /*if (effectSound.Length > 0 && effectSound[0] != null)
         {
             effectSound[0].Play();
         }
         else
         {
             Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+        }*/
+
+        if (type == Type.Boss)
+        {
+            if (effectSound.Length > 1 && effectSound[1] != null) // 배열 길이와 null 체크
+            {
+                effectSound[1].Play(); // 1번 효과음 재생
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
+        }
+        else
+        {
+            // Boss가 아닌 경우 0번 효과음 재생
+            if (effectSound.Length > 0 && effectSound[0] != null)
+            {
+                effectSound[0].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
         }
 
         isDie = true;
@@ -394,5 +429,14 @@ public class Enemy : MonoBehaviour
         col.enabled = true;
         if (nav.isActiveAndEnabled && nav.isOnNavMesh)
             nav.isStopped = false;
+    }
+    private bool IsPlayerWithinBounds()
+    {
+        if (player == null) return false;
+
+        Vector3 playerPosition = player.transform.position;
+        return playerPosition.x >= minBounds.x && playerPosition.x <= maxBounds.x &&
+               playerPosition.y >= minBounds.y && playerPosition.y <= maxBounds.y &&
+               playerPosition.z >= minBounds.z && playerPosition.z <= maxBounds.z;
     }
 }
