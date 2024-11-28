@@ -133,7 +133,10 @@ public class ManufactListBehavior : UIBehavior
             ItemBundle newItem = new ItemBundle(manufactInfo.outputItem);
             InventoryManager.addItems(newItem);
             if (newItem.count > 0)
+            {
                 ItemThrowManager.throwItem(newItem);
+                WarningManager.startWarning();
+            }
             Debug.Log("제작 시도 : 성공!");
         }
         else

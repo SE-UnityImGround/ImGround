@@ -16,6 +16,12 @@ public class PlayerUIController : MonoBehaviour
     // - 디버깅시 에러 문구를 빨리 파악하기 위함 -
     private Player _playerScript { get { checkValue(playerScript, nameof(playerScript), 1); return playerScript; } set { playerScript = value; } }
 
+    private const float DEFAULT_BOSS_IDENTIFY_RANGE = 50.0f;
+    [SerializeField]
+    private float bossIdentifyRange = DEFAULT_BOSS_IDENTIFY_RANGE;
+    private const float FINDING_BOSS_DUARTION = 0.25f; // 성능을 고려해 보스를 실시간으로 찾는 대신 일정 시간마다 찾기
+    private float findingBossStdTime = 0.0f;
+
     /// <summary>
     /// - 디버깅시 에러 문구를 빨리 파악하기 위함 -
     /// </summary>
@@ -48,6 +54,10 @@ public class PlayerUIController : MonoBehaviour
         checkValue(playerScript, nameof(playerScript), 2);
 
         ItemThrowManager.listenItemThrowEvent(onItemThrow);
+
+        // 오류 회피용 - 기본값 강제 주입
+        if (bossIdentifyRange <= 1.0f)
+            bossIdentifyRange = DEFAULT_BOSS_IDENTIFY_RANGE;
     }
 
     private void onItemThrow(GameObject itemObject)
@@ -60,6 +70,7 @@ public class PlayerUIController : MonoBehaviour
     void Update()
     {
         updatePlayerInfo();
+        updateBossHealth();
         uiControllByInput();
     }
 
@@ -69,6 +80,25 @@ public class PlayerUIController : MonoBehaviour
             _playerScript.health / (float)_playerScript.MaxHealth,
             _playerScript.Exp / (float)_playerScript.requiredExp[_playerScript.level],
             _playerScript.level);
+    }
+
+    private void updateBossHealth()
+    {
+        if (Time.time - findingBossStdTime < FINDING_BOSS_DUARTION)
+            return;
+        findingBossStdTime = Time.time;
+
+        Boss boss = FindObjectOfType<Boss>();
+        if (boss != null
+            && (transform.position - boss.transform.position).sqrMagnitude < bossIdentifyRange * bossIdentifyRange)
+        {
+            inGameUI.getUIBehavior<BossHealthBehavior>().setHealth(boss.Health / (float)boss.maxHealth);
+            inGameUI.getUIBehavior<BossHealthBehavior>().setVisible(true);
+        }
+        else
+        {
+            inGameUI.getUIBehavior<BossHealthBehavior>().setVisible(false);
+        }
     }
 
     private void uiControllByInput()

@@ -54,7 +54,7 @@ public class PlayerBehavior : MonoBehaviour
         player = GetComponent<Player>();
         sDown = new bool[8];
 
-        InventoryManager.onSelectionChangedHandler += onItemSelectionChanged;
+        InventoryManager.onSelectionChangedHandler += OnItemSelectionChanged;
     }
     public void GetInput()
     {
@@ -244,7 +244,7 @@ public class PlayerBehavior : MonoBehaviour
     /// 인벤토리로부터 아이템 선택 값이 변경되었을때 처리되는 이벤트 처리기
     /// </summary>
     /// <param name="slotIdx"></param>
-    private void onItemSelectionChanged(int slotIdx)
+    private void OnItemSelectionChanged(int slotIdx)
     {
         // 이전 들고있던 아이템 숨기기
         if (grabbedItem != null)
@@ -396,14 +396,14 @@ public class PlayerBehavior : MonoBehaviour
         // Destroy the picked-up item
         if (pickedItem != null)
         {
-            getItem(pickedItem.GetComponent<ItemPrefabID>()); // 주운 아이템의 인벤토리 처리
+            GetItem(pickedItem.GetComponent<ItemPrefabID>()); // 주운 아이템의 인벤토리 처리
             pickedItem.transform.SetParent(null);
             pickedItem.gameObject.SetActive(false);
             pickedItem = null; // Reset the reference to the item
         }
     }
 
-    private void getItem(ItemPrefabID itemPrefabId)
+    private void GetItem(ItemPrefabID itemPrefabId)
     {
         if (itemPrefabId == null)
         {
@@ -416,6 +416,7 @@ public class PlayerBehavior : MonoBehaviour
             if (takenItem.count > 0)
             {
                 ItemThrowManager.throwItem(takenItem);
+                WarningManager.startWarning();
             }
         }
     }
