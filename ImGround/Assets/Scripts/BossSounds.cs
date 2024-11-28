@@ -17,7 +17,17 @@ public class BossSounds : MonoBehaviour
 
         if (!isWithinBounds)
         {
-            effectSound[0].Play();
+            if (!effectSound[0].isPlaying)
+            {
+                effectSound[0].Play();
+            }            
+        }
+        else
+        {
+            if (effectSound[0].isPlaying)
+            {
+                effectSound[0].Stop();
+            }
         }
 
     }
