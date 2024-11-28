@@ -181,7 +181,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void AttackInput()
     {
-        aDown = Input.GetButton("Fire1");
+        aDown = InputManager.GetButton("Fire1");
     }
 
     public void Attack()
