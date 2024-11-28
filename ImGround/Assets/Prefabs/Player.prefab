@@ -3030,6 +3030,7 @@ GameObject:
   - component: {fileID: 2052404618653691677}
   - component: {fileID: 8593166215986311713}
   - component: {fileID: 4166386189120917311}
+  - component: {fileID: 1189769670823799689}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3277,6 +3278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameUI: {fileID: 0}
+  bossIdentifyRange: 50
 --- !u!114 &8593166215986311713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3301,6 +3303,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565148238265b804c8c45fb975c9229b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1189769670823799689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723851214982213589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffa83d7b7d2362b42a7f9f8f46330995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  go_Prefab: {fileID: 5425799500559631028, guid: 78e5a9e805b9d9344a5330e4911f1450, type: 3}
+  go_PreviewPrefab: {fileID: 8055602770613395783, guid: 894c0a6424efb6d4eab07d960d8d6508, type: 3}
+  tf_Player: {fileID: 7770421585148322102}
 --- !u!1 &2748259234206898592
 GameObject:
   m_ObjectHideFlags: 0

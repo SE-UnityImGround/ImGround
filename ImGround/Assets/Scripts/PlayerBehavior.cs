@@ -35,9 +35,10 @@ public class PlayerBehavior : MonoBehaviour
     public Transform[] curtivatePoint; // 괭이와 삽의 콜라이더 (0번 인덱스 : 괭이, 1번 인덱스 : 삽)
     public Transform ItemPoint; // 음식을 먹는 손의 위치
     private GameObject pickedItem; // 현재 주운 아이템
+    public int GrabSlotID { get { return grabbingSlotIdx; } }
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
-    public bool IsDigging { get {  return isDigging; } }
+    public bool IsDigging { get {  return isDigging; } set { isDigging = value; } }
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
     public bool IsPlant {  get { return isPlant; } }
