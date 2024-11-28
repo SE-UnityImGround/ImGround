@@ -10,12 +10,14 @@ public class Quest
     public ItemBundle[] requestItems { get; private set; }
     public ItemBundle[] rewardItems { get; private set; }
     public int rewardMoney { get; private set; }
+    public int exp { get; private set; }
 
-    public Quest (QuestIdEnum id, ItemBundle[] requestItems, ItemBundle[] rewardItems, int rewardMoney)
+    public Quest (QuestIdEnum id, ItemBundle[] requestItems, ItemBundle[] rewardItems, int rewardMoney, int exp)
     {
         this.id = id;
         this.requestItems = requestItems;
         this.rewardItems = rewardItems;
         this.rewardMoney = rewardMoney;
+        this.exp = exp;
     }
 }

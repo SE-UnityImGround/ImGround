@@ -71,7 +71,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.GOLD_NECKLACE, 1, false) },
                 new ItemBundle[] { },
-                5000),
+                10000,
+                3),
             (GameObject)Resources.Load("QuestPrefabs/Quest_1")),
 
         new QuestInfo(
@@ -82,8 +83,9 @@ public class QuestInfoManager
                     new ItemBundle(ItemIdEnum.PIZZA, 1, false),
                     new ItemBundle(ItemIdEnum.HAMBURGER, 1, false)},
                 new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
-                100000),
+                    new ItemBundle(ItemIdEnum.STEAK, 1, false)},
+                50000,
+                5),
             (GameObject)Resources.Load("QuestPrefabs/Quest_2")),
 
         new QuestInfo(
@@ -93,7 +95,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.FROUT_SALAD, 1, false)},
                 new ItemBundle[] { },
-                5000),
+                20000,
+                3),
             (GameObject)Resources.Load("QuestPrefabs/Quest_3")),
 
         new QuestInfo(
@@ -103,9 +106,9 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.CHEESE, 3, false),
                     new ItemBundle(ItemIdEnum.BREAD, 1, false)},
-                new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
-                100000),
+                new ItemBundle[] { },
+                10000,
+                1),
             (GameObject)Resources.Load("QuestPrefabs/Quest_4")),
 
         new QuestInfo(
@@ -115,7 +118,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.APPLE_JUICE, 3, false)},
                 new ItemBundle[] { },
-                5000),
+                20000,
+                3),
             (GameObject)Resources.Load("QuestPrefabs/Quest_5")),
 
         new QuestInfo(
@@ -125,7 +129,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.BANANA_MILK, 5, false)},
                 new ItemBundle[] { },
-                5000),
+                35000,
+                4),
             (GameObject)Resources.Load("QuestPrefabs/Quest_6")),
 
         new QuestInfo(
@@ -135,9 +140,9 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.HALF_WATERMELON, 5, false), 
                     new ItemBundle(ItemIdEnum.WATERMELON_JUICE, 2, false)},
-                new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
-                100000),
+                new ItemBundle[] { },
+                45000,
+                3),
             (GameObject)Resources.Load("QuestPrefabs/Quest_7")),
 
         new QuestInfo(
@@ -147,9 +152,9 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.APPLE_JUICE, 2, false),
                     new ItemBundle(ItemIdEnum.LEMON_JUICE, 3, false)},
-                new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
-                100000),
+                new ItemBundle[] { },
+                30000,
+                3),
             (GameObject)Resources.Load("QuestPrefabs/Quest_8")),
         
         new QuestInfo(
@@ -159,7 +164,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.CHICKEN_SALAD, 2, false)},
                 new ItemBundle[] { },
-                5000),
+                50000,
+                5),
             (GameObject)Resources.Load("QuestPrefabs/Quest_9")),
 
         new QuestInfo(
@@ -170,8 +176,9 @@ public class QuestInfoManager
                     new ItemBundle(ItemIdEnum.FISH, 2, false),
                     new ItemBundle(ItemIdEnum.SALMON, 1, false)},
                 new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.SILVER_INGOT, 1, false)},
-                100000),
+                    new ItemBundle(ItemIdEnum.GOLD_INGOT, 1, false)},
+                100000,
+                5),
             (GameObject)Resources.Load("QuestPrefabs/Quest_10")),
 
         new QuestInfo(
@@ -181,7 +188,8 @@ public class QuestInfoManager
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.COOKED_LAMB, 4, false)},
                 new ItemBundle[] { },
-                5000),
+                65000,
+                4),
             (GameObject)Resources.Load("QuestPrefabs/Quest_11")),
 
         new QuestInfo(
@@ -196,8 +204,9 @@ public class QuestInfoManager
                     new ItemBundle(ItemIdEnum.WATERMELON_JUICE, 1, false),
                     new ItemBundle(ItemIdEnum.APPLE_JUICE, 1, false),
                     new ItemBundle(ItemIdEnum.LEMON_JUICE, 1, false)},
-                new ItemBundle[] { }, // 뭐줄까 스페셜 퀘스트
-                0), // 얼마줄까 스페셜 퀘스트
+                new ItemBundle[] { }, 
+                1000000,
+                10), 
             (GameObject)Resources.Load("QuestPrefabs/Quest_12")),
     };
 

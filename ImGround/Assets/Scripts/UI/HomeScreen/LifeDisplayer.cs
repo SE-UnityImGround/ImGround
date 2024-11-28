@@ -26,7 +26,9 @@ public class LifeDisplayer : MonoBehaviour
 
     public void update(float lifeRatio)
     {
-        lifeText.text = string.Format("{0:#}%", lifeRatio * 100);
+        if (lifeRatio < 0.0f)
+            lifeRatio = 0.0f;
+        lifeText.text = string.Format("{0:0}%", lifeRatio * 100);
         lifeImage.sprite = getLifeImage(lifeRatio);
     }
 
