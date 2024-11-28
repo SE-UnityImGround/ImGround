@@ -12,11 +12,11 @@ public class TalkInfoManager
 
     // 가공 상점
     private static TalkInfo INDUSTRY_2 = new TalkInfo(
-        "넵! 감사합니다!",
+        "아, 이거는 이렇게 만들면 돼",
         ("확인", TalkEventEnum.END, null));
     private static TalkInfo INDUSTRY_1 = new TalkInfo(
         "응? 다들 모르는 건 나한테 물어보라고 했다고? ······. 아, 이 문제는······.",
-        ("확인", TalkEventEnum.OPEN_SHOP, new TalkInfo[] { INDUSTRY_2 }));
+        ("확인", TalkEventEnum.OPEN_MANUFACT, new TalkInfo[] { INDUSTRY_2 }));
 
     // 생선 상점
     private static TalkInfo FISH_3 = new TalkInfo(
@@ -162,7 +162,7 @@ public class TalkInfoManager
         "맛있는걸로 부탁하마!",
         ("확인", TalkEventEnum.NEW_QUEST, null));
     private static TalkInfo QUEST5_2 = new TalkInfo(
-        "내가 말이야! 매일 아침 사과주스를 마셔야 하는데, 나참··· 오늘은 바빠서 그럴 시간이 없더라고. 나는 가게를 지켜야 하니 대신 사과주스 좀 구해다 주겠나?",
+        "내가 말이야! 매일 아침 사과주스를 마셔야 하는데, 나참··· 오늘은 바빠서 그럴 시간이 없더라고. 나는 동굴을 지켜야 하니 대신 사과주스 좀 구해다 주겠나?",
         ("네..", TalkEventEnum.NONE, new TalkInfo[] { QUEST5_3a }),
         ("무시하기", TalkEventEnum.NONE, new TalkInfo[] { QUEST5_3b }));
     private static TalkInfo QUEST5_1 = new TalkInfo(
@@ -192,7 +192,7 @@ public class TalkInfoManager
         ("확인", TalkEventEnum.NEW_QUEST, null));
     private static TalkInfo QUEST7_2 = new TalkInfo(
         "너무 더워서 수박이랑 수박주스 좀 먹어야겠어! 어때? 같이 먹을래?",
-        ("응··· 설마 내가 다 준비해?", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3a }),
+        ("응··· 설마 내가 다?", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3a }),
         ("귀찮아 네가 가져와", TalkEventEnum.NONE, new TalkInfo[] { QUEST7_3b }));
     private static TalkInfo QUEST7_1 = new TalkInfo(
         "흐아, 이번 여름은 유독 긴 것 같아······.",
@@ -222,7 +222,7 @@ public class TalkInfoManager
     private static TalkInfo QUEST9_2 = new TalkInfo(
         "닭가슴살 샐러드? 오, 좋은데? 그거 어디서 파는지 알아? ······. 미안한데, 나 지금 당장 운동하러 가야 하거든? 그동안 좀 사다 줄 수 있어?",
         ("이번만이야", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3a }),
-        ("미안 나도 시간이 없어서", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3b }));
+        ("미안 나도 시간이 없어", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_3b }));
     private static TalkInfo QUEST9_1 = new TalkInfo(
         "아, 근손실은 안 돼!! 그렇지만 오늘은 닭가슴살만 먹고 싶지 않아···. 뭔가 새로운 게 없을까?",
         ("닭가슴살 샐러드?", TalkEventEnum.NONE, new TalkInfo[] { QUEST9_2 }),
@@ -238,10 +238,10 @@ public class TalkInfoManager
     private static TalkInfo QUEST10_2 = new TalkInfo(
         "좀 무섭긴 한데, 탐나는 것 같기도 하고? 음···, 나도 생선 같은 걸 들고 다니면 어떨까?",
         ("한번 해 봐", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3a }),
-        ("그건 그 사람만 소화 가능해", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3b }));
+        ("아마 넌 소화하기 힘들걸?", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_3b }));
     private static TalkInfo QUEST10_1 = new TalkInfo(
         "아니 글쎄, 마을에 청새치를 들고 다니는 사람이 있대. 너도 알아?",
-        ("어어, 너무 잘 알지. 하하.", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_2 }),
+        ("응, 너무 잘 알지. 하하.", TalkEventEnum.NONE, new TalkInfo[] { QUEST10_2 }),
         ("무시하기", TalkEventEnum.END, null));
 
     // 퀘스트 11
@@ -277,6 +277,95 @@ public class TalkInfoManager
         ("무시하기", TalkEventEnum.END, null));
 
     /*=======================================
+     *           퀘스트 완료 대화
+     *=======================================*/
+
+    private static TalkInfo DONE_QUEST1 = new TalkInfo(
+        "고마워! 프로포즈 성공하면 꼭 한 턱 쏠게!!",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST2 = new TalkInfo(
+        "고마워! 그나저나 나 혼자 이걸 다 먹은 건······ 평생 우리 둘만 아는 비밀인 거야!",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST3 = new TalkInfo(
+        "고마워! ······. 아, 그런데 이걸로는 배가 안 차네. 아무래도 치킨을 시켜야······.",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST4 = new TalkInfo(
+        "다행히도 우리 딸이 너무 좋아하더라. 저어, 학생. 아줌마가 많이는 못 주고······ 이거라도 받아.",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST5 = new TalkInfo(
+        "크으, 이 맛이지. 다음에도 부탁하마!",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST6 = new TalkInfo(
+        "오늘따라 더 맛있네~ 남의 걸 뺏어 먹어서 그런가? ♪♩",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST7 = new TalkInfo(
+        "아~ 이제야 좀 살 것 같다!",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST8 = new TalkInfo(
+        "마시고 열심히 들으려고 했는데에, 졸려···. 식곤증인가 ··· zzZ······.",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST9 = new TalkInfo(
+        "우물우물······. 음, 역시 그냥 닭가슴살이 나은 것 같아.",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST10 = new TalkInfo(
+        "어때 어때? 나도 좀 멋있나?",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST11 = new TalkInfo(
+        "이렇게 맛있는 걸 이제야 알았다니! 아~ 하나만, 아니 다섯 개만 더 먹고 싶다아~",
+        ("확인", TalkEventEnum.END, null));
+
+    private static TalkInfo DONE_QUEST12 = new TalkInfo(
+        "좋아, 완벽해. 덕분에 아주 최고의 파티가 되겠어!",
+        ("확인", TalkEventEnum.END, null));
+
+    /*=======================================
+     *              일반 대화
+     *=======================================*/
+
+    private static TalkInfo[] smallTalks = new TalkInfo[] {
+    new TalkInfo(
+        "너는 참 바쁘게 다니는구나.",
+        ("ㅎㅎ..", TalkEventEnum.END, null)),
+
+    new TalkInfo(
+        "그거 아니? 이 세계는 사실 누군가 조종하고 있는 곳일지도 몰라!",
+        ("어머낫", TalkEventEnum.END, null)),
+
+    new TalkInfo(
+        "좋은하루~ 너도 행복한 날 보내렴!",
+        ("확인", TalkEventEnum.END, null)),
+
+    new TalkInfo(
+        "중얼중얼... 우리집 개가 어디 갔을까.. 중얼중얼...",
+        ("확인", TalkEventEnum.END, null)),
+
+    new TalkInfo(
+        "너 저번에 마을사람들을 도와주러 다니는 애 아니니? 반갑구나!",
+        ("안녕하세요!", TalkEventEnum.END, null)),
+
+    new TalkInfo(
+        "비가 올땐 우비가 좋아, 우산이 좋아?",
+        ("우비요!", TalkEventEnum.NONE, new TalkInfo[] {
+            new TalkInfo(
+                "난 우산이 좋아",
+                ("네.", TalkEventEnum.END, null)) }),
+        ("우산이요!", TalkEventEnum.NONE, new TalkInfo[] {
+            new TalkInfo(
+                "어머! 난 우산이 좋단다 얘야",
+                ("우와 신기해요", TalkEventEnum.END, null))}))
+    };
+
+    /*=======================================
      *          npc type 매핑 데이터
      *=======================================*/
 
@@ -304,9 +393,39 @@ public class TalkInfoManager
             { NPCType.NPC_12, QUEST12_1 }
         };
 
+    private static Dictionary<NPCType, TalkInfo> questDoneTalkInfo = new Dictionary<NPCType, TalkInfo>()
+        {
+            { NPCType.NPC_1, DONE_QUEST1},
+            { NPCType.NPC_2, DONE_QUEST2},
+            { NPCType.NPC_3, DONE_QUEST3},
+            { NPCType.NPC_4, DONE_QUEST4},
+            { NPCType.NPC_5, DONE_QUEST5},
+            { NPCType.NPC_6, DONE_QUEST6},
+            { NPCType.NPC_7, DONE_QUEST7},
+            { NPCType.NPC_8, DONE_QUEST8},
+            { NPCType.NPC_9, DONE_QUEST9},
+            { NPCType.NPC_10, DONE_QUEST10},
+            { NPCType.NPC_11, DONE_QUEST11},
+            { NPCType.NPC_12, DONE_QUEST12 }
+        };
+
     /*=======================================
      *          외부 지원 메소드
      *=======================================*/
+
+    public static TalkInfo getSmallTalkInfo()
+    {
+        return smallTalks[UnityEngine.Random.Range(0, smallTalks.Length)];
+    }
+
+    public static TalkInfo getQuestDoneTalkInfo(NPCType type)
+    {
+        if (questDoneTalkInfo.ContainsKey(type))
+        {
+            return questDoneTalkInfo[type];
+        }
+        throw new Exception("NPC " + type.ToString() + "에 대한 대화 데이터가 없습니다!");
+    }
 
     public static TalkInfo getTalkInfo(NPCType type)
     {
@@ -315,38 +434,6 @@ public class TalkInfoManager
             return talkInfos[type];
         }
         throw new Exception("NPC " + type.ToString() + "에 대한 대화 데이터가 없습니다!");
-    }
-
-    public static QuestIdEnum getQuestId(NPCType type)
-    {
-        switch (type)
-        {
-            case NPCType.NPC_1:
-                return QuestIdEnum.Q_1;
-            case NPCType.NPC_2:
-                return QuestIdEnum.Q_2;
-            case NPCType.NPC_3:
-                return QuestIdEnum.Q_3;
-            case NPCType.NPC_4:
-                return QuestIdEnum.Q_4;
-            case NPCType.NPC_5:
-                return QuestIdEnum.Q_5;
-            case NPCType.NPC_6:
-                return QuestIdEnum.Q_6;
-            case NPCType.NPC_7:
-                return QuestIdEnum.Q_7;
-            case NPCType.NPC_8:
-                return QuestIdEnum.Q_8;
-            case NPCType.NPC_9:
-                return QuestIdEnum.Q_9;
-            case NPCType.NPC_10:
-                return QuestIdEnum.Q_10;
-            case NPCType.NPC_11:
-                return QuestIdEnum.Q_11;
-            case NPCType.NPC_12:
-                return QuestIdEnum.Q_12;
-        }
-        throw new Exception("NPC " + type.ToString() + "에 대한 퀘스트 데이터가 없습니다!");
     }
 
     public static ImageIdEnum getTalkerBackground(NPCType type)

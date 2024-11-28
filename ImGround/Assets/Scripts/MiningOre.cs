@@ -16,25 +16,53 @@ public class MiningOre : MonoBehaviour
     public float allowedDistance = 2f;      // 곡괭이 범위
     public LayerMask oreLayer;              // 광석 레이어 마스크
 
+    private Vector3 originalPosition;       // 광석의 초기 위치 저장
+    private Quaternion originalRotation;    // 광석의 초기 회전 저장
+
+    private bool isRespawning = false;      // 광석이 리스폰 중인지 확인
+    private Player player;                  // Player 참조
+
+    void Awake()
+    {
+        // 초기 위치와 회전 저장
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
+    }
+
     void Update()
     {
-        // 마우스 오른쪽 버튼을 누르고 있는 동안
-        if (Input.GetMouseButton(1)) // 오른쪽 마우스 버튼
+        if (isRespawning) return; // 리스폰 중에는 작동하지 않음
+
+        if (player.pBehavior.ToolIndex != 3)
         {
-            // 곡괭이 범위 내에 있는 모든 광석을 감지
+            Debug.Log($"ToolIndex is not 3. Current ToolIndex: {player.pBehavior.ToolIndex}");
+            StopMining();
+            return;
+        }
+
+        // 플레이어가 없거나 ToolIndex가 3이 아니면 마이닝 중단
+        if (player == null || player.pBehavior == null || player.pBehavior.ToolIndex != 3)
+        {
+            if (isMining) // 마이닝이 진행 중일 때만 중단 처리
+            {
+                StopMining();
+            }
+            return;
+        }
+
+        // 마우스 오른쪽 버튼 누름
+        if (InputManager.GetMouseButton(1))
+        {
             Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, allowedDistance, oreLayer);
 
-            // 가장 가까운 정면 방향의 광석을 찾기 위한 변수
             Transform closestOre = null;
             float closestAngle = 45f;  // 정면 기준 허용 각도
 
-            // 감지된 광석 중에서 플레이어가 바라보는 방향에 가까운 광석을 선택
             foreach (var hitCollider in hitColliders)
             {
                 Vector3 directionToOre = (hitCollider.transform.position - playerTransform.position).normalized;
                 float angleToOre = Vector3.Angle(playerTransform.forward, directionToOre);
 
-                // 정면 각도 내에 있는 광석이면서 가장 가까운 각도의 광석을 선택
                 if (angleToOre < closestAngle)
                 {
                     closestAngle = angleToOre;
@@ -42,29 +70,25 @@ public class MiningOre : MonoBehaviour
                 }
             }
 
-            // 가장 가까운 광석이 현재 오브젝트이고, 아직 마이닝이 시작되지 않은 경우
             if (closestOre == transform && !isMiningTriggered)
             {
                 StartMining();
             }
 
-            // 마이닝 진행 중이라면 게이지바를 업데이트
             if (isMining)
             {
-                miningProgress += Time.deltaTime; // 마우스를 누르고 있는 동안 진행
-                UpdateGauge(1 - (miningProgress / miningTimeRequired));  // 게이지 감소
+                miningProgress += Time.deltaTime;
+                UpdateGauge(1 - (miningProgress / miningTimeRequired));
 
-                // 마이닝 완료 처리
                 if (miningProgress >= miningTimeRequired)
                 {
                     FinishMining();
                 }
             }
         }
-        // 마우스 오른쪽 버튼을 뗐을 때
-        else if (Input.GetMouseButtonUp(1))
+        else if (InputManager.GetMouseButtonUp(1))
         {
-            StopMining(); // 게이지바 제거 및 초기화
+            StopMining();
         }
     }
 
@@ -75,23 +99,21 @@ public class MiningOre : MonoBehaviour
             isMining = true;
             isMiningTriggered = true;
 
-            // 게이지바 생성 및 초기화, Canvas에 추가
             gaugeBarInstance = Instantiate(gaugeBarPrefab, canvasTransform);
-            gaugeBarInstance.SetActive(true); // 게이지바 활성화
-            UpdateGauge(1); // 처음에는 게이지가 가득 차 있음
+            gaugeBarInstance.SetActive(true);
+            UpdateGauge(1);
         }
     }
 
     void StopMining()
     {
-        isMining = false; // 마이닝을 멈춤
-        isMiningTriggered = false; // 다시 시도할 수 있도록 초기화
-        miningProgress = 0f; // 진행도 초기화
+        isMining = false;
+        isMiningTriggered = false;
+        miningProgress = 0f;
 
-        // 게이지바 제거
         if (gaugeBarInstance != null)
         {
-            Destroy(gaugeBarInstance);  // 게이지바 제거
+            Destroy(gaugeBarInstance);
         }
     }
 
@@ -112,26 +134,62 @@ public class MiningOre : MonoBehaviour
         isMining = false;
         isMiningTriggered = false;
 
-        Destroy(gaugeBarInstance);   // 게이지바 제거
-        Destroy(gameObject);         // 광석 오브젝트 제거
+        Destroy(gaugeBarInstance);
+        gameObject.SetActive(false); // 광석 비활성화
 
         if (itemPrefab != null)
         {
-            // 아이템 생성 위치 설정
             Vector3 spawnPosition = playerTransform.position + playerTransform.forward * 0.5f;
-            spawnPosition.y = transform.position.y + 0.2f;
+            spawnPosition.y = playerTransform.position.y; // 플레이어의 높이를 Y축 값으로 설정
 
-            // 아이템 생성
             GameObject newItem = Instantiate(itemPrefab, spawnPosition, Quaternion.identity);
             newItem.transform.localScale = itemSize;
 
-            // FloatingItem 스크립트 추가 및 초기 위치 설정
             FloatingItem floatingItem = newItem.AddComponent<FloatingItem>();
             floatingItem.Initialize(spawnPosition);
         }
+
+        // 10초 뒤에 리스폰
+        Invoke(nameof(RespawnOre), 10f);
     }
 
-    // Gizmos를 사용해 곡괭이 범위를 시각화
+    void RespawnOre()
+    {
+        // 리스폰 상태로 설정
+        isRespawning = true;
+
+        // 광석의 상태 초기화
+        transform.position = originalPosition;
+        transform.rotation = originalRotation;
+        miningProgress = 0f; // 채굴 진행 초기화
+        isMining = false;    // 채굴 상태 초기화
+        isMiningTriggered = false; // 채굴 가능 상태로 초기화
+
+        // 광석 재활성화
+        gameObject.SetActive(true);
+
+        // 리스폰 상태 종료
+        isRespawning = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = other.GetComponent<Player>();
+            playerTransform = player.transform; // 플레이어의 Transform 저장
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            player = null;
+            playerTransform = null; // 플레이어의 Transform 해제
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

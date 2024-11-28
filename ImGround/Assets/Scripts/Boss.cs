@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
+    public AudioSource[] BosseffectSound;
     [Header("Boss Prefabs")]
     public GameObject stonePrefab; // 돌 프리팹
+    public GameObject throwStonePrefab; // 던지는 공격에 사용할 돌 프리펩
     float throwForce = 1000f; // 돌을 던지는 힘
-    int numberOfStones = 10; // 스톤 샤워 공격에 사용될 돌의 수
-    float radius = 7f; // 스톤 샤워 돌 생성 반경
+    int numberOfStones = 12; // 스톤 샤워 공격에 사용될 돌의 수
+    float radius = 10f; // 스톤 샤워 돌 생성 반경
     public GameObject stonePosition; // 골렘이 꺼내는 돌
     
 
@@ -34,26 +36,46 @@ public class Boss : Enemy
 
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
 
-        if (distanceToPlayer <= 6f)
+        if (distanceToPlayer <= 9f)
         {
-            int ranAction = Random.Range(0, 5);
-            if (ranAction <= 3)
+            anim.SetTrigger("doPunchA");
+            punchPosition.SetActive(true);
+            StartCoroutine(ResetPunch());
+            /*if (BosseffectSound.Length > 0 && BosseffectSound[0] != null)
             {
-                anim.SetTrigger("doPunchA");
-                punchPosition.SetActive(true);
-                StartCoroutine(ResetPunch());
+                BosseffectSound[0].Play();
             }
             else
             {
-                CreateStoneShower();
-                anim.SetTrigger("doStone");
+                Debug.LogError("보스 효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }*/
+        }
+        else if (distanceToPlayer <= 15f)
+        {
+            CreateStoneShower();
+            anim.SetTrigger("doStone");
+            /*if (BosseffectSound.Length > 0 && BosseffectSound[1] != null)
+            {
+                BosseffectSound[1].Play();
             }
+            else
+            {
+                Debug.LogError("보스 효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }*/
         }
         else
         {
             anim.SetTrigger("doThrow");
             stonePosition.SetActive(true);
             Invoke("ThrowStone", 1.5f);
+            /*if (BosseffectSound.Length > 0 && BosseffectSound[2] != null)
+            {
+                BosseffectSound[2].Play();
+            }
+            else
+            {
+                Debug.LogError("보스 효과음 배열이 비어있거나 2번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }*/
         }
 
         yield return new WaitForSeconds(4f); // 보스의 경우 공격 딜레이
@@ -77,17 +99,14 @@ public class Boss : Enemy
         for (int i = 0; i < numberOfStones; i++)
         {
             Vector3 stonePosition = Random.onUnitSphere * radius + transform.position;
-            stonePosition.y = transform.position.y + 12; // 높이 조절
+            stonePosition.y = transform.position.y + 15; // 높이 조절
             GameObject stone = Instantiate(stonePrefab, stonePosition, Quaternion.identity);
             Rigidbody rb = stone.GetComponent<Rigidbody>();
             if (rb)
             {
                 rb.useGravity = true; // 중력 사용
             }
-            if (rb.position.y <= 0)
-            {
-                Destroy(rb);
-            }
+            Destroy(stone, 4f);
         }
     }
 
@@ -95,8 +114,9 @@ public class Boss : Enemy
     {
         if (stonePrefab && target)
         {
+            
             stonePosition.SetActive(false);
-            GameObject stone = Instantiate(stonePrefab, transform.position + Vector3.up, Quaternion.identity);
+            GameObject stone = Instantiate(throwStonePrefab, transform.position + Vector3.up * 2, Quaternion.identity);
             Rigidbody rb = stone.GetComponent<Rigidbody>();
             if (rb)
             {

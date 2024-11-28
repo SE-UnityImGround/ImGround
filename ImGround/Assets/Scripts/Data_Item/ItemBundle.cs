@@ -19,14 +19,7 @@ public class ItemBundle
 
     public ItemBundle(Item item, int count, bool isLimited)
     {
-        this.item = item;
-        this.maxCount = ItemInfoManager.getItemInfo(item.itemId).maxCount;
-        this.isLimited = isLimited;
-        this.count = count;
-        if (isLimited && count > maxCount)
-        {
-            this.count = maxCount;
-        }
+        setItemBundle(item, count, isLimited);
     }
 
     public ItemBundle(ItemIdEnum itemId, int count, bool isLimited) : this(new Item(itemId), count, isLimited)
@@ -39,6 +32,24 @@ public class ItemBundle
     /// <param name="bundle">내용을 복사할 ItemBundle 객체</param>
     public ItemBundle(ItemBundle bundle) : this(bundle.item.itemId, bundle.count, bundle.isLimited)
     {
+    }
+
+    /// <summary>
+    /// 아이템 묶음의 내용을 수정합니다.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="count"></param>
+    /// <param name="isLimited"></param>
+    public void setItemBundle(Item item, int count, bool isLimited)
+    {
+        this.item = item;
+        this.maxCount = ItemInfoManager.getItemInfo(item.itemId).maxCount;
+        this.isLimited = isLimited;
+        this.count = count;
+        if (isLimited && count > maxCount)
+        {
+            this.count = maxCount;
+        }
     }
 
     /// <summary>
@@ -62,14 +73,12 @@ public class ItemBundle
 
     /// <summary>
     /// 주어진 갯수만큼 아이템을 버립니다.
+    /// <br/> 음수를 입력할 경우 모든 아이템을 버립니다.
     /// </summary>
     /// <param name="count"></param>
     public void discardItem(int count)
     {
-        if (count <= 0)
-            return;
-
-        if (count > this.count)
+        if (count < 0 || count > this.count)
         {
             this.count = 0;
             return;

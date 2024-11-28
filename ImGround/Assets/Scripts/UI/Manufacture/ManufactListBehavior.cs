@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class ManufactListBehavior : UIBehavior
     private GameObject ManufactPrefab;
 
     private List<ManufactBehavior> manufactItems = new List<ManufactBehavior>();
+    [SerializeField]
+    private TabItemBehavior[] tabButtons;
+    
+    private Action onClose;
 
     public override void initialize()
     {
@@ -25,14 +30,35 @@ public class ManufactListBehavior : UIBehavior
         }
 
         InventoryManager.onSlotItemChangedHandler += onInventoryUpdated;
-
-        test();
     }
 
-    void test()
+    /// <summary>
+    /// 제작 UI를 설정합니다. (표시하진 않음) 제작화면 종료시 실행되어야 할 메소드를 함께 입력받습니다.
+    /// </summary>
+    public void setManufact(Action onCloseCallBack)
     {
+        this.onClose = onCloseCallBack;
+        setViewByCategory(ManufactCategory.SIMPLE_FOOD);
+    }
+
+    /// <summary>
+    /// 제작 창의 카테고리를 설정합니다.
+    /// </summary>
+    /// <param name="category"></param>
+    private void setViewByCategory(ManufactCategory category)
+    {
+        foreach (TabItemBehavior tab in tabButtons)
+        {
+            tab.updateSelection(category);
+        }
+
+        foreach (ManufactBehavior man in manufactItems)
+        {
+            Destroy(man.gameObject);
+        }
+        manufactItems.Clear();
         Dictionary<ItemIdEnum, int> invenInfo = InventoryManager.getInventoryInfo();
-        foreach (ManufactInfo info in ManufactInfoManager.manufactInfos)
+        foreach (ManufactInfo info in ManufactInfoManager.getManufactInfo(category))
         {
             addManufactItem(info, invenInfo);
         }
@@ -71,6 +97,15 @@ public class ManufactListBehavior : UIBehavior
     }
 
     /// <summary>
+    /// 탭 버튼이 클릭되면 처리할 이벤트입니다.
+    /// </summary>
+    /// <param name="category"></param>
+    public void onTabButtonClick(ManufactCategory category)
+    {
+        setViewByCategory(category);
+    }
+
+    /// <summary>
     /// UI에 의해 만들기 기능이 시작될 경우 처리하는 이벤트 처리기입니다.
     /// </summary>
     /// <param name="manufactInfo"></param>
@@ -95,12 +130,33 @@ public class ManufactListBehavior : UIBehavior
             {
                 InventoryManager.removeItem(inputItem.item.itemId, inputItem.count);
             }
-            InventoryManager.addItems(new ItemBundle(manufactInfo.outputItem));
+            ItemBundle newItem = new ItemBundle(manufactInfo.outputItem);
+            InventoryManager.addItems(newItem);
+            if (newItem.count > 0)
+            {
+                ItemThrowManager.throwItem(newItem);
+                WarningManager.startWarning();
+            }
             Debug.Log("제작 시도 : 성공!");
         }
         else
         {
             Debug.Log("제작 시도 : 실패! 아이템 부족해요");
         }
+    }
+
+    /// <summary>
+    /// 창 닫기 과정에서 추가 처리를 위해 오버라이딩 된 함수입니다.
+    /// </summary>
+    /// <param name="isActive"></param>
+    public override void setActive(bool isActive)
+    {
+        if (!isActive)
+        {
+            Action closeFunc = onClose;
+            onClose = null;
+            closeFunc?.Invoke();
+        }
+        base.setActive(isActive);
     }
 }

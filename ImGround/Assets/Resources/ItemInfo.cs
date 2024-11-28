@@ -15,13 +15,27 @@ public class ItemInfo
     public readonly string itemName;
     public readonly int maxCount;
     public readonly int buyingPrice;
+    public readonly bool isFood;
+    /// <summary>
+    /// 100분위 비율입니다. (0~100%)
+    /// </summary>
+    public readonly float healAmount;
 
-    public ItemInfo(ItemIdEnum itemId, ImageIdEnum itemImg, string itemName, int maxCount, int buyingPrice)
+    public ItemInfo(
+        ItemIdEnum itemId, 
+        ImageIdEnum itemImg, 
+        string itemName, 
+        int maxCount, 
+        int buyingPrice,
+        bool isFood,
+        float healAmount)
     {
         this.itemId = itemId;
         this.itemImg = itemImg;
         this.itemName = itemName;
         this.maxCount = maxCount;
         this.buyingPrice = buyingPrice;
+        this.isFood = isFood;
+        this.healAmount = healAmount;
     }
 }

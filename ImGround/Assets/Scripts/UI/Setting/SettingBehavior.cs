@@ -5,33 +5,19 @@ using UnityEngine.UI;
 
 public class SettingBehavior : MonoBehaviour
 {
-    [SerializeField]
-    private VolumeControl volumeControl;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void onMusicSettingChanged(ToggleButton btn)
     {
-
+        SettingManager.setSoundVolume(SoundType.BACKGROUND, btn.value);
     }
 
     public void onEffectSettingChanged(ToggleButton btn)
     {
-        
+        SettingManager.setSoundVolume(SoundType.EFFECT, btn.value);
     }
 
     public void onSliderChanged(Slider slider)
     {
-        
+        SettingManager.setSoundVolume(SoundType.BACKGROUND, slider.value);
+        SettingManager.setSoundVolume(SoundType.EFFECT, slider.value);
     }
 }

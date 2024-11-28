@@ -57,18 +57,8 @@ public class NPCBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isTalkingWithPlayer)
-        {
-            GameObject player = findPlayerInDistance(5.0f);
-            if (player != null)
-            {
-                npcMover.talkWithPlayer(player.transform.position);
-            }
-        }
-        else
-        {
-            npcMover.moveRandomPosition(Origin, Radius);
-        }
+        setNpcIcon();
+        move();
     }
 
     void LateUpdate()
@@ -110,6 +100,56 @@ public class NPCBehavior : MonoBehaviour
         else 
         {
             npcGazer.lookAtPos(player.transform.position + PlayerLookOffset);
+        }
+    }
+
+    private void setNpcIcon()
+    {
+        QuestIdEnum questid = QuestInfoManager.getQuestId(type);
+        if (questid != QuestIdEnum.NULL)
+        {
+            if (QuestManager.isDone(questid))
+            {
+                if (!QuestManager.hasAccepted(questid))
+                {
+                    npcIcon.setIconType(NpcIconsSO.REWARD);
+                }
+                else
+                {
+                    npcIcon.setIconType(NpcIconsSO.DEFAULT);
+                }
+            }
+            else
+            {
+                if (!QuestManager.canReward(questid))
+                {
+                    npcIcon.setIconType(NpcIconsSO.QUEST);
+                }
+                else
+                {
+                    npcIcon.setIconType(NpcIconsSO.REWARD);
+                }
+            }
+        }
+        else
+        {
+            npcIcon.setIconType(NpcIconsSO.DEFAULT);
+        }
+    }
+
+    private void move()
+    {
+        if (isTalkingWithPlayer)
+        {
+            GameObject player = findPlayerInDistance(5.0f);
+            if (player != null)
+            {
+                npcMover.talkWithPlayer(player.transform.position);
+            }
+        }
+        else
+        {
+            npcMover.moveRandomPosition(Origin, Radius);
         }
     }
 }

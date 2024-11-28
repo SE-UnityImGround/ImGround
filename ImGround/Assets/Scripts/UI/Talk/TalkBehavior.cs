@@ -11,8 +11,6 @@ public class TalkBehavior : UIBehavior
     [SerializeField]
     private InGameViewBehavior inGameUI;
     [SerializeField]
-    private ShopBehavior shopView;
-    [SerializeField]
     private Image TalkerCircle;
     [SerializeField]
     private Text TalkerName;
@@ -43,7 +41,6 @@ public class TalkBehavior : UIBehavior
     public override void initialize()
     {
         checkValue(inGameUI, nameof(inGameUI));
-        checkValue(shopView, nameof(shopView));
         checkValue(TalkerCircle, nameof(TalkerCircle));
         checkValue(TalkerName, nameof(TalkerName));
         checkValue(TalkText, nameof(TalkText));
@@ -64,12 +61,43 @@ public class TalkBehavior : UIBehavior
             talkingNPC.setTalkingState(false);
         }
 
-        if (talker != null)
+        if (talker != null && talker.type != NPCType.NPC_NORMAL)
         {
             talkingNPC = talker;
             talkingNPC.setTalkingState(true);
             talkerBackground = ImageManager.getImage(TalkInfoManager.getTalkerBackground(talkingNPC.type));
-            currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+
+            QuestIdEnum qid = QuestInfoManager.getQuestId(talker.type);
+            if (qid == QuestIdEnum.NULL)
+                currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+            else
+            {
+                if (!QuestManager.isDone(qid))
+                {
+                    if (QuestManager.canReward(qid))
+                    {
+                        currentTalk = TalkInfoManager.getQuestDoneTalkInfo(talkingNPC.type);
+                        QuestManager.setAccepted(qid);
+                        QuestManager.rewardQuest(qid);
+                    }
+                    else
+                    {
+                        currentTalk = TalkInfoManager.getTalkInfo(talkingNPC.type);
+                    }
+                }
+                else
+                {
+                    if (QuestManager.hasAccepted(qid))
+                        currentTalk = TalkInfoManager.getSmallTalkInfo();
+                    else
+                    {
+                        currentTalk = TalkInfoManager.getQuestDoneTalkInfo(talkingNPC.type);
+                        QuestManager.setAccepted(qid);
+                    }
+                }
+            }
+            updateTalkView();
+            inGameUI.displayView(InGameViewMode.TALK);
         }
         else
         {
@@ -77,8 +105,6 @@ public class TalkBehavior : UIBehavior
             talkerBackground = null;
             currentTalk = null;
         }
-        updateTalkView();
-        inGameUI.displayView(InGameViewMode.TALK);
     }
 
     /// <summary>
@@ -93,22 +119,29 @@ public class TalkBehavior : UIBehavior
         // 대답의 이벤트 처리
         if (eventType == TalkEventEnum.END)
         {
-            talkingNPC.setTalkingState(false);
             nextTalks = null;
         }
         if (eventType == TalkEventEnum.NEW_QUEST)
         {
-            QuestManager.addQuest(TalkInfoManager.getQuestId(talkingNPC.type));
+            QuestManager.addQuest(QuestInfoManager.getQuestId(talkingNPC.type));
         }
         if (eventType == TalkEventEnum.OPEN_SHOP)
         {
-            shopView.startShop(ShopInfoManager.getShopInfo(talkingNPC.type), onShopViewClose);
+            inGameUI.getUIBehavior<ShopBehavior>().setShopView(ShopInfoManager.getShopInfo(talkingNPC.type), onChildViewClose);
+            inGameUI.displayView(InGameViewMode.SHOP);
+            inGameUI.hideView(InGameViewMode.TALK);
+        }
+        if (eventType == TalkEventEnum.OPEN_MANUFACT)
+        {
+            inGameUI.getUIBehavior<ManufactListBehavior>().setManufact(onChildViewClose);
+            inGameUI.displayView(InGameViewMode.MANUFACT);
             inGameUI.hideView(InGameViewMode.TALK);
         }
 
         // 다음 대화 처리
         if (nextTalks == null)
         {
+            talkingNPC.setTalkingState(false);
             talkingNPC = null;
             currentTalk = null;
             inGameUI.hideView(InGameViewMode.TALK);
@@ -164,9 +197,9 @@ public class TalkBehavior : UIBehavior
     }
 
     /// <summary>
-    /// 거래 창이 닫히면 처리하는 작업입니다.
+    /// 대화 중 보조 창이 닫히면 처리하는 작업입니다.
     /// </summary>
-    private void onShopViewClose()
+    private void onChildViewClose()
     {
         if (currentTalk != null)
         {

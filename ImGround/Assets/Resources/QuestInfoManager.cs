@@ -42,7 +42,7 @@ public class QuestInfoManager
         {
             try
             {
-                if (findQuestInfo(id).UIPrefab == null)
+                if (id != QuestIdEnum.NULL && findQuestInfo(id).UIPrefab == null)
                 {
                     cantLoaded += id.ToString() + "\n";
                 }
@@ -133,7 +133,7 @@ public class QuestInfoManager
             new Quest(
                 QuestIdEnum.Q_7,
                 new ItemBundle[] {
-                    new ItemBundle(ItemIdEnum.WATERMELON, 5, false), 
+                    new ItemBundle(ItemIdEnum.HALF_WATERMELON, 5, false), 
                     new ItemBundle(ItemIdEnum.WATERMELON_JUICE, 2, false)},
                 new ItemBundle[] {
                     new ItemBundle(ItemIdEnum.SILVER_ORE, 1, false)},
@@ -200,6 +200,43 @@ public class QuestInfoManager
                 0), // 얼마줄까 스페셜 퀘스트
             (GameObject)Resources.Load("QuestPrefabs/Quest_12")),
     };
+
+    /*==================================================
+     *             Quest NPC Mapping Method
+     *==================================================*/
+
+    public static QuestIdEnum getQuestId(NPCType type)
+    {
+        switch (type)
+        {
+            case NPCType.NPC_1:
+                return QuestIdEnum.Q_1;
+            case NPCType.NPC_2:
+                return QuestIdEnum.Q_2;
+            case NPCType.NPC_3:
+                return QuestIdEnum.Q_3;
+            case NPCType.NPC_4:
+                return QuestIdEnum.Q_4;
+            case NPCType.NPC_5:
+                return QuestIdEnum.Q_5;
+            case NPCType.NPC_6:
+                return QuestIdEnum.Q_6;
+            case NPCType.NPC_7:
+                return QuestIdEnum.Q_7;
+            case NPCType.NPC_8:
+                return QuestIdEnum.Q_8;
+            case NPCType.NPC_9:
+                return QuestIdEnum.Q_9;
+            case NPCType.NPC_10:
+                return QuestIdEnum.Q_10;
+            case NPCType.NPC_11:
+                return QuestIdEnum.Q_11;
+            case NPCType.NPC_12:
+                return QuestIdEnum.Q_12;
+            default:
+                return QuestIdEnum.NULL;
+        }
+    }
 
     /*==================================================
      *                 Util Method

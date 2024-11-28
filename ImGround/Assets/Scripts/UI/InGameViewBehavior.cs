@@ -20,6 +20,8 @@ public class InGameViewBehavior : MonoBehaviour
     private UIBehavior InventoryView;
     [SerializeField]
     private UIBehavior TalkView;
+    [SerializeField]
+    private BossHealthBehavior BossHealthView;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,7 @@ public class InGameViewBehavior : MonoBehaviour
         ShopView.initialize();
         InventoryView.initialize();
         TalkView.initialize();
+        BossHealthView.setVisible(false);
 
         displayView(InGameViewMode.DEFAULT);
     }
@@ -77,6 +80,8 @@ public class InGameViewBehavior : MonoBehaviour
             return (T)(object)InventoryView;
         if (TalkView is T)
             return (T)(object)TalkView;
+        if (BossHealthView is T)
+            return (T)(object)BossHealthView;
         
         return default(T);
     }
@@ -88,7 +93,10 @@ public class InGameViewBehavior : MonoBehaviour
     public void hideView(InGameViewMode mode)
     {
         if (this.mode == mode)
+        {
             this.mode = InGameViewMode.DEFAULT;
+            InputManager.onUI = false;
+        }
         switch (mode)
         {
             case InGameViewMode.SETTING:
@@ -130,6 +138,7 @@ public class InGameViewBehavior : MonoBehaviour
         TalkView.setActive(mode == InGameViewMode.TALK);
 
         this.mode = mode;
+        InputManager.onUI = (this.mode != InGameViewMode.DEFAULT);
     }
 
     public void toggleView(InGameViewMode mode)

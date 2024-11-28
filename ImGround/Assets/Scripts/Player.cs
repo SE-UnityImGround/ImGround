@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     [Header("Player Class")]
     public PlayerMove pMove;
     public PlayerAttack pAttack;
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
     public int MaxHealth { get { return maxHealth; } }
-
+    public int Exp {  get { return exp; } }
     void Awake()
     {
         // 플레이어 중복 방지 및 DontDestroyOnLoad 적용
@@ -53,6 +54,9 @@ public class Player : MonoBehaviour
         health = maxHealth;
         // 시작할 때 플레이어의 기본 리스폰 위치를 현재 위치로 설정(침대 추가시 이 코드는 삭제 예정)
         respawnPosition = transform.position;
+
+        // 퀘스트 완수 후 경험치 즉시 추가를 위한 이벤트 처리
+        QuestManager.onQuestDoneHandler += OnQuestDone;
     }
 
     // 싱글톤으로 플레이어 오브젝트 참조 반환
@@ -76,28 +80,28 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (LevelUpCheck() && level < requiredExp.Length)
-        {
-            LevelUp();
-        }
         // 플레이어 동작 업데이트
-        pBehavior.getInput();
-        pBehavior.Use();
-        pBehavior.Swap();
+        pBehavior.GetInput();
         pMove.MoveInput();
         pAttack.AttackInput();
-
-        if (!pMove.IsTired)
-        {
-            pMove.Move();
-        }
-
-        pMove.Turn();
-        pMove.Jump();
-        pMove.Sleep();
         pMove.Sit();
-        pAttack.Attack();
-        pAttack.SpinAttack();
+        if (!pMove.IsTired && !pBehavior.IsPickingUp)
+        {
+            pBehavior.Use();
+            pBehavior.Swap();
+            pMove.Move();
+            pMove.Jump();
+            pMove.Sleep();
+            pAttack.Attack();
+            pAttack.SpinAttack();
+        }
+        pMove.Turn();
+        if (LevelUpCheck())
+        {
+            exp = 0;
+            LevelUp();
+        }
+        
     }
     // 사망 후 5초 동안 동작을 제한하는 코루틴
     IEnumerator DeathCooldown()
@@ -110,6 +114,14 @@ public class Player : MonoBehaviour
     }
     private void Respawn()
     {
+        if (effectSound.Length > 0 && effectSound[0] != null)
+        {
+            effectSound[0].Play();
+        }
+        else
+        {
+            Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+        }
         // 체력을 초기화
         health = maxHealth;
 
@@ -121,7 +133,9 @@ public class Player : MonoBehaviour
     }
     private bool LevelUpCheck()
     {
-        if (exp >= requiredExp[level])
+        if (level >= requiredExp.Length)
+            return false;
+        else if (exp >= requiredExp[level])
         {
             level++;
             return true;
@@ -138,6 +152,15 @@ public class Player : MonoBehaviour
 
             effectInstance = Instantiate(effect, adjustedPos, Quaternion.identity);
             particleSystem = effectInstance.GetComponent<ParticleSystem>();
+
+            if (effectSound.Length > 0 && effectSound[2] != null)
+            {
+                effectSound[2].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 2번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
         }
         particleSystem?.Play();
 
@@ -151,7 +174,34 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Exp"))
         {
+           
+            if (effectSound.Length > 0 && effectSound[1] != null)
+            {
+                effectSound[1].Play();
+            }
+            else
+            {
+                Debug.LogError("효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+            }
             exp++;
+            
         }
+    }
+
+    /// <summary>
+    /// 퀘스트 완료시 경험치 처리를 위한 이벤트 처리기입니다.
+    /// </summary>
+    /// <param name="qid"></param>
+    private void OnQuestDone(QuestIdEnum qid)
+    {
+        if (effectSound.Length > 0 && effectSound[1] != null)
+        {
+            effectSound[1].Play();
+        }
+        else
+        {
+            Debug.LogError("효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
+        }
+        exp += 10; // 모든 퀘스트마다 경험치 10으로 임시 고정
     }
 }

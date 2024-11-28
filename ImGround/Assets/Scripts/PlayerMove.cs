@@ -7,6 +7,7 @@ using static UnityEngine.ParticleSystem;
 
 public class PlayerMove : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     public float speed;
     float hAxis;
     float vAxis;
@@ -23,7 +24,8 @@ public class PlayerMove : MonoBehaviour
     bool isSitting = false;
 
     public bool IsJumping { get { return isJumping; } }
-    public bool IsWalking { get { return isWalking; } }
+    public bool IsWalking { get { return isWalking; } set { isWalking = value; } }
+    public bool IsRunning { get { return isRunning; } set { isRunning = value; } }
     public bool IsTired { get { return isTired; } set { isTired = value; } }
     public bool IsSleeping { get { return isSleeping; } }
     public bool IsSitting { get { return isSitting; } }
@@ -34,7 +36,7 @@ public class PlayerMove : MonoBehaviour
     public Camera followCamera;
 
     [SerializeField]
-    private float runningEnergyTime = 10f;
+    private float runningEnergyTime = 15f;
     private float runningTime = 0f;
 
     [SerializeField]
@@ -89,9 +91,9 @@ public class PlayerMove : MonoBehaviour
     public void Move()
     {
         // 플레이어가 행동 중인지 확인
-        bool isPerformingAction = player.pBehavior.dDown || player.pBehavior.IsDigging || isSleeping ||
+        bool isPerformingAction = player.pBehavior.IsDigging || isSleeping ||
                                   isSitting || player.pBehavior.IsEating || player.pBehavior.IsPickingUp ||
-                                  player.pBehavior.IsHarvest || player.pBehavior.IsPicking;
+                                  player.pBehavior.IsHarvest || player.pBehavior.IsPlant;
 
         // 행동 중이면 이동 불가
         if (followCamera != null && !isPerformingAction)
@@ -149,7 +151,8 @@ public class PlayerMove : MonoBehaviour
         jumpDelay += Time.deltaTime;
         isJumpReady = 1.1f < jumpDelay;
 
-        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating && !player.pBehavior.IsPickingUp)
+        if (jDown && isJumpReady && !player.pBehavior.IsDigging && !isSleeping && !isSitting && !player.pBehavior.IsEating &&
+            !player.pBehavior.IsPickingUp && !player.pBehavior.IsPlant)
         {
             isJumping = true;
             rigid.AddForce(Vector3.up * 4.5f, ForceMode.Impulse);
@@ -200,10 +203,10 @@ public class PlayerMove : MonoBehaviour
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f);
 
-            // 침대를 발견한 경우
+            // 의자를 발견한 경우
             foreach (var hitCollider in hitColliders)
             {
-                if (hitCollider.CompareTag("Chair"))  // 침대의 태그가 "Chair"인지 확인
+                if (hitCollider.CompareTag("Chair"))  // 의자의 태그가 "Chair"인지 확인
                 {
                     isSitting = true;
                     isTired = true;
@@ -218,7 +221,7 @@ public class PlayerMove : MonoBehaviour
                     {
                         Debug.LogWarning("자식 오브젝트를 찾을 수 없습니다.");
                     }
-                    break;  // 첫 번째 침대에 반응 후 종료
+                    break;  // 첫 번째 의자에 반응 후 종료
                 }
             }
         }
@@ -292,5 +295,41 @@ public class PlayerMove : MonoBehaviour
     {
         yield return new WaitForSeconds(1.1f);
         isJumping = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isWalking && !effectSound[0].isPlaying)
+        {
+            effectSound[0].Play();
+        }
+        else if((!isWalking && effectSound[0].isPlaying ) || isTired)
+        {
+            effectSound[0].Stop();
+        }
+        if (isRunning && !effectSound[1].isPlaying)
+        {
+            effectSound[1].Play();
+        }
+        else if ((!isRunning && effectSound[1].isPlaying) || isTired)
+        {
+            effectSound[1].Stop();
+        }
+        if (isJumping && !effectSound[2].isPlaying)
+        {
+            effectSound[2].Play();
+        }
+        else if ((!isJumping && effectSound[2].isPlaying) && isTired)
+        {
+            effectSound[2].Stop();
+        }
+        if (isTired && !effectSound[3].isPlaying)
+        {
+            effectSound[3].Play();
+        }
+        else if ((!isTired && effectSound[3].isPlaying))
+        {
+            effectSound[3].Stop();
+        }
     }
 }

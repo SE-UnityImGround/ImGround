@@ -403,19 +403,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.360001
+      value: 54.583862
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.43
+      value: 16.537102
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.3700004
+      value: 18.126057
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8016439
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -423,7 +423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.5978019
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalRotation.z
@@ -435,7 +435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 73.425
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fbea289df3d8ea429c9cb034940df4f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -583,7 +583,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 8
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3039851048604300773
 MonoBehaviour:
@@ -606,6 +606,8 @@ MonoBehaviour:
   anim: {fileID: 1112878657047530753}
   target: {fileID: 0}
   item: {fileID: 0}
+  expPrefab: {fileID: 592310022102497824, guid: d64e1af8e06ba5341b28dd2589471bf4, type: 3}
+  expDropCount: 3
   runSpeed: 3
   walkSpeed: 1
   detectionRadius: 5
@@ -644,9 +646,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeBarPrefab: {fileID: 2561797722483929044}
-  itemPrefab: {fileID: 919132149155446097, guid: 55020d84f9a0dd146aaf180e25ff1704, type: 3}
+  itemPrefab: {fileID: 0}
+  interactingTimeRequired: 4
+  cooldownTime: 10
   canvasTransform: {fileID: 4805255334944920774}
-  itemSize: {x: 0.5, y: 0.5, z: 0.5}
+  itemSize: {x: 0.15, y: 0.15, z: 0.15}
   playerTransform: {fileID: 0}
   allowedDistance: 2
   animalLayer:
