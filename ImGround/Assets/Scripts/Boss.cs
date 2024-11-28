@@ -41,41 +41,42 @@ public class Boss : Enemy
             anim.SetTrigger("doPunchA");
             punchPosition.SetActive(true);
             StartCoroutine(ResetPunch());
-            /*if (BosseffectSound.Length > 0 && BosseffectSound[0] != null)
+            if (BosseffectSound.Length > 0 && BosseffectSound[0] != null)
             {
-                BosseffectSound[0].Play();
+                //BosseffectSound[0].Play();
+                StartCoroutine(PlaySoundWithDelay(0.7f));
             }
             else
             {
                 Debug.LogError("보스 효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
-            }*/
+            }
         }
         else if (distanceToPlayer <= 15f)
         {
             CreateStoneShower();
             anim.SetTrigger("doStone");
-            /*if (BosseffectSound.Length > 0 && BosseffectSound[1] != null)
+            if (BosseffectSound.Length > 0 && BosseffectSound[1] != null)
             {
                 BosseffectSound[1].Play();
             }
             else
             {
                 Debug.LogError("보스 효과음 배열이 비어있거나 1번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
-            }*/
+            }
         }
         else
         {
             anim.SetTrigger("doThrow");
             stonePosition.SetActive(true);
             Invoke("ThrowStone", 1.5f);
-            /*if (BosseffectSound.Length > 0 && BosseffectSound[2] != null)
+            if (BosseffectSound.Length > 0 && BosseffectSound[2] != null)
             {
                 BosseffectSound[2].Play();
             }
             else
             {
                 Debug.LogError("보스 효과음 배열이 비어있거나 2번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
-            }*/
+            }
         }
 
         yield return new WaitForSeconds(4f); // 보스의 경우 공격 딜레이
@@ -131,5 +132,10 @@ public class Boss : Enemy
     {
         yield return new WaitForSeconds(1.5f);
         punchPosition.SetActive(false);
+    }
+    IEnumerator PlaySoundWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정한 시간(초) 동안 대기
+        BosseffectSound[0].Play(); // 사운드 재생
     }
 }
