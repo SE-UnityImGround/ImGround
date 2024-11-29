@@ -17,6 +17,8 @@ public class PlayerBuild : MonoBehaviour
     private RaycastHit hitInfo;
     private LayerMask layerMask;
     private float range = 2f;
+
+    ItemPrefabID bed;
     void Awake()
     {
         player = GetComponent<Player>();
@@ -27,13 +29,15 @@ public class PlayerBuild : MonoBehaviour
     {
         if (player.pBehavior.ItemPoint.childCount > 0 && !isPreviewActivated)
         {
-            ItemPrefabID bed = player.pBehavior.ItemPoint.GetComponentInChildren<ItemPrefabID>();
+            bed = player.pBehavior.ItemPoint.GetComponentInChildren<ItemPrefabID>();
             bool isBed = bed.itemType == ItemIdEnum.BED;
             if (isBed)
             {
                 go_Preview = Instantiate(go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
                 isPreviewActivated = true;
             }
+            else
+                return;
         }
         if (isPreviewActivated)
         {
@@ -46,11 +50,11 @@ public class PlayerBuild : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && bed != null && bed.itemType == ItemIdEnum.BED)
         {
             Build();
         }
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2") && bed != null && bed.itemType == ItemIdEnum.BED)
             Cancel();
     }
     void Build()

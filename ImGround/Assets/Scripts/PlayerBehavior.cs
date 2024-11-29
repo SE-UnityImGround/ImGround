@@ -127,6 +127,8 @@ public class PlayerBehavior : MonoBehaviour
                 }
             }
             // 플레이어와 가장 가까이 있는 물체를 줍기
+            if (nearestCollider == null)
+                return;
             pickedItem = nearestCollider.gameObject;
             isPickingUp = true;
             anim.SetTrigger("doPickUp");
@@ -194,6 +196,8 @@ public class PlayerBehavior : MonoBehaviour
         else if (toolIndex == 2 && dDown && isPickReady && !isHarvest && !player.pAttack.IsAttacking)
         {// 과일 수확
             player.rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
+            Collider col = handPoint.GetComponentInChildren<Collider>();
+            col.enabled = true;
             anim.SetTrigger("doPick");
             isPicking = true;
             pickDelay = 0f;
@@ -389,6 +393,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); 
         isPicking = false;
+        Collider col = handPoint.GetComponentInChildren<Collider>();
+        col.enabled = false;
     }
 
     IEnumerator ResetPickUp()
