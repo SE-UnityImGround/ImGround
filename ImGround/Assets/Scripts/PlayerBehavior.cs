@@ -42,6 +42,8 @@ public class PlayerBehavior : MonoBehaviour
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
     public bool IsPlant {  get { return isPlant; } }
+
+    public bool IsGrabbing { set { isGrabbing = value; } }
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 

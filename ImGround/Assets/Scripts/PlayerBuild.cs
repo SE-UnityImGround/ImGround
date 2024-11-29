@@ -10,6 +10,7 @@ public class PlayerBuild : MonoBehaviour
     public GameObject go_PreviewPrefab; // 미리보기 프리펩
 
     private bool isPreviewActivated = false;
+    private bool canBuild = false;
     private Player player;
     public Transform tf_Player;
     // Raycast 필요 변수 선언
@@ -37,24 +38,24 @@ public class PlayerBuild : MonoBehaviour
         if (isPreviewActivated)
         {
             PreviewPositionUpdate();
-
+            
             // R 키 입력 감지
-            if (Input.GetKeyDown(KeyCode.R))
+            if (InputManager.GetKeyDown(KeyCode.R))
             {
                 RotatePreview();
             }
         }
 
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire1"))
         {
             Build();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("Fire2"))
             Cancel();
     }
     void Build()
     {
-        if (isPreviewActivated)
+        if (isPreviewActivated && canBuild)
         {
             Instantiate(go_Prefab, go_Preview.transform.position, go_Preview.transform.rotation);
             Destroy(go_Preview);
@@ -67,7 +68,7 @@ public class PlayerBuild : MonoBehaviour
     {
         if (isPreviewActivated)
             Destroy(go_Preview);
-
+        player.pBehavior.IsGrabbing = false;
         isPreviewActivated = false;
         go_Preview = null;
     }
@@ -82,6 +83,7 @@ public class PlayerBuild : MonoBehaviour
         if (collisionChecker != null)
         {
             SetPreviewColor(collisionChecker.isColliding ? Color.red : Color.green);
+            canBuild = collisionChecker.isColliding ? false : true;
         }
     }
 
