@@ -128,7 +128,7 @@ namespace TMPro.Examples
             moveVector = Vector3.zero;
 
             // Check Mouse Wheel Input prior to Shift Key so we can apply multiplier on Shift for Scrolling
-            mouseWheel = Input.GetAxis("Mouse ScrollWheel");
+            mouseWheel = InputManager.GetAxis("Mouse ScrollWheel");
 
             float touchCount = Input.touchCount;
 
@@ -147,10 +147,10 @@ namespace TMPro.Examples
 
 
                 // Check for right mouse button to change camera follow and elevation angle
-                if (Input.GetMouseButton(1))
+                if (InputManager.GetMouseButton(1))
                 {
-                    mouseY = Input.GetAxis("Mouse Y");
-                    mouseX = Input.GetAxis("Mouse X");
+                    mouseY = InputManager.GetAxis("Mouse Y");
+                    mouseX = InputManager.GetAxis("Mouse X");
 
                     if (mouseY > 0.01f || mouseY < -0.01f)
                     {
@@ -196,7 +196,7 @@ namespace TMPro.Examples
                 }
 
                 // Check for left mouse button to select a new CameraTarget or to reset Follow position
-                if (Input.GetMouseButton(0))
+                if (InputManager.GetMouseButton(0))
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit hit;
@@ -219,7 +219,7 @@ namespace TMPro.Examples
                 }
 
 
-                if (Input.GetMouseButton(2))
+                if (InputManager.GetMouseButton(2))
                 {
                     if (dummyTarget == null)
                     {
@@ -242,8 +242,8 @@ namespace TMPro.Examples
                     }
 
 
-                    mouseY = Input.GetAxis("Mouse Y");
-                    mouseX = Input.GetAxis("Mouse X");
+                    mouseY = InputManager.GetAxis("Mouse Y");
+                    mouseX = InputManager.GetAxis("Mouse X");
 
                     moveVector = cameraTransform.TransformDirection(mouseX, mouseY, 0);
 

@@ -57,7 +57,7 @@ public class SpawnManager : MonoBehaviour
                 Animal animalComponent = animal.GetComponent<Animal>();
                 if (animalComponent != null)
                 {
-                    float respawnTime = 5f;
+                    float respawnTime = 30f;
                     respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
                     StartCoroutine(RespawnAnimal(animal, respawnTime));
                     animalComponent.Respawn();
@@ -65,7 +65,7 @@ public class SpawnManager : MonoBehaviour
                 else
                 {
                     Chicken chicken = animal.GetComponent<Chicken>();
-                    float respawnTime = 5f;
+                    float respawnTime = 15f;
                     respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
                     StartCoroutine(RespawnAnimal(animal, respawnTime));
                     chicken.Respawn();

@@ -27,6 +27,7 @@ public class ToggleButton : MonoBehaviour
     /// <param name="toggleValue"></param>
     public void onClick(bool toggleValue)
     {
+        UISoundManager.playUiSound(UISoundObject.MAIN_UI_CLICK);
         setValue(toggleValue);
         ToggleListener.onClick.Invoke();
     }

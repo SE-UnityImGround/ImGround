@@ -7,6 +7,7 @@ public class PlayerBehavior : MonoBehaviour
     public AudioSource[] effectSound;
     Animator anim;
     private Player player;
+    private Crops crop;
     public GameObject[] tools;
     private GameObject grabbedItem = null;
     private int grabbingSlotIdx = -1;
@@ -14,7 +15,7 @@ public class PlayerBehavior : MonoBehaviour
     public bool dDown;
     bool fDown;
     bool eDown;
-    bool[] sDown; // 0~7¹ø±îÁöÀÇ µµ±¸ ÀÎµ¦½º ¹øÈ£ ¸ğÀ½
+    bool[] sDown; // 0~7ë²ˆê¹Œì§€ì˜ ë„êµ¬ ì¸ë±ìŠ¤ ë²ˆí˜¸ ëª¨ìŒ
 
     bool isDigReady, isPickReady, isHarvestReady, isPlantReady;
     bool isEating = false;
@@ -26,13 +27,14 @@ public class PlayerBehavior : MonoBehaviour
     bool isDie = false;
     bool isGrabbing = false;
     bool canFarming = false;
+    bool canPlant = false;
 
-    public Transform handPoint; // ¾ÆÀÌÅÛÀ» Áİ±â À§ÇÑ ¼ÕÀÇ À§Ä¡
-    public Transform pickPoint; // ¾ÆÀÌÅÛÀ» Áİ±â À§ÇÑ ¼ÕÀÇ À§Ä¡
-    public Transform pointH;  // ³´ÀÇ Äİ¶óÀÌ´õ À§Ä¡
-    public Transform[] curtivatePoint; // ±ªÀÌ¿Í »ğÀÇ Äİ¶óÀÌ´õ (0¹ø ÀÎµ¦½º : ±ªÀÌ, 1¹ø ÀÎµ¦½º : »ğ)
-    public Transform ItemPoint; // À½½ÄÀ» ¸Ô´Â ¼ÕÀÇ À§Ä¡
-    private GameObject pickedItem; // ÇöÀç ÁÖ¿î ¾ÆÀÌÅÛ
+    public Transform handPoint; // ì•„ì´í…œì„ ì¤ê¸° ìœ„í•œ ì†ì˜ ìœ„ì¹˜
+    public Transform pickPoint; // ì•„ì´í…œì„ ì¤ê¸° ìœ„í•œ ì†ì˜ ìœ„ì¹˜
+    public Transform pointH;  // ë‚«ì˜ ì½œë¼ì´ë” ìœ„ì¹˜
+    public Transform[] curtivatePoint; // ê´­ì´ì™€ ì‚½ì˜ ì½œë¼ì´ë” (0ë²ˆ ì¸ë±ìŠ¤ : ê´­ì´, 1ë²ˆ ì¸ë±ìŠ¤ : ì‚½)
+    public Transform ItemPoint; // ìŒì‹ì„ ë¨¹ëŠ” ì†ì˜ ìœ„ì¹˜
+    private GameObject pickedItem; // í˜„ì¬ ì£¼ìš´ ì•„ì´í…œ
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
     public bool IsDigging { get {  return isDigging; } }
@@ -44,7 +46,7 @@ public class PlayerBehavior : MonoBehaviour
 
     float digDelay, pickDelay, harvestDelay, plantDelay;
 
-    int toolIndex = 0; // ÇöÀç ÇÃ·¹ÀÌ¾î°¡ ¼Õ¿¡ µç µµ±¸ÀÇ ÀÎµ¦½º
+    int toolIndex = 0; // í˜„ì¬ í”Œë ˆì´ì–´ê°€ ì†ì— ë“  ë„êµ¬ì˜ ì¸ë±ìŠ¤
 
     private void Awake()
     {
@@ -54,22 +56,22 @@ public class PlayerBehavior : MonoBehaviour
 
         InventoryManager.onSelectionChangedHandler += OnItemSelectionChanged;
     }
-    public void getInput()
+    public void GetInput()
     {
-        dDown = Input.GetButton("Fire2"); // µµ±¸ µ¿ÀÛ Å°
-        fDown = Input.GetKeyDown(KeyCode.F); // Áİ±â Å°
-        eDown = Input.GetKeyDown(KeyCode.E);
-        sDown[1] = Input.GetKeyDown(KeyCode.Alpha1); // 1¹ø Å°
-        sDown[2] = Input.GetKeyDown(KeyCode.Alpha2); // 2¹ø Å°
-        sDown[3] = Input.GetKeyDown(KeyCode.Alpha3); // 3¹ø Å°
-        sDown[4] = Input.GetKeyDown(KeyCode.Alpha4); // 4¹ø Å°
-        sDown[5] = Input.GetKeyDown(KeyCode.Alpha5); // 5¹ø Å°
-        sDown[6] = Input.GetKeyDown(KeyCode.Alpha6); // 6¹ø Å°
-        sDown[7] = Input.GetKeyDown(KeyCode.Alpha7); // 7¹ø Å°
-        sDown[0] = Input.GetKeyDown(KeyCode.Alpha0); // 0¹ø Å°
+        dDown = InputManager.GetButton("Fire2"); // ë„êµ¬ ë™ì‘ í‚¤
+        fDown = InputManager.GetKeyDown(KeyCode.F); // ì¤ê¸° í‚¤
+        eDown = InputManager.GetKeyDown(KeyCode.E);
+        sDown[1] = InputManager.GetKeyDown(KeyCode.Alpha1); // 1ë²ˆ í‚¤
+        sDown[2] = InputManager.GetKeyDown(KeyCode.Alpha2); // 2ë²ˆ í‚¤
+        sDown[3] = InputManager.GetKeyDown(KeyCode.Alpha3); // 3ë²ˆ í‚¤
+        sDown[4] = InputManager.GetKeyDown(KeyCode.Alpha4); // 4ë²ˆ í‚¤
+        sDown[5] = InputManager.GetKeyDown(KeyCode.Alpha5); // 5ë²ˆ í‚¤
+        sDown[6] = InputManager.GetKeyDown(KeyCode.Alpha6); // 6ë²ˆ í‚¤
+        sDown[7] = InputManager.GetKeyDown(KeyCode.Alpha7); // 7ë²ˆ í‚¤
+        sDown[0] = InputManager.GetKeyDown(KeyCode.Alpha0); // 0ë²ˆ í‚¤
     }
 
-    // µµ±¸ »ç¿ë ¹× Çàµ¿ ·ÎÁ÷
+    // ë„êµ¬ ì‚¬ìš© ë° í–‰ë™ ë¡œì§
     public void Use()
     {
         digDelay += Time.deltaTime;
@@ -83,14 +85,14 @@ public class PlayerBehavior : MonoBehaviour
         isPlantReady = 2f < plantDelay;
 
         if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
-        {// À½½Ä ¸Ô±â
+        {// ìŒì‹ ë¨¹ê¸°
             if (ItemPoint.childCount == 0
-                || IsEating // ¸Ô´Â µµÁß ¶Ç ¸Ô´Â ·ÎÁ÷À» ½ÇÇàÇÏ´Â Çö»ó ¹æÁö
-                || !isGrabbing // ¾Æ¹« ¾ÆÀÌÅÛµµ Àâ°í ÀÖÁö ¾Ê´Ù¸é Ã³¸®ÇÏÁö ¾ÊÀ½
-                || !ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).isFood) // À½½ÄÀ» µé°í ÀÖ´Â°Ô ¾Æ´Ï¸é Ã³¸®ÇÏÁö ¾ÊÀ½
+                || IsEating // ë¨¹ëŠ” ë„ì¤‘ ë˜ ë¨¹ëŠ” ë¡œì§ì„ ì‹¤í–‰í•˜ëŠ” í˜„ìƒ ë°©ì§€
+                || !isGrabbing // ì•„ë¬´ ì•„ì´í…œë„ ì¡ê³  ìˆì§€ ì•Šë‹¤ë©´ ì²˜ë¦¬í•˜ì§€ ì•ŠìŒ
+                || !ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).isFood) // ìŒì‹ì„ ë“¤ê³  ìˆëŠ”ê²Œ ì•„ë‹ˆë©´ ì²˜ë¦¬í•˜ì§€ ì•ŠìŒ
                 return;
 
-            // Ã¼·Â È¸º¹ Ã³¸®
+            // ì²´ë ¥ íšŒë³µ ì²˜ë¦¬
             float healAmount = ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).healAmount;
             player.health = Mathf.Min(player.health + (int)(healAmount * player.MaxHealth), player.MaxHealth);
 
@@ -101,65 +103,64 @@ public class PlayerBehavior : MonoBehaviour
         }
         else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking && !isGrabbing)
         {
-            // ¿øÇü ¹üÀ§·Î ¾ÆÀÌÅÛ °¨Áö (OverlapSphere »ç¿ë)
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3f); // ÇÃ·¹ÀÌ¾î ÁÖº¯ 1¹ÌÅÍ ¹üÀ§
+            Collider nearestCollider = null;
+            float nearestDistance = Mathf.Infinity;         
+            // ì›í˜• ë²”ìœ„ë¡œ ì•„ì´í…œ ê°ì§€ (OverlapSphere ì‚¬ìš©)
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // í”Œë ˆì´ì–´ ì£¼ë³€ 1ë¯¸í„° ë²”ìœ„
 
             foreach (Collider hitCollider in hitColliders)
             {
-                // Æ¯Á¤ ÅÂ±×°¡ ÀÖ´ÂÁö È®ÀÎ(ÀÖ´Ù¸é pickedItem¿¡ ÇØ´ç ÇÁ¸®Æé ÀúÀå)
-                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("Ore") || hitCollider.CompareTag("item"))
+                // íŠ¹ì • íƒœê·¸ê°€ ìˆëŠ”ì§€ í™•ì¸(ìˆë‹¤ë©´ pickedItemì— í•´ë‹¹ í”„ë¦¬í© ì €ì¥)
+                if (hitCollider.CompareTag("fruit") || hitCollider.CompareTag("crop") || hitCollider.CompareTag("item"))
                 {
-                    pickedItem = hitCollider.gameObject;
-                    isPickingUp = true;
-                    anim.SetTrigger("doPickUp");
+                    // ê° ì½œë¼ì´ë”ì™€ì˜ ê±°ë¦¬ ê³„ì‚°
+                    float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
 
-                    // ¾ÆÀÌÅÛ ¼ÕÀ¸·Î Áİ±â µ¿ÀÛ
-                    StartCoroutine(Picking());
-                    effectSound[5].Play();
-
-                    // ¹°¸® È¿°ú Á¦°Å (¾ÆÀÌÅÛÀÌ ¼Õ¿¡¼­ ³¯¶Ù´Â ¹®Á¦ ÇØ°á)
-                    if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                    if (distance < nearestDistance)
                     {
-                        rb.isKinematic = true; // ¹°¸® ½Ã¹Ä·¹ÀÌ¼Ç ÁßÁöÇÏ¿© °íÁ¤
+                        nearestDistance = distance;
+                        nearestCollider = hitCollider;
                     }
-
-                    // °úÀÏÀÇ Collider ºñÈ°¼ºÈ­ (ÇÃ·¹ÀÌ¾î¿ÍÀÇ Ãæµ¹·Î ÇÃ·¹ÀÌ¾î°¡ ³¯¾Æ°¡´Â ¹®Á¦ ¹æÁö)
-                    if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider))
-                    {
-                        itemCollider.enabled = false; // Ãæµ¹ ºñÈ°¼ºÈ­
-                    }
-
-                    // ¾ÆÀÌÅÛ Áİ±â µ¿ÀÛ Á¾·á
-                    StartCoroutine(ResetPickUp());
-                    break; // ÇÑ ¹ø ¾ÆÀÌÅÛÀ» ÀâÀ¸¸é ·çÇÁ ÁßÁö(¹üÀ§ ³» ¾ÆÀÌÅÛÀÌ ¿©·¯°³ µ¿½Ã¿¡ Áİ´Â °Í ¹æÁö)
                 }
             }
+            // í”Œë ˆì´ì–´ì™€ ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ë¬¼ì²´ë¥¼ ì¤ê¸°
+            pickedItem = nearestCollider.gameObject;
+            isPickingUp = true;
+            anim.SetTrigger("doPickUp");
+
+            // ì•„ì´í…œ ì†ìœ¼ë¡œ ì¤ê¸° ë™ì‘
+            StartCoroutine(Picking());
+            effectSound[5].Play();
+
+            // ë¬¼ë¦¬ íš¨ê³¼ ì œê±° (ì•„ì´í…œì´ ì†ì—ì„œ ë‚ ë›°ëŠ” ë¬¸ì œ í•´ê²°)
+            if (pickedItem.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            {
+                rb.isKinematic = true; // ë¬¼ë¦¬ ì‹œë®¬ë ˆì´ì…˜ ì¤‘ì§€í•˜ì—¬ ê³ ì •
+            }
+
+            // ê³¼ì¼ì˜ Collider ë¹„í™œì„±í™” (í”Œë ˆì´ì–´ì™€ì˜ ì¶©ëŒë¡œ í”Œë ˆì´ì–´ê°€ ë‚ ì•„ê°€ëŠ” ë¬¸ì œ ë°©ì§€)
+            if (pickedItem.TryGetComponent<Collider>(out Collider itemCollider) && !pickedItem.CompareTag("crop"))
+            {
+                itemCollider.enabled = false; // ì¶©ëŒ ë¹„í™œì„±í™”
+            }
+
+            // ì•„ì´í…œ ì¤ê¸° ë™ì‘ ì¢…ë£Œ
+            StartCoroutine(ResetPickUp());
         }
-        else if (toolIndex == 0 && eDown && canFarming && isPlantReady && !isPickingUp && !isHarvest && !player.pMove.IsJumping && 
-                 !player.pAttack.IsAttacking && !player.pMove.IsWalking)
-        {// ¾¾¾Ñ ½É±â
+        else if (toolIndex == 0 && ItemPoint.childCount > 0 && eDown && canFarming && canPlant && isPlantReady && !isPickingUp && !isHarvest &&
+                !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
+        {// ì”¨ì•— ì‹¬ê¸°
+            StartCoroutine(Planting());
             anim.SetTrigger("doPlant");
             isPlant = true;
             plantDelay = 0f;
             effectSound[6].Play();
             StartCoroutine(ResetPlant());
-            //StartCoroutine(PlayAndFadeOutEffectSound(effectSound[6], 1.0f, 3.0f, 0.5f));
-
         }
-        /*else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
-        {// °æÀÛÇÏ±â + Ã¤±¤ÇÏ±â
-            anim.SetTrigger("doDigDown");
-            isDigging = true;
-            digDelay = 0f;
-            if(toolIndex == 1)
-            {
-                curtivatePoint[0].gameObject.SetActive(true);
-            }
-            StartCoroutine(ResetDig());*/
 
         else if ((toolIndex == 1 || toolIndex == 3) && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {
-            if (toolIndex == 1 && canFarming) // °æÀÛ
+            if (toolIndex == 1 && canFarming) // ê²½ì‘
             {
                 anim.SetTrigger("doDigDown");
                 isDigging = true;
@@ -168,13 +169,14 @@ public class PlayerBehavior : MonoBehaviour
                 effectSound[7].Play();
                 StartCoroutine(ResetDig());
             }
-            else if (toolIndex == 3) // Ã¤±¤
+            else if (toolIndex == 3) // ì±„ê´‘
             {
-                // ¿øÇü ¹üÀ§·Î ¾ÆÀÌÅÛ °¨Áö (OverlapSphere »ç¿ë)
-                Collider[] checkOre = Physics.OverlapSphere(transform.position, 1.7f); // ÇÃ·¹ÀÌ¾î ÁÖº¯ 1¹ÌÅÍ ¹üÀ§
+                // ì›í˜• ë²”ìœ„ë¡œ ì•„ì´í…œ ê°ì§€ (OverlapSphere ì‚¬ìš©)
+                Collider[] checkOre = Physics.OverlapSphere(transform.position, MiningOre.allowedDistance);
+
                 foreach (Collider hitOre in checkOre)
                 {
-                    if (hitOre.CompareTag("Ore")) // Æ¯Á¤ ÅÂ±×°¡ ÀÖ´ÂÁö È®ÀÎ (ÀÖ´Ù¸é pickedItem¿¡ ÇØ´ç ÇÁ¸®Æé ÀúÀå)
+                    if (hitOre.CompareTag("Ore")) // 'Ore' íƒœê·¸ê°€ ìˆëŠ”ì§€ í™•ì¸ (ìˆë‹¤ë©´ ì±„ê´‘ ê°€ëŠ¥)
                     {
                         anim.SetTrigger("doDigDown");
                         isDigging = true;
@@ -187,7 +189,7 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         else if (toolIndex == 2 && dDown && isPickReady && !isHarvest && !player.pAttack.IsAttacking)
-        {// °úÀÏ ¼öÈ®
+        {// ê³¼ì¼ ìˆ˜í™•
             player.rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
             anim.SetTrigger("doPick");
             isPicking = true;
@@ -204,7 +206,7 @@ public class PlayerBehavior : MonoBehaviour
             StartCoroutine(ResetPick());
         }
         else if (toolIndex == 4 && canFarming && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
-        {// ¶¥ÆÄ±â
+        {// ë•…íŒŒê¸°
             anim.SetTrigger("doDigUp");
             isDigging = true;
             digDelay = 0f;
@@ -221,7 +223,7 @@ public class PlayerBehavior : MonoBehaviour
             StartCoroutine(ResetDigUp());
         }
         else if(toolIndex == 5 && canFarming && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
-        {// ÀÛ¹° ¼öÈ®ÇÏ±â
+        {// ì‘ë¬¼ ìˆ˜í™•í•˜ê¸°
             anim.SetTrigger("doHarvest");
             isHarvest = true;
             pointH.gameObject.SetActive(true);
@@ -240,33 +242,33 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÎº¥Åä¸®·ÎºÎÅÍ ¾ÆÀÌÅÛ ¼±ÅÃ °ªÀÌ º¯°æµÇ¾úÀ»¶§ Ã³¸®µÇ´Â ÀÌº¥Æ® Ã³¸®±â
+    /// ì¸ë²¤í† ë¦¬ë¡œë¶€í„° ì•„ì´í…œ ì„ íƒ ê°’ì´ ë³€ê²½ë˜ì—ˆì„ë•Œ ì²˜ë¦¬ë˜ëŠ” ì´ë²¤íŠ¸ ì²˜ë¦¬ê¸°
     /// </summary>
     /// <param name="slotIdx"></param>
     private void OnItemSelectionChanged(int slotIdx)
     {
-        // ÀÌÀü µé°íÀÖ´ø ¾ÆÀÌÅÛ ¼û±â±â
+        // ì´ì „ ë“¤ê³ ìˆë˜ ì•„ì´í…œ ìˆ¨ê¸°ê¸°
         if (grabbedItem != null)
             Destroy(grabbedItem.gameObject);
 
         ItemIdEnum item = InventoryManager.getItemId(slotIdx);
         if (item == ItemIdEnum.TEST_NULL_ITEM)
         {
-            // ¾Æ¹«°Íµµ ¼±ÅÃÇÏÁö ¾ÊÀ½ »óÅÂ¶ó¸é
+            // ì•„ë¬´ê²ƒë„ ì„ íƒí•˜ì§€ ì•ŠìŒ ìƒíƒœë¼ë©´
             grabbedItem = null;
             isGrabbing = false;
             grabbingSlotIdx = -1;
             return;
         }
 
-        // ¹«¾ğ°¡¸¦ ¼±ÅÃÇß´Ù¸é ¼Õ¿¡ Áã¾îÁà
+        // ë¬´ì–¸ê°€ë¥¼ ì„ íƒí–ˆë‹¤ë©´ ì†ì— ì¥ì–´ì¤˜
         grabbedItem = ItemPrefabSO.getItemPrefab(new ItemBundle(item, 1, false)).gameObject;
         grabbedItem.SetActive(false);
         isGrabbing = true;
         grabbingSlotIdx = slotIdx;
     }
    
-    // ¾ÆÀÌÅÛ Áİ±â ¹üÀ§ È®ÀÎ¿ë(ÃßÈÄ »èÁ¦ ¿¹Á¤)
+    // ì•„ì´í…œ ì¤ê¸° ë²”ìœ„ í™•ì¸ìš©(ì¶”í›„ ì‚­ì œ ì˜ˆì •)
     private void OnDrawGizmosSelected()
     {
         if (handPoint == null)
@@ -275,7 +277,7 @@ public class PlayerBehavior : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(handPoint.position, 1f);
     }
-    // »ç¸Á µ¿ÀÛ
+    // ì‚¬ë§ ë™ì‘
     public void Die()
     {
         ItemBundle[] inventoryItems = InventoryManager.popAllItems();
@@ -290,56 +292,56 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest && !isPlant) {
             int currentIndex = toolIndex;
-            if (sDown[1]) // ÁÖ¸Ô
+            if (sDown[1]) // ì£¼ë¨¹
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 0;
                 isGrabbing = false;
             }
-            if (sDown[2]) // ±ªÀÌ
+            if (sDown[2]) // ê´­ì´
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 1;
                 isGrabbing = false;
             }
-            if (sDown[3]) // »ïÁöÃ¢(°úÀÏ ¼öÈ®¿ë)
+            if (sDown[3]) // ì‚¼ì§€ì°½(ê³¼ì¼ ìˆ˜í™•ìš©)
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 2;
                 isGrabbing = false;
             }
-            if (sDown[4]) // °î±ªÀÌ
+            if (sDown[4]) // ê³¡ê´­ì´
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 3;
                 isGrabbing = false;
             }
-            if (sDown[5]) // »ğ
+            if (sDown[5]) // ì‚½
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 4;
                 isGrabbing = false;
             }
-            if (sDown[6]) // ³´
+            if (sDown[6]) // ë‚«
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 5;
                 isGrabbing = false;
             }
-            if (sDown[7]) // °Ë
+            if (sDown[7]) // ê²€
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 6;
                 isGrabbing = false;
             }
-            if (sDown[0]) // ÀÌ½ºÅÍ¿¡±×
+            if (sDown[0]) // ì´ìŠ¤í„°ì—ê·¸
             {
                 tools[currentIndex].gameObject.SetActive(false);
                 toolIndex = 7;
                 isGrabbing = false;
             }
 
-            // µé°í ÀÖ´Â ¾ÆÀÌÅÛ Ã³¸®
+            // ë“¤ê³  ìˆëŠ” ì•„ì´í…œ ì²˜ë¦¬
             if (isGrabbing)
             {
                 toolIndex = 0;
@@ -395,10 +397,9 @@ public class PlayerBehavior : MonoBehaviour
         // Destroy the picked-up item
         if (pickedItem != null)
         {
-            GetItem(pickedItem.GetComponent<ItemPrefabID>()); // ÁÖ¿î ¾ÆÀÌÅÛÀÇ ÀÎº¥Åä¸® Ã³¸®
+            GetItem(pickedItem.GetComponent<ItemPrefabID>()); // ì£¼ìš´ ì•„ì´í…œì˜ ì¸ë²¤í† ë¦¬ ì²˜ë¦¬
             pickedItem.transform.SetParent(null);
             pickedItem.gameObject.SetActive(false);
-            //Destroy(pickedItem);
             pickedItem = null; // Reset the reference to the item
         }
     }
@@ -407,7 +408,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (itemPrefabId == null)
         {
-            Debug.LogError("¾ÆÀÌÅÛÀ» Ãß°¡ÇÒ ¼ö ¾øÀ½ : ¾ÆÀÌÅÛ ÇÁ¸®ÆÕ/¿ÀºêÁ§Æ®¿¡ " + nameof(ItemPrefabID) + " ½ºÅ©¸³Æ®°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogError("ì•„ì´í…œì„ ì¶”ê°€í•  ìˆ˜ ì—†ìŒ : ì•„ì´í…œ í”„ë¦¬íŒ¹/ì˜¤ë¸Œì íŠ¸ì— " + nameof(ItemPrefabID) + " ìŠ¤í¬ë¦½íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤!");
         }
         else
         {
@@ -439,28 +440,83 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         isPlant = false;
+        InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
     IEnumerator Picking()
     {
-        // ¾ÆÀÌÅÛÀ» ¼Õ À§Ä¡·Î ÀÌµ¿
+        // ì•„ì´í…œì„ ì† ìœ„ì¹˜ë¡œ ì´ë™
         yield return new WaitForSeconds(0.5f);
-        // ÇöÀçÀÇ ¿ùµå ½ºÄÉÀÏ ÀúÀå
+        // í˜„ì¬ì˜ ì›”ë“œ ìŠ¤ì¼€ì¼ ì €ì¥
         Vector3 originalScale = pickedItem.transform.lossyScale;
 
-        // ºÎ¸ğ ¼³Á¤
+        // ë¶€ëª¨ ì„¤ì •
         pickedItem.transform.SetParent(handPoint, worldPositionStays: false);
 
-        // ½ºÄÉÀÏÀ» ±âÁ¸ ¿ùµå ½ºÄÉÀÏ·Î °íÁ¤
+        // ìŠ¤ì¼€ì¼ì„ ê¸°ì¡´ ì›”ë“œ ìŠ¤ì¼€ì¼ë¡œ ê³ ì •
         pickedItem.transform.localScale = new Vector3(
             originalScale.x / handPoint.lossyScale.x,
             originalScale.y / handPoint.lossyScale.y,
             originalScale.z / handPoint.lossyScale.z
         );
         pickedItem.transform.localPosition = Vector3.zero;
-        pickedItem.transform.localRotation = Quaternion.identity; // ¼ÕÀÇ È¸Àü°ú ¸ÂÃã  
+        pickedItem.transform.localRotation = Quaternion.identity; // ì†ì˜ íšŒì „ê³¼ ë§ì¶¤  
     }
-    
-    // °úÀÏ ¼öÈ® ·ÎÁ÷
+
+    IEnumerator Planting()
+    {
+        yield return new WaitForSeconds(1f);
+        ItemPrefabID seed = ItemPoint.GetComponentInChildren<ItemPrefabID>();
+        bool isSeed = seed.itemType == ItemIdEnum.CARROT_SEED || seed.itemType == ItemIdEnum.RICE_SEED || seed.itemType == ItemIdEnum.TOMATO_SEED ||
+                      seed.itemType == ItemIdEnum.LEMMON_SEED || seed.itemType == ItemIdEnum.WATERMELON_SEED;
+        // ì›í˜• ë²”ìœ„ë¡œ ì•„ì´í…œ ê°ì§€ (OverlapSphere ì‚¬ìš©)
+        Collider nearestCollider = null;
+        float nearestDistance = Mathf.Infinity;
+        Collider[] checkGround = Physics.OverlapSphere(transform.position, 1f); // í”Œë ˆì´ì–´ ì£¼ë³€ 1ë¯¸í„° ë²”ìœ„
+        foreach (Collider collider in checkGround)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Harvest")) // 'Harvest' íƒœê·¸ê°€ ìˆëŠ”ì§€ í™•ì¸
+            {
+                // ê° ì½œë¼ì´ë”ì™€ì˜ ê±°ë¦¬ ê³„ì‚°
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestCollider = collider;
+                }
+            }
+        }
+        crop = nearestCollider.GetComponent<Crops>();
+        if (crop == null)
+        {
+            yield break;
+        }
+        yield return new WaitForSeconds(6f);
+        // í˜„ì¬ ë“¤ê³  ìˆëŠ” ì•„ì´í…œì´ ì”¨ì•—ì¸ì§€ í™•ì¸
+        if (isSeed)
+        {
+            switch(seed.itemType)
+            {
+                case ItemIdEnum.CARROT_SEED:
+                    crop.CropIndex = 0;
+                    break;
+                case ItemIdEnum.RICE_SEED:
+                    crop.CropIndex = 1;
+                    break;
+                case ItemIdEnum.TOMATO_SEED:
+                    crop.CropIndex = 2;
+                    break;
+                case ItemIdEnum.LEMMON_SEED:
+                    crop.CropIndex = 3;
+                    break;
+                case ItemIdEnum.WATERMELON_SEED:
+                    crop.CropIndex = 4;
+                    break;
+            }
+
+        }
+    }
+    // ê³¼ì¼ ìˆ˜í™• ë¡œì§ + í”¼ê²© ë¡œì§
     private void OnTriggerEnter(Collider other)
     {
         if (!isDie)
@@ -473,10 +529,9 @@ public class PlayerBehavior : MonoBehaviour
                 {
                     fruitRb.useGravity = true;
                     fruitCollider.isTrigger = false;
-                    effectSound[0].Play(); // 0¹ø È¿°úÀ½ Àç»ı
-                    StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1ÃÊ ÈÄ 1¹ø È¿°úÀ½ Àç»ı
+                    effectSound[0].Play(); // 0ë²ˆ íš¨ê³¼ìŒ ì¬ìƒ
+                    StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1ì´ˆ í›„ 1ë²ˆ íš¨ê³¼ìŒ ì¬ìƒ
                 }
-
             }
             else if (other.tag == "BossAttack")
             {
@@ -505,53 +560,39 @@ public class PlayerBehavior : MonoBehaviour
     }
     void OnCollisionStay(Collision collision)
     {
-        // ¹Ù´ÚÀÇ ·¹ÀÌ¾î°¡ HarvestÀÎÁö È®ÀÎ
+        // í˜„ì¬ í”Œë ˆì´ì–´ê°€ ë°Ÿê³  ìˆëŠ” ë°”ë‹¥ì´ ë†ì‘ì§€ì¸ì§€ í™•ì¸
         if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
         {
             canFarming = true;
+        }
+        // í˜„ì¬ í”Œë ˆì´ì–´ê°€ ë°Ÿê³  ìˆëŠ” ë°”ë‹¥ì´ ê²½ì‘ëœ ë•…ì¸ì§€ í™•ì¸
+        if (collision.gameObject.CompareTag("Plant"))
+        {
+            canPlant = true;
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        // ¹Ù´ÚÀÇ ·¹ÀÌ¾î°¡ HarvestÀÎÁö È®ÀÎ
+        // í˜„ì¬ í”Œë ˆì´ì–´ê°€ ë°Ÿê³  ìˆëŠ” ë°”ë‹¥ì´ ë†ì‘ì§€ì¸ì§€ í™•ì¸
         if (collision.gameObject.layer == LayerMask.NameToLayer("Harvest"))
         {
             canFarming = false;
         }
+        // í˜„ì¬ í”Œë ˆì´ì–´ê°€ ë°Ÿê³  ìˆëŠ” ë°”ë‹¥ì´ ê²½ì‘ëœ ë•…ì¸ì§€ í™•ì¸
+        if (collision.gameObject.CompareTag("Plant"))
+        {
+            canPlant = false;
+        }
     }
     private IEnumerator PlaySoundWithDelay(AudioSource audioSource, float delay)
     {
-        yield return new WaitForSeconds(delay); // ÁöÁ¤µÈ ½Ã°£¸¸Å­ ´ë±â
-        audioSource.Play(); // ÁöÁ¤µÈ È¿°úÀ½ Àç»ı
+        yield return new WaitForSeconds(delay); // ì§€ì •ëœ ì‹œê°„ë§Œí¼ ëŒ€ê¸°
+        audioSource.Play(); // ì§€ì •ëœ íš¨ê³¼ìŒ ì¬ìƒ
     }
     private IEnumerator StopSoundWithDelay(AudioSource audioSource, float delay)
     {
-        yield return new WaitForSeconds(delay); // ÁöÁ¤µÈ ½Ã°£¸¸Å­ ´ë±â
-        audioSource.Stop(); // ÁöÁ¤µÈ È¿°úÀ½ Àç»ı
+        yield return new WaitForSeconds(delay); // ì§€ì •ëœ ì‹œê°„ë§Œí¼ ëŒ€ê¸°
+        audioSource.Stop(); // ì§€ì •ëœ íš¨ê³¼ìŒ ì¬ìƒ
     }
-    /*private IEnumerator PlayAndFadeOutEffectSound(AudioSource audioSource, float playDelay, float playDuration, float fadeOutDuration)
-    {
-        // 1ÃÊ ÈÄ Àç»ı
-        yield return new WaitForSeconds(playDelay);
-
-        audioSource.volume = 0.7f; // ÃÊ±â º¼·ıÀ» 0.7·Î ¼³Á¤
-        audioSource.Play();
-
-        // (playDuration - fadeOutDuration) µ¿¾È Àç»ı
-        yield return new WaitForSeconds(playDuration - fadeOutDuration);
-
-        // ÆäÀÌµå¾Æ¿ô Ã³¸®
-        float startVolume = audioSource.volume;
-        for (float t = 0; t < fadeOutDuration; t += Time.deltaTime)
-        {
-            audioSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeOutDuration);
-            yield return null;
-        }
-
-        // ¿ÏÀüÈ÷ ÆäÀÌµå¾Æ¿ô ÈÄ Á¤Áö
-        audioSource.volume = 0f;
-        audioSource.Stop();
-    }*/
-
 }

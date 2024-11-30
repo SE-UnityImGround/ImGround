@@ -66,10 +66,57 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8522d4c3eb3909b419a1eecdd3d5889d, type: 3}
       propertyPath: m_TagString
-      value: Item
+      value: item
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8522d4c3eb3909b419a1eecdd3d5889d, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 7127886775893395545}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8522d4c3eb3909b419a1eecdd3d5889d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5880598411004898348}
   m_SourcePrefab: {fileID: 100100000, guid: 8522d4c3eb3909b419a1eecdd3d5889d, type: 3}
+--- !u!1 &1049752675367253841 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8522d4c3eb3909b419a1eecdd3d5889d, type: 3}
+  m_PrefabInstance: {fileID: 166652629282900480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7127886775893395545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049752675367253841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50beb603c3909474881dfb184299c728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Item_2d_image: {fileID: 0}
+  itemType: 51
+  amount: 1
+--- !u!65 &-5880598411004898348
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049752675367253841}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.69570005, y: 0.5778286, z: 0.65941656}
+  m_Center: {x: 0.014981538, y: 0.2889143, z: 0.00289236}

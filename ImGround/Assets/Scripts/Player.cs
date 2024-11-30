@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         }
 
         // 플레이어 동작 업데이트
-        pBehavior.getInput();
+        pBehavior.GetInput();
         pMove.MoveInput();
         pAttack.AttackInput();
         pMove.Sit();

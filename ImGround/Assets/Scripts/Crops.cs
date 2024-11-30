@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class Crops : MonoBehaviour
 {
-    public CropData cropData;
+    [SerializeField]
+    private CropData[] cropData;
+    private int cropIndex = -1;
+    public int CropIndex { set {  cropIndex = value; } }
     [Header("Spots")]
     public Transform[] spots;
     public Transform bigSpot;
@@ -18,19 +21,24 @@ public class Crops : MonoBehaviour
     private ParticleSystem particleSystem;
     private bool isGrowing = false;
     private Coroutine[] growCoroutines; // 각 작물의 성장 코루틴을 추적하는 배열
+    public GameObject CropInstance {  set { cropInstance = value; } }
 
-    private void Start()
+    private void Update()
     {
-        if (cropData.isBig)
-        {
-            StartBigCrop();
-        }
+        if (cropIndex == -1 || isGrowing)
+            return;
         else
         {
-            StartSmallCrops();
+            if (cropData[cropIndex].isBig)
+            {
+                StartBigCrop();
+            }
+            else
+            {
+                StartSmallCrops();
+            }
         }
     }
-
     private void StartSmallCrops()
     {
         currentCrops = new GameObject[spots.Length];
@@ -38,7 +46,7 @@ public class Crops : MonoBehaviour
         isGrowing = true;
         for (int i = 0; i < spots.Length; i++)
         {
-            currentCrops[i] = Instantiate(cropData.growthStages[0], spots[i].position, Quaternion.identity);
+            currentCrops[i] = Instantiate(cropData[cropIndex].growthStages[0], spots[i].position, Quaternion.identity);
             currentCrops[i].transform.SetParent(spots[i]);
             growCoroutines[i] = StartCoroutine(GrowCrop(i));
         }
@@ -49,7 +57,7 @@ public class Crops : MonoBehaviour
         currentCrops = new GameObject[1];
         growCoroutines = new Coroutine[1];
         isGrowing = true;
-        currentCrops[0] = Instantiate(cropData.growthStages[0], bigSpot.position, Quaternion.identity);
+        currentCrops[0] = Instantiate(cropData[cropIndex].growthStages[0], bigSpot.position, Quaternion.identity);
         currentCrops[0].transform.SetParent(bigSpot);
         growCoroutines[0] = StartCoroutine(GrowBigCrop());
     }
@@ -58,22 +66,22 @@ public class Crops : MonoBehaviour
     {
         int currentStage = 0;
 
-        while (currentStage < cropData.growthStages.Length)
+        while (currentStage < cropData[cropIndex].growthStages.Length)
         {
-            yield return new WaitForSeconds(cropData.growthTimePerStage[currentStage]);
+            yield return new WaitForSeconds(cropData[cropIndex].growthTimePerStage[currentStage]);
 
-            if (currentStage != cropData.growthStages.Length - 1)
+            if (currentStage != cropData[cropIndex].growthStages.Length - 1)
                 Destroy(currentCrops[index]);
             else
                 break;
 
             currentStage++;
 
-            if (currentStage < cropData.growthStages.Length)
+            if (currentStage < cropData[cropIndex].growthStages.Length)
             {
-                currentCrops[index] = Instantiate(cropData.growthStages[currentStage], spots[index].position, Quaternion.identity);
+                currentCrops[index] = Instantiate(cropData[cropIndex].growthStages[currentStage], spots[index].position, Quaternion.identity);
                 currentCrops[index].transform.SetParent(spots[index]);
-                if (currentStage == cropData.growthStages.Length - 1)
+                if (currentStage == cropData[cropIndex].growthStages.Length - 1)
                     AllGrown();
             }
         }
@@ -83,22 +91,22 @@ public class Crops : MonoBehaviour
     {
         int currentStage = 0;
 
-        while (currentStage < cropData.growthStages.Length)
+        while (currentStage < cropData[cropIndex].growthStages.Length)
         {
-            yield return new WaitForSeconds(cropData.growthTimePerStage[currentStage]);
+            yield return new WaitForSeconds(cropData[cropIndex].growthTimePerStage[currentStage]);
 
-            if (currentStage != cropData.growthStages.Length - 1)
+            if (currentStage != cropData[cropIndex].growthStages.Length - 1)
                 Destroy(currentCrops[0]);
             else
                 break;
 
             currentStage++;
 
-            if (currentStage < cropData.growthStages.Length)
+            if (currentStage < cropData[cropIndex].growthStages.Length)
             {
-                currentCrops[0] = Instantiate(cropData.growthStages[currentStage], bigSpot.position, Quaternion.identity);
+                currentCrops[0] = Instantiate(cropData[cropIndex].growthStages[currentStage], bigSpot.position, Quaternion.identity);
                 currentCrops[0].transform.SetParent(bigSpot);
-                if (currentStage == cropData.growthStages.Length - 1)
+                if (currentStage == cropData[cropIndex].growthStages.Length - 1)
                     AllGrown();
             }
         }
@@ -138,9 +146,10 @@ public class Crops : MonoBehaviour
             {
                 Destroy(crop);
                 if (cropInstance == null)
-                    cropInstance = Instantiate(cropData.cropH, bigSpot.position, Quaternion.identity);
+                    cropInstance = Instantiate(cropData[cropIndex].cropH, bigSpot.position, Quaternion.identity);
             }
         }
+        cropIndex = -1;
     }
 
     public bool IsCropExist()
@@ -176,14 +185,17 @@ public class Crops : MonoBehaviour
         // 4. 경작지 상태에서만 농사 재시작
         if (isCultivated)
         {
-            if (cropData.isBig)
-            {
-                StartBigCrop();
-            }
-            else
-            {
-                StartSmallCrops();
-            }
+            cropInstance = null;
+            isGrowing = false;
+            cropIndex = -1;
+            //if (cropData[cropIndex].isBig)
+            //{
+            //    StartBigCrop();
+            //}
+            //else
+            //{
+            //    StartSmallCrops();
+            //}
         }
     }
 }
