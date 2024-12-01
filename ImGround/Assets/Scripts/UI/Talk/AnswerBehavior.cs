@@ -37,11 +37,13 @@ public class AnswerBehavior : MonoBehaviour
 
     public void onClick()
     {
+        UISoundManager.playUiSound(UISoundObject.DEFAULT_CLICK);
         AnswerSelectedEventHandler?.Invoke(answerIdx);
     }
 
     public void onPointerEnter()
     {
+        UISoundManager.playUiSound(UISoundObject.START_TALKING);
         textView.text = POINTED + answerText;
     }
 

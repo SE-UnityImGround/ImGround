@@ -37,6 +37,7 @@ public class SlotBehavior : MonoBehaviour
     /// </summary>
     public void onClick()
     {
+        UISoundManager.playUiSound(UISoundObject.DEFAULT_CLICK);
         slotSelectedEventHandler?.Invoke(slotIdx);
     }
 
