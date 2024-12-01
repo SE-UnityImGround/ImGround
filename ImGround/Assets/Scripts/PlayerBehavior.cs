@@ -35,12 +35,15 @@ public class PlayerBehavior : MonoBehaviour
     public Transform[] curtivatePoint; // 괭이와 삽의 콜라이더 (0번 인덱스 : 괭이, 1번 인덱스 : 삽)
     public Transform ItemPoint; // 음식을 먹는 손의 위치
     private GameObject pickedItem; // 현재 주운 아이템
+    public int GrabSlotID { get { return grabbingSlotIdx; } }
     public bool IsEating {  get { return isEating; } }
     public bool IsPickingUp { get {  return isPickingUp; } }
-    public bool IsDigging { get {  return isDigging; } }
+    public bool IsDigging { get {  return isDigging; } set { isDigging = value; } }
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
     public bool IsPlant {  get { return isPlant; } }
+
+    public bool IsGrabbing { set { isGrabbing = value; } }
     public int ToolIndex { get { return toolIndex; } }
     public bool IsDie { get { return isDie; } set { isDie = value; } }
 
@@ -124,6 +127,8 @@ public class PlayerBehavior : MonoBehaviour
                 }
             }
             // 플레이어와 가장 가까이 있는 물체를 줍기
+            if (nearestCollider == null)
+                return;
             pickedItem = nearestCollider.gameObject;
             isPickingUp = true;
             anim.SetTrigger("doPickUp");
@@ -191,6 +196,8 @@ public class PlayerBehavior : MonoBehaviour
         else if (toolIndex == 2 && dDown && isPickReady && !isHarvest && !player.pAttack.IsAttacking)
         {// 과일 수확
             player.rigid.AddForce(Vector3.up * 4f, ForceMode.Impulse);
+            Collider col = handPoint.GetComponentInChildren<Collider>();
+            col.enabled = true;
             anim.SetTrigger("doPick");
             isPicking = true;
             pickDelay = 0f;
@@ -386,6 +393,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); 
         isPicking = false;
+        Collider col = handPoint.GetComponentInChildren<Collider>();
+        col.enabled = false;
     }
 
     IEnumerator ResetPickUp()
