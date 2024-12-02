@@ -7,7 +7,7 @@ public class RandomSoundPlayer : MonoBehaviour
     public AudioSource effectsound; // AudioSource 컴포넌트
     private float nextPlayTime; // 다음 재생 시간
 
-    // 랜덤 간격의 범위를 오브젝트마다 다르게 설정하기 위한 변수
+    // 랜덤 간격의 범위를 오브젝트마다 다르게 설정하기 위한 변수 
     public float minDelay; // 최소 재생 간격
     public float maxDelay; // 최대 재생 간격
 
