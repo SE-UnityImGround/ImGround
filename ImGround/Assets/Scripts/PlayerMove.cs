@@ -174,6 +174,15 @@ public class PlayerMove : MonoBehaviour
                 if (hitCollider.CompareTag("Bed"))  // 침대의 태그가 "Bed"인지 확인
                 {
                     isSleeping = true;
+                    if (isSleeping && !effectSound[4].isPlaying)
+                    {
+                        StartCoroutine(PlaySoundWithDelay(3f));
+                    }
+                    else if (!isSleeping && effectSound[4].isPlaying)
+                    {
+                        effectSound[4].Stop();
+                    }
+                   
                     // 자식 오브젝트의 인덱스로 가져오기 (예: 첫 번째 자식)
             Transform childTransform = hitCollider.transform.GetChild(0);  // 0번째 자식 가져오기
 
@@ -209,6 +218,15 @@ public class PlayerMove : MonoBehaviour
                 {
                     isSitting = true;
                     isTired = true;
+                    if (isSitting && !effectSound[4].isPlaying)
+                    {
+                        StartCoroutine(PlaySoundWithDelay(3f));
+                    }
+                    else if (!isSitting && effectSound[4].isPlaying)
+                    {
+                        effectSound[4].Stop();
+                    }
+
                     // 자식 오브젝트의 인덱스로 가져오기 (예: 첫 번째 자식)
                     Transform childTransform = hitCollider.transform.GetChild(0);  // 0번째 자식 가져오기
 
@@ -310,6 +328,19 @@ public class PlayerMove : MonoBehaviour
         isJumping = false;
     }
 
+    IEnumerator PlaySoundWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 3초 대기
+        if (isSitting && !effectSound[4].isPlaying) // 상태를 다시 확인
+        {
+            effectSound[4].Play();
+        }
+        if (isSleeping && !effectSound[4].isPlaying) // 상태를 다시 확인
+        {
+            effectSound[4].Play();
+        }
+    }
+
     private void FixedUpdate()
     {
         if (isWalking && !effectSound[0].isPlaying)
@@ -344,5 +375,6 @@ public class PlayerMove : MonoBehaviour
         {
             effectSound[3].Stop();
         }
+        
     }
 }
