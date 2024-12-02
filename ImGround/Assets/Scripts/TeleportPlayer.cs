@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class TeleportManager : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     // ¸¶À» -> µ¿±¼
     private Vector3 villageToCaveAreaA = new Vector3(101.457855f, 0.391266584f, -51.4535637f);
     private Vector3 villageToCaveAreaB = new Vector3(109.437233f, 0.557283998f, -44.3972092f);
     private Vector3 villageToCaveAreaC = new Vector3(112.112526f, 0.593310833f, -47.5299721f);
     private Vector3 villageToCaveAreaD = new Vector3(104.903412f, 0.307282567f, -54.0016174f);
-    private Vector3 caveTeleportPosition = new Vector3(343.149994f, 1.40999997f, -1221.34998f);
+    private Vector3 caveTeleportPosition = new Vector3(183.929993f, 0.379999995f, -1204.97998f);
     private Vector3 caveTeleportRotation = new Vector3(0, 321.833008f, 0);
 
     // µ¿±¼ -> ¸¶À»
-    private Vector3 caveToVillageAreaA = new Vector3(343.269989f, 1.40999997f, -1228.27002f);
-    private Vector3 caveToVillageAreaB = new Vector3(351.25f, 1.40999997f, -1222.58997f);
-    private Vector3 caveToVillageAreaC = new Vector3(352.970001f, 1.40999997f, -1224.40002f);
-    private Vector3 caveToVillageAreaD = new Vector3(344.98999f, 1.40999997f, -1229.76001f);
+    private Vector3 caveToVillageAreaA = new Vector3(176.779999f, 0.379999995f, -1199.62f);
+    private Vector3 caveToVillageAreaB = new Vector3(175.399994f, 0.379999995f, -1195.67004f);
+    private Vector3 caveToVillageAreaC = new Vector3(187.259995f, 0.379999995f, -1194.58997f);
+    private Vector3 caveToVillageAreaD = new Vector3(188.729996f, 0.379999995f, -1198.16003f);
     private Vector3 villageTeleportPosition = new Vector3(100.779999f, 0.379999995f, -45.9599991f);
     private Vector3 villageTeleportRotation = new Vector3(0, 321.833008f, 0);
 
@@ -60,6 +61,7 @@ public class TeleportManager : MonoBehaviour
 
     private void TeleportToCave()
     {
+        effectSound[0].Play();
         transform.position = caveTeleportPosition;
         transform.rotation = Quaternion.Euler(caveTeleportRotation);
         Debug.Log("Player teleported to the cave!");
@@ -67,6 +69,7 @@ public class TeleportManager : MonoBehaviour
 
     private void TeleportToVillage()
     {
+        effectSound[0].Play();
         transform.position = villageTeleportPosition;
         transform.rotation = Quaternion.Euler(villageTeleportRotation);
         Debug.Log("Player teleported to the village!");

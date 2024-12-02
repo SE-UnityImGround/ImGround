@@ -105,7 +105,7 @@ public class PlayerUIController : MonoBehaviour
     {
         // 대화 시작하기 가능 조건
         if (_inGameUI.mode == InGameViewMode.DEFAULT
-            && Input.GetKeyDown(KeyCode.F) && _npcController.selectedNPC != null)
+            && Input.GetKeyDown(KeyCode.Q) && _npcController.selectedNPC != null)
         {
             NPCBehavior npc = _npcController.selectedNPC.GetComponent<NPCBehavior>();
             Debug.Log("선택된 npc : " + npc.name + " 타입 : " + npc.type);

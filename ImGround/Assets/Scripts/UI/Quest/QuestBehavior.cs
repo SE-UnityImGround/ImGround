@@ -55,6 +55,7 @@ public class QuestBehavior : MonoBehaviour
 
     public void onClickReward()
     {
-        onQuestRewardClickHandler.Invoke(this);
+        UISoundManager.playUiSound(UISoundObject.QUEST_REWARD);
+        onQuestRewardClickHandler?.Invoke(this);
     }
 }

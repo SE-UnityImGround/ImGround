@@ -18,6 +18,7 @@ public class MiningOre : MonoBehaviour
     private Vector3 originalPosition;
     private Quaternion originalRotation;
 
+    public GameObject GaugeInstance { get {  return gaugeBarInstance; } }
     private bool isRespawning = false;
     private Player player;
     private Transform playerTransform;
@@ -40,39 +41,37 @@ public class MiningOre : MonoBehaviour
     {
         if (isRespawning) return;
 
+        // 플레이어 상태나 도구 확인
         if (player == null || player.pBehavior == null || player.pBehavior.ToolIndex != 3)
         {
-            if (isMining)
-            {
-                StopMining();
-            }
+            StopMining();
             return;
         }
 
-        // 오버랩스피어로 주변 광석 탐색
-        Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, allowedDistance, oreLayer);
-
-        Transform closestOre = null;
-        float closestAngle = 45f; // 플레이어 정면 기준 최대 허용 각도
-        foreach (var hitCollider in hitColliders)
+        // 우클릭 상태 확인
+        if (InputManager.GetMouseButton(1))
         {
-            if (hitCollider.CompareTag("Ore")) // 'Ore' 태그가 있는 광석만 탐지
-            {
-                Vector3 directionToOre = (hitCollider.transform.position - playerTransform.position).normalized;
-                float angle = Vector3.Angle(playerTransform.forward, directionToOre);
+            Collider[] hitColliders = Physics.OverlapSphere(playerTransform.position, allowedDistance, oreLayer);
 
-                if (angle < closestAngle)
+            Transform closestOre = null;
+            float closestAngle = 45f; // 플레이어 정면 기준 최대 허용 각도
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("Ore")) // 'Ore' 태그가 있는 광석만 탐지
                 {
-                    closestAngle = angle;
-                    closestOre = hitCollider.transform;
+                    Vector3 directionToOre = (hitCollider.transform.position - playerTransform.position).normalized;
+                    float angle = Vector3.Angle(playerTransform.forward, directionToOre);
+
+                    if (angle < closestAngle)
+                    {
+                        closestAngle = angle;
+                        closestOre = hitCollider.transform;
+                    }
                 }
             }
-        }
 
-        // 가장 적합한 광석만 게이지 표시
-        if (closestOre == transform)
-        {
-            if (InputManager.GetMouseButton(1))
+            // 가장 적합한 광석만 게이지 표시
+            if (closestOre == transform)
             {
                 if (!isMiningTriggered)
                 {
@@ -90,13 +89,12 @@ public class MiningOre : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                StopMining(); // 다른 광석이 활성화된 경우 게이지 제거
+            }
         }
-        else
-        {
-            StopMining(); // 다른 광석이 활성화된 경우 게이지 제거
-        }
-
-        if (InputManager.GetMouseButtonUp(1))
+        else // 우클릭이 해제되면 마이닝 중단
         {
             StopMining();
         }
@@ -104,22 +102,35 @@ public class MiningOre : MonoBehaviour
 
     void StartMining()
     {
-        if (!isMining)
-        {
-            isMining = true;
-            isMiningTriggered = true;
+        if (isMining) return; // 중복 실행 방지
 
-            gaugeBarInstance = Instantiate(gaugeBarPrefab, canvasTransform);
-            gaugeBarInstance.SetActive(true);
-            UpdateGauge(1);
+        isMining = true;
+        isMiningTriggered = true;
+
+        // IsDigging 활성화
+        if (player != null && player.pBehavior != null)
+        {
+            player.pBehavior.IsDigging = true;
         }
+
+        gaugeBarInstance = Instantiate(gaugeBarPrefab, canvasTransform);
+        gaugeBarInstance.SetActive(true);
+        UpdateGauge(1);
     }
 
     void StopMining()
     {
+        if (!isMining) return; // 이미 멈췄다면 실행하지 않음
+        player.pBehavior.IsDigging = false;
         isMining = false;
         isMiningTriggered = false;
         miningProgress = 0f;
+
+        // IsDigging 비활성화
+        if (player != null && player.pBehavior != null)
+        {
+            player.pBehavior.IsDigging = false;
+        }
 
         if (gaugeBarInstance != null)
         {
@@ -136,6 +147,7 @@ public class MiningOre : MonoBehaviour
             {
                 slider.value = value;
             }
+            player.pBehavior.IsDigging = true;
         }
     }
 
@@ -143,10 +155,12 @@ public class MiningOre : MonoBehaviour
     {
         isMining = false;
         isMiningTriggered = false;
+        player.pBehavior.IsDigging = false;
 
         Destroy(gaugeBarInstance);
         gameObject.SetActive(false);
 
+        // 아이템 드롭 처리
         if (itemPrefab != null)
         {
             Vector3 spawnPosition = playerTransform.position + playerTransform.forward * 0.5f;
@@ -156,6 +170,7 @@ public class MiningOre : MonoBehaviour
             newItem.transform.localScale = itemSize;
         }
 
+        // 리스폰 처리
         Invoke(nameof(RespawnOre), 10f);
     }
 
