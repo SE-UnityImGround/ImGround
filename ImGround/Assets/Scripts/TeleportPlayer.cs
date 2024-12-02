@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class TeleportManager : MonoBehaviour
 {
+    public AudioSource[] effectSound;
     // ¸¶À» -> µ¿±¼
     private Vector3 villageToCaveAreaA = new Vector3(101.457855f, 0.391266584f, -51.4535637f);
     private Vector3 villageToCaveAreaB = new Vector3(109.437233f, 0.557283998f, -44.3972092f);
@@ -60,6 +61,7 @@ public class TeleportManager : MonoBehaviour
 
     private void TeleportToCave()
     {
+        effectSound[0].Play();
         transform.position = caveTeleportPosition;
         transform.rotation = Quaternion.Euler(caveTeleportRotation);
         Debug.Log("Player teleported to the cave!");
@@ -67,6 +69,7 @@ public class TeleportManager : MonoBehaviour
 
     private void TeleportToVillage()
     {
+        effectSound[0].Play();
         transform.position = villageTeleportPosition;
         transform.rotation = Quaternion.Euler(villageTeleportRotation);
         Debug.Log("Player teleported to the village!");
