@@ -168,15 +168,6 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        /*if (effectSound.Length > 0 && effectSound[0] != null)
-        {
-            effectSound[0].Play();
-        }
-        else
-        {
-            Debug.LogError("효과음 배열이 비어있거나 0번째 인덱스가 null입니다. 효과음을 재생할 수 없습니다.");
-        }*/
-
         if (type == Type.Boss)
         {
             if (effectSound.Length > 1 && effectSound[1] != null) // 배열 길이와 null 체크
