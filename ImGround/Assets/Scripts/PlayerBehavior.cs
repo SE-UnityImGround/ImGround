@@ -35,12 +35,12 @@ public class PlayerBehavior : MonoBehaviour
     public Transform ItemPoint; // 음식을 먹는 손의 위치
     private GameObject pickedItem; // 현재 주운 아이템
     public int GrabSlotID { get { return grabbingSlotIdx; } }
-    public bool IsEating {  get { return isEating; } }
-    public bool IsPickingUp { get {  return isPickingUp; } }
-    public bool IsDigging { get {  return isDigging; } set { isDigging = value; } }
+    public bool IsEating { get { return isEating; } }
+    public bool IsPickingUp { get { return isPickingUp; } }
+    public bool IsDigging { get { return isDigging; } set { isDigging = value; } }
     public bool IsPicking { get { return isPicking; } }
     public bool IsHarvest { get { return isHarvest; } }
-    public bool IsPlant {  get { return isPlant; } }
+    public bool IsPlant { get { return isPlant; } }
 
     public bool IsGrabbing { set { isGrabbing = value; } }
     public int ToolIndex { get { return toolIndex; } }
@@ -86,7 +86,7 @@ public class PlayerBehavior : MonoBehaviour
         isHarvestReady = 0.4f < harvestDelay;
         isPlantReady = 2f < plantDelay;
 
-        if(toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
+        if (toolIndex == 0 && dDown && !player.pMove.IsJumping && !player.pAttack.IsAttacking)
         {// 음식 먹기
             if (ItemPoint.childCount == 0
                 || IsEating // 먹는 도중 또 먹는 로직을 실행하는 현상 방지
@@ -106,7 +106,7 @@ public class PlayerBehavior : MonoBehaviour
         else if (toolIndex == 0 && fDown && !isPickingUp && !isDigging && !isHarvest && !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking && !isGrabbing)
         {
             Collider nearestCollider = null;
-            float nearestDistance = Mathf.Infinity;         
+            float nearestDistance = Mathf.Infinity;
             // 원형 범위로 아이템 감지 (OverlapSphere 사용)
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // 플레이어 주변 1미터 범위
 
@@ -208,7 +208,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 effectSound[11].Stop();
             }
-            
+
             StartCoroutine(ResetPick());
         }
         else if (toolIndex == 4 && canFarming && dDown && isDigReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
@@ -217,7 +217,7 @@ public class PlayerBehavior : MonoBehaviour
             isDigging = true;
             digDelay = 0f;
             curtivatePoint[1].gameObject.SetActive(true);
-            
+
             if (isDigging && !effectSound[9].isPlaying)
             {
                 effectSound[9].Play();
@@ -228,13 +228,13 @@ public class PlayerBehavior : MonoBehaviour
             }
             StartCoroutine(ResetDigUp());
         }
-        else if(toolIndex == 5 && canFarming && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
+        else if (toolIndex == 5 && canFarming && dDown && isHarvestReady && !isHarvest && !player.pAttack.IsAttacking && !player.pMove.IsJumping && !isPicking)
         {// 작물 수확하기
             anim.SetTrigger("doHarvest");
             isHarvest = true;
             pointH.gameObject.SetActive(true);
             harvestDelay = 0f;
-            
+
             if (isHarvest && !effectSound[10].isPlaying)
             {
                 effectSound[10].Play();
@@ -273,7 +273,7 @@ public class PlayerBehavior : MonoBehaviour
         isGrabbing = true;
         grabbingSlotIdx = slotIdx;
     }
-   
+
     // 아이템 줍기 범위 확인용(추후 삭제 예정)
     private void OnDrawGizmosSelected()
     {
@@ -296,7 +296,8 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void Swap()
     {
-        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest && !isPlant) {
+        if (!isEating && !isDigging && !isPicking && !isPickingUp && !isHarvest && !isPlant)
+        {
             int currentIndex = toolIndex;
             if (sDown[1]) // 주먹
             {
@@ -372,7 +373,7 @@ public class PlayerBehavior : MonoBehaviour
     }
     IEnumerator ResetDig()
     {
-        if(toolIndex == 3)
+        if (toolIndex == 3)
             yield return new WaitForSeconds(1f);
         else
             yield return new WaitForSeconds(1.6f);
@@ -390,7 +391,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPick()
     {
-        yield return new WaitForSeconds(1f); 
+        yield return new WaitForSeconds(1f);
         isPicking = false;
         Collider col = handPoint.GetComponentInChildren<Collider>();
         col.enabled = false;
@@ -503,7 +504,7 @@ public class PlayerBehavior : MonoBehaviour
         // 현재 들고 있는 아이템이 씨앗인지 확인
         if (isSeed)
         {
-            switch(seed.itemType)
+            switch (seed.itemType)
             {
                 case ItemIdEnum.CARROT_SEED:
                     crop.CropIndex = 0;
@@ -553,7 +554,7 @@ public class PlayerBehavior : MonoBehaviour
                 player.health -= 10;
                 effectSound[1].Play();
             }
-            else if(other.tag == "EnemyAttack")
+            else if (other.tag == "EnemyAttack")
             {
                 anim.SetTrigger("doHit");
                 player.health -= 2;
