@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 /// <summary>
 /// 아이템 묶음을 표현하는 기본 자료구조입니다.
 /// </summary>
+[Serializable]
 public class ItemBundle
 {
-    public Item item { get; private set; }
-    public int count { get; private set; }
-    public int maxCount { get; private set; }
+    public Item item;
+    public int count;
+    public int maxCount;
     /// <summary>
     /// 아이템 중복 수량을 최대 중복 수량만큼 제한할지를 표시합니다.
     /// </summary>
-    public bool isLimited { get; private set; }
+    public bool isLimited;
 
     public ItemBundle(Item item, int count, bool isLimited)
     {

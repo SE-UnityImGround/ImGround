@@ -96,7 +96,7 @@ public class PlayerBehavior : MonoBehaviour
 
             // 체력 회복 처리
             float healAmount = ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).healAmount;
-            player.health = Mathf.Min(player.health + (int)(healAmount * player.MaxHealth), player.MaxHealth);
+            player.health = Mathf.Min(player.health + (int)((healAmount / 100.0f) * player.MaxHealth), player.MaxHealth);
 
             isEating = true;
             anim.SetTrigger("doEat");
