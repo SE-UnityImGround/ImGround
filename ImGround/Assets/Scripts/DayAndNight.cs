@@ -86,6 +86,10 @@ public class DayAndNight : MonoBehaviour
     private float nextEffectTime1 = 0f; // 효과음 1번 재생 시간
     private float nextEffectTime2 = 0f; // 효과음 2번 재생 시간
 
+    public GameObject player; // 플레이어 오브젝트
+    public static Vector3 minBounds = new Vector3(-78, -10, -120); // x, y, z 최소값
+    public static Vector3 maxBounds = new Vector3(183, 20, 148);
+
     void Start()
     {
         DayFogDensity = RenderSettings.fogDensity;
@@ -93,6 +97,7 @@ public class DayAndNight : MonoBehaviour
 
     void Update()
     {
+
         inGameTime += 24.0f * secondPerRealTime * Time.deltaTime; // secondPerRealTime = 6 으로 주어졌을 때 실제 5분 = 게임시간 12시간이 되도록 조정
         transform.rotation = Quaternion.Euler(inGameTime * 360.0f / 86400.0f, 0.0f, 0.0f); // second -> angle(degree)
 
@@ -146,4 +151,6 @@ public class DayAndNight : MonoBehaviour
             nextEffectTime2 = Time.time + Random.Range(1f, 3f); // 1~5초 사이의 랜덤 시간 설정
         }
     }
+
+
 }
