@@ -164,7 +164,7 @@ public class PlayerMove : MonoBehaviour
 
     public void Sleep()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (InputManager.GetKeyDown(KeyCode.Z))
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f);
 
@@ -174,7 +174,6 @@ public class PlayerMove : MonoBehaviour
                 if (hitCollider.CompareTag("Bed"))  // 침대의 태그가 "Bed"인지 확인
                 {
                     isSleeping = true;
-                    isTired = true;
                     // 자식 오브젝트의 인덱스로 가져오기 (예: 첫 번째 자식)
             Transform childTransform = hitCollider.transform.GetChild(0);  // 0번째 자식 가져오기
 
@@ -291,6 +290,8 @@ public class PlayerMove : MonoBehaviour
     IEnumerator ResetSit()
     {
         yield return new WaitForSeconds(2.3f);
+        particleSystem?.Stop();
+        Destroy(particleInstance);
         isTired = false;
         isSitting = false;
     }

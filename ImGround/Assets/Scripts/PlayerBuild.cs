@@ -50,11 +50,11 @@ public class PlayerBuild : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1") && bed != null && bed.itemType == ItemIdEnum.BED)
+        if (InputManager.GetButton("Fire1") && bed != null && bed.itemType == ItemIdEnum.BED)
         {
             Build();
         }
-        if (Input.GetButtonDown("Fire2") && bed != null && bed.itemType == ItemIdEnum.BED)
+        if (InputManager.GetButton("Fire2") && bed != null && bed.itemType == ItemIdEnum.BED)
             Cancel();
     }
     void Build()
