@@ -39,7 +39,8 @@ public class InGameViewBehavior : MonoBehaviour
 
     public void onGameCloseButtonClick()
     {
-        // 추가 처리 가능 : 메인화면으로 다시 돌아간다던지
+        SaveManager.invokeOnSave();
+        PlayerPrefs.Save();
         Debug.LogWarning("프로그램 종료");
         Application.Quit();
     }
