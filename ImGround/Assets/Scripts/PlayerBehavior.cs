@@ -274,15 +274,6 @@ public class PlayerBehavior : MonoBehaviour
         grabbingSlotIdx = slotIdx;
     }
 
-    // 아이템 줍기 범위 확인용(추후 삭제 예정)
-    private void OnDrawGizmosSelected()
-    {
-        if (handPoint == null)
-            return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(handPoint.position, 1f);
-    }
     // 사망 동작
     public void Die()
     {
