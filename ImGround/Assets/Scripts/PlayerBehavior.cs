@@ -30,7 +30,6 @@ public class PlayerBehavior : MonoBehaviour
     bool canPlant = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
-    public Transform pickPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pointH;  // 낫의 콜라이더 위치
     public Transform[] curtivatePoint; // 괭이와 삽의 콜라이더 (0번 인덱스 : 괭이, 1번 인덱스 : 삽)
     public Transform ItemPoint; // 음식을 먹는 손의 위치
@@ -602,6 +601,6 @@ public class PlayerBehavior : MonoBehaviour
     private IEnumerator StopSoundWithDelay(AudioSource audioSource, float delay)
     {
         yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
-        audioSource.Stop(); // 지정된 효과음 재생
+        audioSource.Stop(); // 지정된 효과음 재생 중지
     }
 }
