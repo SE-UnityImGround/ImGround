@@ -129,13 +129,13 @@ public class ItemInfoManager
         new ItemInfo(ItemIdEnum.RICE_PLANT, ImageIdEnum.ITEM_RICE_PLANT, "벼", DEFAULT_COUNT, 100, true, 2.0f),
         new ItemInfo(ItemIdEnum.REFINED_RICE, ImageIdEnum.ITEM_REFINED_RICE, "정제된 쌀", DEFAULT_COUNT, 1000, true, 5.0f),
 
-        new ItemInfo(ItemIdEnum.HOE, ImageIdEnum.ITEM_HOE, "괭이", DEFAULT_COUNT, 10000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.RAKE, ImageIdEnum.ITEM_RAKE, "갈퀴", DEFAULT_COUNT, 16000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.PICKAXE, ImageIdEnum.ITEM_PICKAXE, "곡괭이", DEFAULT_COUNT, 18000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.SHOVEL, ImageIdEnum.ITEM_SHOVEL, "삽", DEFAULT_COUNT, 14000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.KNIFE, ImageIdEnum.ITEM_KNIFE, "칼", DEFAULT_COUNT, 20000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.SICKLE, ImageIdEnum.ITEM_SICKLE, "낫", DEFAULT_COUNT, 12000, false, 0.0f),
-        new ItemInfo(ItemIdEnum.STRIPED_MARLIN, ImageIdEnum.ITEM_STRIPED_MARLIN, "청새치", DEFAULT_COUNT, 50000, false, 0.0f),
+        new ItemInfo(ItemIdEnum.HOE, ImageIdEnum.ITEM_HOE, "괭이", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.RAKE, ImageIdEnum.ITEM_RAKE, "갈퀴", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.PICKAXE, ImageIdEnum.ITEM_PICKAXE, "곡괭이", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.SHOVEL, ImageIdEnum.ITEM_SHOVEL, "삽", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.KNIFE, ImageIdEnum.ITEM_KNIFE, "칼", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.SICKLE, ImageIdEnum.ITEM_SICKLE, "낫", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
+        new ItemInfo(ItemIdEnum.STRIPED_MARLIN, ImageIdEnum.ITEM_STRIPED_MARLIN, "청새치", DEFAULT_COUNT, int.MaxValue, false, 0.0f),
 
         new ItemInfo(ItemIdEnum.BED, ImageIdEnum.ITEM_BED, "침대", DEFAULT_COUNT, 50000, false, 0.0f)
     };
