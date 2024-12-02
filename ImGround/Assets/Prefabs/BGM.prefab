@@ -187,6 +187,7 @@ MonoBehaviour:
   - {fileID: 6962113060079715106}
   - {fileID: 2137320068724141773}
   dayAndNightScript: {fileID: 0}
+  player: {fileID: 0}
   fadeDuration: 3
 --- !u!114 &7595355691187846721
 MonoBehaviour:
@@ -217,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &262769383359885663
 Transform:
   m_ObjectHideFlags: 0
