@@ -109,6 +109,12 @@ public class MiningOre : MonoBehaviour
             isMining = true;
             isMiningTriggered = true;
 
+            // 플레이어 움직임 차단
+            if (player != null && player.pBehavior != null)
+            {
+                player.pBehavior.IsDigging = true; // IsDigging을 true로 설정
+            }
+
             gaugeBarInstance = Instantiate(gaugeBarPrefab, canvasTransform);
             gaugeBarInstance.SetActive(true);
             UpdateGauge(1);
@@ -121,11 +127,18 @@ public class MiningOre : MonoBehaviour
         isMiningTriggered = false;
         miningProgress = 0f;
 
+        // 플레이어 움직임 허용
+        if (player != null && player.pBehavior != null)
+        {
+            player.pBehavior.IsDigging = false; // IsDigging을 false로 설정
+        }
+
         if (gaugeBarInstance != null)
         {
             Destroy(gaugeBarInstance);
         }
     }
+
 
     void UpdateGauge(float value)
     {
