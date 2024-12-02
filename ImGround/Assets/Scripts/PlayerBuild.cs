@@ -13,9 +13,6 @@ public class PlayerBuild : MonoBehaviour
     private bool canBuild = false;
     private Player player;
     public Transform tf_Player;
-    // Raycast 필요 변수 선언
-    private RaycastHit hitInfo;
-    private LayerMask layerMask;
     private float range = 2f;
 
     ItemPrefabID bed;

@@ -187,10 +187,4 @@ public class MiningOre : MonoBehaviour
         gameObject.SetActive(true);
         isRespawning = false;
     }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, allowedDistance);
-    }
 }
