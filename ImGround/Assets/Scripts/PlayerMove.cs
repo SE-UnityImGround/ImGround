@@ -336,11 +336,11 @@ public class PlayerMove : MonoBehaviour
         {
             effectSound[2].Stop();
         }
-        if (isTired && !effectSound[3].isPlaying)
+        if (isTired && !effectSound[3].isPlaying && !isSitting)
         {
             effectSound[3].Play();
         }
-        else if ((!isTired && effectSound[3].isPlaying))
+        else if ((!isTired && effectSound[3].isPlaying && isSitting))
         {
             effectSound[3].Stop();
         }
