@@ -154,7 +154,9 @@ public class Animal : MonoBehaviour
         for (int i = 0; i < expDropCount; i++)
         {
             Vector3 randomOffset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-            Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+            GameObject expReward = Instantiate(expPrefab, transform.position + randomOffset, Quaternion.identity);
+            FloatingItem floatingItem = expReward.AddComponent<FloatingItem>();
+            floatingItem.Initialize(transform.position);
         }
     }
 
