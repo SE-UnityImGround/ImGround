@@ -374,7 +374,9 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator ResetDig()
     {
         if (toolIndex == 3)
+        {
             yield return new WaitForSeconds(1f);
+        }
         else
             yield return new WaitForSeconds(1.6f);
         isDigging = false;

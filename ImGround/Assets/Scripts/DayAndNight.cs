@@ -97,7 +97,6 @@ public class DayAndNight : MonoBehaviour
 
     void Update()
     {
-        bool isWithinBounds = IsPlayerWithinBounds();
 
         inGameTime += 24.0f * secondPerRealTime * Time.deltaTime; // secondPerRealTime = 6 으로 주어졌을 때 실제 5분 = 게임시간 12시간이 되도록 조정
         transform.rotation = Quaternion.Euler(inGameTime * 360.0f / 86400.0f, 0.0f, 0.0f); // second -> angle(degree)
@@ -153,13 +152,5 @@ public class DayAndNight : MonoBehaviour
         }
     }
 
-    private bool IsPlayerWithinBounds()
-    {
-        if (player == null) return false;
 
-        Vector3 playerPosition = player.transform.position;
-        return playerPosition.x >= minBounds.x && playerPosition.x <= maxBounds.x &&
-               playerPosition.y >= minBounds.y && playerPosition.y <= maxBounds.y &&
-               playerPosition.z >= minBounds.z && playerPosition.z <= maxBounds.z;
-    }
 }

@@ -3219,7 +3219,6 @@ MonoBehaviour:
   - {fileID: 1887479742422903558}
   dDown: 0
   handPoint: {fileID: 4289810962353847650}
-  pickPoint: {fileID: 490536810569287166}
   pointH: {fileID: 2571697701100941809}
   curtivatePoint:
   - {fileID: 1824750828228468503}
@@ -3263,8 +3262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e8a251423342d4680ee03c01a5bca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyRespawnTime: 10
-  bossRespawnTime: 30
+  enemyRespawnTime: 15
+  bossRespawnTime: 120
 --- !u!114 &2052404618653691677
 MonoBehaviour:
   m_ObjectHideFlags: 0
