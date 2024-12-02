@@ -18,9 +18,6 @@ public class RandomSoundPlayer : MonoBehaviour
             effectsound = gameObject.AddComponent<AudioSource>();
         }
 
-        // 각 오브젝트에 고유의 재생 간격 범위를 설정
-        SetRandomRange();
-
         ScheduleNextPlay();
     }
 
@@ -43,13 +40,5 @@ public class RandomSoundPlayer : MonoBehaviour
         // 오브젝트마다 고유한 랜덤 범위 내에서 지연 시간 계산
         float randomDelay = Random.Range(minDelay, maxDelay);
         nextPlayTime = Time.time + randomDelay;
-    }
-
-    private void SetRandomRange()
-    {
-        // 오브젝트마다 다른 간격 범위를 설정 (격차를 크게 설정)
-        float baseTime = Random.Range(5f, 50f); // 기본 시간 범위를 랜덤으로 설정
-        minDelay = baseTime; // 최소 지연 시간
-        maxDelay = baseTime + Random.Range(10f, 30f); // 최대 지연 시간 (최소 시간 + 추가 시간)
     }
 }
