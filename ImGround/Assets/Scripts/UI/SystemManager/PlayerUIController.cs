@@ -77,7 +77,7 @@ public class PlayerUIController : MonoBehaviour
     private void updatePlayerInfo()
     {
         float expRate = 1.0f;
-        if (_playerScript.level >= 0 && _playerScript.requiredExp.Length < _playerScript.level)
+        if (_playerScript.level >= 0 && _playerScript.level < _playerScript.requiredExp.Length)
             expRate = _playerScript.Exp / (float)_playerScript.requiredExp[_playerScript.level];
         _inGameUI.getUIBehavior<HomeScreen>().setPlayerInfo(
             _playerScript.health / (float)_playerScript.MaxHealth,
