@@ -59,13 +59,6 @@ public class Player : MonoBehaviour
         // 시작할 때 플레이어의 기본 리스폰 위치를 현재 위치로 설정(침대 추가시 이 코드는 삭제 예정)
         respawnPosition = transform.position;
 
-        if (hatIns == null)
-        {
-            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
-            hatIns.transform.SetParent(originHat);
-            hatIns.transform.localScale = hat[level].transform.localScale;
-        }
-
         // 퀘스트 완수 후 경험치 즉시 추가를 위한 이벤트 처리
         QuestManager.onQuestDoneHandler += OnQuestDone;
 
@@ -73,6 +66,13 @@ public class Player : MonoBehaviour
         SaveManager.setOnSave(onStartSave);
         if (SaveManager.isLoadedGame)
             onStartLoad();
+
+        if (hatIns == null)
+        {
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        }
     }
 
     /*====================================
