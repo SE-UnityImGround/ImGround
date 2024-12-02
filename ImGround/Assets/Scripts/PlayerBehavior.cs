@@ -553,6 +553,10 @@ public class PlayerBehavior : MonoBehaviour
                 player.health -= 2;
                 effectSound[1].Play();
             }
+            else if (other.tag == "Out")
+            {
+                player.health -= 99;
+            }
             if (player.health <= 0)
             {
                 Die();
