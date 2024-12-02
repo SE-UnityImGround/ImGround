@@ -12,7 +12,7 @@ public class InGameButton : MonoBehaviour
 
     public void onClick()
     {
-        UISoundManager.onPlayUiSound(UISoundObject.INGAME_UI_CLICK);
+        UISoundManager.playUiSound(UISoundObject.INGAME_UI_CLICK);
         if (hideOrDisplay)
             inGameViewBehavior.hideView(LinkedView);
         else
