@@ -66,12 +66,26 @@ public class TalkInfoManager
         ("확인", TalkEventEnum.OPEN_SHOP, new TalkInfo[] { SELLER_2 }));
 
     // 도구 상점
-    private static TalkInfo TOOL_2 = new TalkInfo(
-        "좋은 하루 되세요~",
+    private static TalkInfo TOOL_4b = new TalkInfo(
+        "감사합니다 또 구경하러 오세요~",
         ("확인", TalkEventEnum.END, null));
+    private static TalkInfo TOOL_4a = new TalkInfo(
+        "정말 겸손하신 분이시군요ㅎㅎ",
+        ("확인", TalkEventEnum.END, null));
+    private static TalkInfo TOOL_3b = new TalkInfo(
+        "당신 이 동네에서 유명해요~ 어디에도 팔지 않는 도구들을 가지고 다닌다고요! 그런분이 왜 저희 도구 상점에...?",
+        ("아유 저 그런 사람 아니에요~", TalkEventEnum.NONE, new TalkInfo[] { TOOL_4a }),
+        ("아 그냥 도구 구경왔어요", TalkEventEnum.OPEN_SHOP, new TalkInfo[] { TOOL_4b }));
+    private static TalkInfo TOOL_3a = new TalkInfo(
+        "앗 그렇군요..",
+        ("확인", TalkEventEnum.END, null));
+    private static TalkInfo TOOL_2 = new TalkInfo(
+        "어! 당신은? 저 빨간 지붕 집에 사는 분 아니세요?",
+        ("아닌데요?", TalkEventEnum.NONE, new TalkInfo[] { TOOL_3a }),
+        ("어 맞아요! 왜여?", TalkEventEnum.NONE, new TalkInfo[] { TOOL_3b }));
     private static TalkInfo TOOL_1 = new TalkInfo(
         "좋은 하루에요~",
-        ("확인", TalkEventEnum.OPEN_SHOP, new TalkInfo[] { TOOL_2 }));
+        ("확인", TalkEventEnum.NONE, new TalkInfo[] { TOOL_2 }));
 
     /*=======================================
      *            퀘스트 대화 데이터

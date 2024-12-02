@@ -126,6 +126,7 @@ public class ManufactListBehavior : UIBehavior
 
         if (canMake)
         {
+            UISoundManager.playUiSound(UISoundObject.TRADE);
             foreach (ItemBundle inputItem in manufactInfo.inputItems)
             {
                 InventoryManager.removeItem(inputItem.item.itemId, inputItem.count);

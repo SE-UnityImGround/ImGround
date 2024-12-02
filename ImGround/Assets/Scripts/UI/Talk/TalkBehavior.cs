@@ -97,6 +97,7 @@ public class TalkBehavior : UIBehavior
                 }
             }
             updateTalkView();
+            UISoundManager.playUiSound(UISoundObject.START_TALKING);
             inGameUI.displayView(InGameViewMode.TALK);
         }
         else

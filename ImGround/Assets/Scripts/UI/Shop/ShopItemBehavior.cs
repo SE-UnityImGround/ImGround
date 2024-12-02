@@ -52,6 +52,7 @@ public class ShopItemBehavior : MonoBehaviour
 
     public void onTradeBtnClick()
     {
+        UISoundManager.playUiSound(UISoundObject.TRADE);
         TradeItemEventHandler.Invoke(item, price);
     }
 }
