@@ -80,6 +80,11 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (health >= maxHealth)
+        {
+            health = maxHealth;
+        }
+
         // 플레이어 동작 업데이트
         pBehavior.GetInput();
         pMove.MoveInput();
