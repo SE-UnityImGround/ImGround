@@ -26,7 +26,11 @@ public class Player : MonoBehaviour
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
     [SerializeField]
-    private Transform[] hat = new Transform[5];
+    private Transform[] hatPos = new Transform[5];
+    [SerializeField]
+    private GameObject[] hat = new GameObject[5];
+    public Transform originHat;
+    private GameObject hatIns;
 
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
@@ -62,6 +66,13 @@ public class Player : MonoBehaviour
         SaveManager.setOnSave(onStartSave);
         if (SaveManager.isLoadedGame)
             onStartLoad();
+
+        if (hatIns == null)
+        {
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        }
     }
 
     /*====================================
@@ -207,9 +218,11 @@ public class Player : MonoBehaviour
 
         if (hat[level - 1] != null)
         {
-            hat[level - 1].gameObject.SetActive(false);
-        }
-        hat[level].gameObject.SetActive(true);    
+            Destroy(hatIns);
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        } 
     }
     private void OnCollisionEnter(Collision collision)
     {
