@@ -59,8 +59,8 @@ public class ShopInfoManager
                     new ItemBundle(ItemIdEnum.RAKE, 1, false),
                     new ItemBundle(ItemIdEnum.PICKAXE, 1, false),
                     new ItemBundle(ItemIdEnum.SHOVEL, 1, false),
-                    new ItemBundle(ItemIdEnum.KNIFE, 1, false),
-                    new ItemBundle(ItemIdEnum.SICKLE, 1, false))
+                    new ItemBundle(ItemIdEnum.SICKLE, 1, false),
+                    new ItemBundle(ItemIdEnum.KNIFE, 1, false))
             },
             {
                 ShopIdEnum.MEAT,
