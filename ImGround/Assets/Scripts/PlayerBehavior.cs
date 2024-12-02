@@ -535,32 +535,34 @@ public class PlayerBehavior : MonoBehaviour
                     StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1초 후 1번 효과음 재생
                 }
             }
-            else if (other.tag == "BossAttack")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 6;
-                effectSound[1].Play();
-            }
-            else if (other.tag == "BossRock")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 10;
-                effectSound[1].Play();
-            }
-            else if (other.tag == "EnemyAttack")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 2;
-                effectSound[1].Play();
-            }
-            else if (other.tag == "Out")
-            {
-                player.health -= 99;
-            }
-            if (player.health <= 0)
-            {
-                Die();
-                effectSound[2].Play();
+            if (InputManager.onUI != true) {
+                if (other.tag == "BossAttack")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 6;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "BossRock")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 10;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "EnemyAttack")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 2;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "Out")
+                {
+                    player.health -= 99;
+                }
+                if (player.health <= 0)
+                {
+                    Die();
+                    effectSound[2].Play();
+                }
             }
         }
     }
