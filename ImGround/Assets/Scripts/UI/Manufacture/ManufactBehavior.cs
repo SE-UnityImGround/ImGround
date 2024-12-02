@@ -20,7 +20,6 @@ public class ManufactBehavior : MonoBehaviour
 
     public void doMakeClickTrigger()
     {
-        UISoundManager.playUiSound(UISoundObject.TRADE);
         doMakeClickHandler?.Invoke(manufactInfo);
     }
 
