@@ -10,6 +10,16 @@ public class UISoundManager
 
     public static void playUiSound(int type)
     {
-        onPlayUiSound?.Invoke(type);
+        foreach (Action<int> d in onPlayUiSound?.GetInvocationList())
+        {
+            try
+            {
+                d.Invoke(type);
+            }
+            catch
+            {
+
+            }
+        }
     }
 }
