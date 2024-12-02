@@ -26,7 +26,11 @@ public class Player : MonoBehaviour
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
     [SerializeField]
-    private Transform[] hat = new Transform[5];
+    private Transform[] hatPos = new Transform[5];
+    [SerializeField]
+    private GameObject[] hat = new GameObject[5];
+    public Transform originHat;
+    private GameObject hatIns;
 
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
@@ -54,6 +58,13 @@ public class Player : MonoBehaviour
         health = maxHealth;
         // 시작할 때 플레이어의 기본 리스폰 위치를 현재 위치로 설정(침대 추가시 이 코드는 삭제 예정)
         respawnPosition = transform.position;
+
+        if (hatIns == null)
+        {
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        }
 
         // 퀘스트 완수 후 경험치 즉시 추가를 위한 이벤트 처리
         QuestManager.onQuestDoneHandler += OnQuestDone;
@@ -207,9 +218,11 @@ public class Player : MonoBehaviour
 
         if (hat[level - 1] != null)
         {
-            hat[level - 1].gameObject.SetActive(false);
-        }
-        hat[level].gameObject.SetActive(true);    
+            Destroy(hatIns);
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        } 
     }
     private void OnCollisionEnter(Collision collision)
     {
