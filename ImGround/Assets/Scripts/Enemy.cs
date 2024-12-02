@@ -85,6 +85,7 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
+        
         bool isWithinBounds = IsPlayerWithinBounds();
 
         if (type == Type.Boss & isWithinBounds)
