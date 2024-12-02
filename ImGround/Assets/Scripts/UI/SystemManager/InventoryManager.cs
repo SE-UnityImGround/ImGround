@@ -107,12 +107,13 @@ public class InventoryManager
         string inventoryData = PlayerPrefs.GetString(SAVE_NAME_INVENTORY, null);
         if (inventoryData != null)
         {
-            ItemBundle[] inv = JsonUtility.FromJson<InventoryData>(inventoryData).inv.ToArray();
-            for (int i = 0; i < INVENTORY_SIZE && i < inv.Length; i++)
-            {
-                inventory[i] = inv[i];
-                onSlotItemChangedHandler?.Invoke(i);
-            }
+            ItemBundle[] inv = JsonUtility.FromJson<InventoryData>(inventoryData)?.inv?.ToArray();
+            if (inv != null)
+                for (int i = 0; i < INVENTORY_SIZE && i < inv.Length; i++)
+                {
+                    inventory[i] = inv[i];
+                    onSlotItemChangedHandler?.Invoke(i);
+                }
         }
     }
 
