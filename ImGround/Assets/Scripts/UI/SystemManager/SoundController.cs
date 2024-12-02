@@ -73,7 +73,8 @@ public class SoundController : MonoBehaviour
 
         foreach ((AudioSource, float) sound in sounds)
         {
-            sound.Item1.volume = sound.Item2 * (volume / 1.0f);
+            if (sound.Item1 != null)
+                sound.Item1.volume = sound.Item2 * (volume / 1.0f);
         }
     }
 }
