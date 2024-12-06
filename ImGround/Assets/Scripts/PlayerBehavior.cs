@@ -155,6 +155,8 @@ public class PlayerBehavior : MonoBehaviour
                 !player.pMove.IsJumping && !player.pAttack.IsAttacking && !player.pMove.IsWalking)
         {// 씨앗 심기
             StartCoroutine(Planting());
+            if (crop != null && crop.IsGrowing)
+                return;
             anim.SetTrigger("doPlant");
             isPlant = true;
             plantDelay = 0f;
@@ -440,9 +442,9 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPlant()
     {
-        yield return new WaitForSeconds(4f);
-        isPlant = false;
         InventoryManager.takeItem(grabbingSlotIdx, 1);
+        yield return new WaitForSeconds(6f);
+        isPlant = false;
     }
     IEnumerator Picking()
     {
@@ -493,6 +495,10 @@ public class PlayerBehavior : MonoBehaviour
         {
             yield break;
         }
+        if (crop.IsGrowing)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(6f);
         // 현재 들고 있는 아이템이 씨앗인지 확인
         if (isSeed)
@@ -515,7 +521,6 @@ public class PlayerBehavior : MonoBehaviour
                     crop.CropIndex = 4;
                     break;
             }
-
         }
     }
     // 과일 수확 로직 + 피격 로직
