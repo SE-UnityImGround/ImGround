@@ -68,6 +68,9 @@ public class SettingManager
 
         foreach (SoundController sound in soundData.sounds)
         {
+            if (sound == null)
+                continue;
+
             if (soundData.isOn)
                 sound.setVolume(soundData.volume);
             else

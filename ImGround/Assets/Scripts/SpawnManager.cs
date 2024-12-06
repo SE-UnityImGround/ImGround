@@ -54,21 +54,38 @@ public class SpawnManager : MonoBehaviour
             if (animal != null && !animal.activeSelf && !respawnInProgress[animal])
             {
                 // 적이 비활성화된 경우 리스폰 시간 결정
-                Animal animalComponent = animal.GetComponent<Animal>();
-                if (animalComponent != null)
-                {
-                    float respawnTime = 30f;
-                    respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
-                    StartCoroutine(RespawnAnimal(animal, respawnTime));
-                    animalComponent.Respawn();
-                }
-                else
-                {
-                    Chicken chicken = animal.GetComponent<Chicken>();
+                /* Animal animalComponent = animal.GetComponent<Animal>();
+                 if (animalComponent != null)
+                 {
+                     float respawnTime = 30f;
+                     respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
+                     StartCoroutine(RespawnAnimal(animal, respawnTime));
+                     animalComponent.Respawn();
+                 }
+                 else
+                 {
+                     Chicken chicken = animal.GetComponent<Chicken>();
+                     float respawnTime = 15f;
+                     respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
+                     StartCoroutine(RespawnAnimal(animal, respawnTime));
+                     chicken.Respawn();
+                 }*/
+                Chicken chicken = animal.GetComponent<Chicken>();
+                if (chicken != null)
+                {   
                     float respawnTime = 15f;
                     respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
                     StartCoroutine(RespawnAnimal(animal, respawnTime));
                     chicken.Respawn();
+                    
+                }
+                else
+                {
+                    Animal animalComponent = animal.GetComponent<Animal>();
+                    float respawnTime = 30f;
+                    respawnInProgress[animal] = true; // 리스폰이 진행 중임을 표시
+                    StartCoroutine(RespawnAnimal(animal, respawnTime));
+                    animalComponent.Respawn();
                 }
             }
         }

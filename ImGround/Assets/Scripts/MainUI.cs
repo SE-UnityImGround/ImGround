@@ -43,6 +43,7 @@ public class MainUI : MonoBehaviour
                 LoadingView.GetComponent<Sceneload>().LoadSceneHandle(GameSceneName, 0);
                 break;
             case BTNType.Continue:
+                SaveManager.setLoadState();
                 changeView(ViewMode.LOADING);
                 LoadingView.GetComponent<Sceneload>().LoadSceneHandle(GameSceneName, 1);
                 break;

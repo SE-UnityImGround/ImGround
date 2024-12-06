@@ -73,6 +73,59 @@ public class InventoryManager
     }
 
     /*====================================
+     *           Save And Load
+     *===================================*/
+
+    private const string SAVE_NAME_MONEY = "Inv_money";
+    private const string SAVE_NAME_INVENTORY = "Inv_inventory";
+
+    private class InventoryData
+    {
+        public List<ItemBundle> inv;
+
+        public InventoryData()
+        {
+            inv = new List<ItemBundle>();
+            foreach(ItemBundle item in inventory)
+            {
+                if (item != null
+                    && item.item.itemId != ItemIdEnum.TEST_NULL_ITEM
+                    && item.count != 0)
+                    inv.Add(new ItemBundle(item));
+            }
+        }
+    }
+
+    public static void initialize()
+    {
+        SaveManager.setOnSave(onStartSave);
+
+        if (!SaveManager.isLoadedGame)
+            return;
+
+        money = PlayerPrefs.GetInt(SAVE_NAME_MONEY, 300000);
+        string inventoryData = PlayerPrefs.GetString(SAVE_NAME_INVENTORY, null);
+        if (inventoryData != null)
+        {
+            ItemBundle[] inv = JsonUtility.FromJson<InventoryData>(inventoryData)?.inv?.ToArray();
+            if (inv != null)
+                for (int i = 0; i < INVENTORY_SIZE && i < inv.Length; i++)
+                {
+                    inventory[i] = inv[i];
+                    onSlotItemChangedHandler?.Invoke(i);
+                }
+        }
+    }
+
+    private static void onStartSave()
+    {
+        PlayerPrefs.SetInt(SAVE_NAME_MONEY, money);
+        PlayerPrefs.SetString(
+            SAVE_NAME_INVENTORY, 
+            JsonUtility.ToJson(new InventoryData()));
+    }
+
+    /*====================================
      *      Selection Management
      *===================================*/
 

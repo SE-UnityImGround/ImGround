@@ -99,4 +99,13 @@ public class InputManager
         }
         return false;
     }
+
+    public static bool GetButtonDown(string buttonName)
+    {
+        if (!onUI)
+        {
+            return Input.GetButtonDown(buttonName);
+        }
+        return false;
+    }
 }

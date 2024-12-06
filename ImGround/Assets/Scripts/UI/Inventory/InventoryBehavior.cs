@@ -25,6 +25,7 @@ public class InventoryBehavior : UIBehavior
 
         generateSlots();
         InventoryManager.onSlotItemChangedHandler += onSlotChanged;
+        InventoryManager.initialize();
     }
 
     private void generateSlots()

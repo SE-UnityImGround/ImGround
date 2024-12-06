@@ -8,9 +8,10 @@ using UnityEngine;
 /// <summary>
 /// 단일 아이템을 표현하는 기본 자료구조입니다.
 /// </summary>
+[Serializable]
 public class Item
 {
-    public ItemIdEnum itemId { get; private set; }
+    public ItemIdEnum itemId;
     public string name { get { return ItemInfoManager.getItemInfo(itemId).itemName; } }
     public Sprite image { get { return ItemInfoManager.getItemImage(itemId); } }
     

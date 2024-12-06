@@ -26,7 +26,11 @@ public class Player : MonoBehaviour
     public Vector3 respawnPosition; // 리스폰 위치 설정
     public Rigidbody rigid;
     [SerializeField]
-    private Transform[] hat = new Transform[5];
+    private Transform[] hatPos = new Transform[5];
+    [SerializeField]
+    private GameObject[] hat = new GameObject[5];
+    public Transform originHat;
+    private GameObject hatIns;
 
     private static Player instance;
     private bool isDeadCooldown = false; // 사망 후 5초 동안의 쿨다운
@@ -57,7 +61,50 @@ public class Player : MonoBehaviour
 
         // 퀘스트 완수 후 경험치 즉시 추가를 위한 이벤트 처리
         QuestManager.onQuestDoneHandler += OnQuestDone;
+
+        // 저장 기능을 위한 메소드 등록
+        SaveManager.setOnSave(onStartSave);
+        if (SaveManager.isLoadedGame)
+            onStartLoad();
+
+        if (hatIns == null)
+        {
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        }
     }
+
+    /*====================================
+     *           Save And Load
+     *===================================*/
+
+    private const string SAVE_NAME_HEALTH = "Player_health";
+    private const string SAVE_NAME_EXP = "Player_exp";
+    private const string SAVE_NAME_LEVEL = "Player_level";
+    private const string SAVE_NAME_POSITION = "Player_position";
+
+    public void onStartSave()
+    {
+        PlayerPrefs.SetInt(SAVE_NAME_HEALTH, health);
+        PlayerPrefs.SetInt(SAVE_NAME_EXP, exp);
+        PlayerPrefs.SetInt(SAVE_NAME_LEVEL, level);
+        PlayerPrefs.SetString(SAVE_NAME_POSITION, JsonUtility.ToJson(transform.position));
+    }
+
+    public void onStartLoad()
+    {
+        health = PlayerPrefs.GetInt(SAVE_NAME_HEALTH, maxHealth);
+        exp = PlayerPrefs.GetInt(SAVE_NAME_EXP, 0);
+        level = PlayerPrefs.GetInt(SAVE_NAME_LEVEL, 0);
+        string text = PlayerPrefs.GetString(SAVE_NAME_POSITION, null);
+        if (text != null && text.Length > 0)
+        {
+            transform.position = JsonUtility.FromJson<Vector3>(text);
+        }
+    }
+
+    // ===================================
 
     // 싱글톤으로 플레이어 오브젝트 참조 반환
     public static Player GetInstance()
@@ -78,6 +125,11 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(DeathCooldown());
             return;
+        }
+
+        if (health >= maxHealth)
+        {
+            health = maxHealth;
         }
 
         // 플레이어 동작 업데이트
@@ -166,9 +218,11 @@ public class Player : MonoBehaviour
 
         if (hat[level - 1] != null)
         {
-            hat[level - 1].gameObject.SetActive(false);
-        }
-        hat[level].gameObject.SetActive(true);    
+            Destroy(hatIns);
+            hatIns = Instantiate(hat[level], hatPos[level].position, hatPos[level].rotation);
+            hatIns.transform.SetParent(originHat);
+            hatIns.transform.localScale = hat[level].transform.localScale;
+        } 
     }
     private void OnCollisionEnter(Collision collision)
     {

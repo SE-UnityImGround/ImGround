@@ -13,9 +13,6 @@ public class PlayerBuild : MonoBehaviour
     private bool canBuild = false;
     private Player player;
     public Transform tf_Player;
-    // Raycast 필요 변수 선언
-    private RaycastHit hitInfo;
-    private LayerMask layerMask;
     private float range = 2f;
 
     ItemPrefabID bed;
@@ -50,11 +47,11 @@ public class PlayerBuild : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1") && bed != null && bed.itemType == ItemIdEnum.BED)
+        if (InputManager.GetButtonDown("Fire1") && bed != null && bed.itemType == ItemIdEnum.BED)
         {
             Build();
         }
-        if (Input.GetButtonDown("Fire2") && bed != null && bed.itemType == ItemIdEnum.BED)
+        if (InputManager.GetButton("Fire2") && bed != null && bed.itemType == ItemIdEnum.BED)
             Cancel();
     }
     void Build()

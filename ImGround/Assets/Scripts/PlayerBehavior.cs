@@ -30,7 +30,6 @@ public class PlayerBehavior : MonoBehaviour
     bool canPlant = false;
 
     public Transform handPoint; // 아이템을 줍기 위한 손의 위치
-    public Transform pickPoint; // 아이템을 줍기 위한 손의 위치
     public Transform pointH;  // 낫의 콜라이더 위치
     public Transform[] curtivatePoint; // 괭이와 삽의 콜라이더 (0번 인덱스 : 괭이, 1번 인덱스 : 삽)
     public Transform ItemPoint; // 음식을 먹는 손의 위치
@@ -97,7 +96,7 @@ public class PlayerBehavior : MonoBehaviour
 
             // 체력 회복 처리
             float healAmount = ItemInfoManager.getItemInfo(grabbedItem.GetComponent<ItemPrefabID>().itemType).healAmount;
-            player.health = Mathf.Min(player.health + (int)(healAmount * player.MaxHealth), player.MaxHealth);
+            player.health = Mathf.Min(player.health + (int)((healAmount / 100.0f) * player.MaxHealth), player.MaxHealth);
 
             isEating = true;
             anim.SetTrigger("doEat");
@@ -275,15 +274,6 @@ public class PlayerBehavior : MonoBehaviour
         grabbingSlotIdx = slotIdx;
     }
 
-    // 아이템 줍기 범위 확인용(추후 삭제 예정)
-    private void OnDrawGizmosSelected()
-    {
-        if (handPoint == null)
-            return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(handPoint.position, 1f);
-    }
     // 사망 동작
     public void Die()
     {
@@ -375,7 +365,9 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator ResetDig()
     {
         if (toolIndex == 3)
+        {
             yield return new WaitForSeconds(1f);
+        }
         else
             yield return new WaitForSeconds(1.6f);
         isDigging = false;
@@ -543,28 +535,34 @@ public class PlayerBehavior : MonoBehaviour
                     StartCoroutine(PlaySoundWithDelay(effectSound[3], 1.0f)); // 1초 후 1번 효과음 재생
                 }
             }
-            else if (other.tag == "BossAttack")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 6;
-                effectSound[1].Play();
-            }
-            else if (other.tag == "BossRock")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 10;
-                effectSound[1].Play();
-            }
-            else if (other.tag == "EnemyAttack")
-            {
-                anim.SetTrigger("doHit");
-                player.health -= 2;
-                effectSound[1].Play();
-            }
-            if (player.health <= 0)
-            {
-                Die();
-                effectSound[2].Play();
+            if (InputManager.onUI != true) {
+                if (other.tag == "BossAttack")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 6;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "BossRock")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 10;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "EnemyAttack")
+                {
+                    anim.SetTrigger("doHit");
+                    player.health -= 2;
+                    effectSound[1].Play();
+                }
+                else if (other.tag == "Out")
+                {
+                    player.health -= 99;
+                }
+                if (player.health <= 0)
+                {
+                    Die();
+                    effectSound[2].Play();
+                }
             }
         }
     }
@@ -603,6 +601,6 @@ public class PlayerBehavior : MonoBehaviour
     private IEnumerator StopSoundWithDelay(AudioSource audioSource, float delay)
     {
         yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
-        audioSource.Stop(); // 지정된 효과음 재생
+        audioSource.Stop(); // 지정된 효과음 재생 중지
     }
 }

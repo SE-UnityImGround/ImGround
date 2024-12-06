@@ -18,6 +18,7 @@ public class MiningOre : MonoBehaviour
     private Vector3 originalPosition;
     private Quaternion originalRotation;
 
+    public GameObject GaugeInstance { get {  return gaugeBarInstance; } }
     private bool isRespawning = false;
     private Player player;
     private Transform playerTransform;
@@ -120,7 +121,7 @@ public class MiningOre : MonoBehaviour
     void StopMining()
     {
         if (!isMining) return; // 이미 멈췄다면 실행하지 않음
-
+        player.pBehavior.IsDigging = false;
         isMining = false;
         isMiningTriggered = false;
         miningProgress = 0f;
@@ -146,6 +147,7 @@ public class MiningOre : MonoBehaviour
             {
                 slider.value = value;
             }
+            player.pBehavior.IsDigging = true;
         }
     }
 
@@ -153,6 +155,7 @@ public class MiningOre : MonoBehaviour
     {
         isMining = false;
         isMiningTriggered = false;
+        player.pBehavior.IsDigging = false;
 
         Destroy(gaugeBarInstance);
         gameObject.SetActive(false);
@@ -183,11 +186,5 @@ public class MiningOre : MonoBehaviour
 
         gameObject.SetActive(true);
         isRespawning = false;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, allowedDistance);
     }
 }
