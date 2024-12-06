@@ -440,7 +440,7 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPlant()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6f);
         isPlant = false;
         InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
