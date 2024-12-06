@@ -132,6 +132,10 @@ public class Player : MonoBehaviour
             health = maxHealth;
         }
 
+        if (pBehavior.IsPlant)
+        {
+            return;
+        }
         // 플레이어 동작 업데이트
         pBehavior.GetInput();
         pMove.MoveInput();

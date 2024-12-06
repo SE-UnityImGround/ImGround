@@ -20,6 +20,7 @@ public class Crops : MonoBehaviour
     private GameObject cropInstance;
     private ParticleSystem particleSystem;
     private bool isGrowing = false;
+    public bool IsGrowing {  get { return isGrowing; } }
     private Coroutine[] growCoroutines; // 각 작물의 성장 코루틴을 추적하는 배열
     public GameObject CropInstance {  set { cropInstance = value; } }
 
