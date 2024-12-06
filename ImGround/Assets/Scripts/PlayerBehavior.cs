@@ -442,9 +442,9 @@ public class PlayerBehavior : MonoBehaviour
 
     IEnumerator ResetPlant()
     {
+        InventoryManager.takeItem(grabbingSlotIdx, 1);
         yield return new WaitForSeconds(6f);
         isPlant = false;
-        InventoryManager.takeItem(grabbingSlotIdx, 1);
     }
     IEnumerator Picking()
     {
